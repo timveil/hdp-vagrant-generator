@@ -53,24 +53,24 @@ SCRIPT
 
 $build = <<SCRIPT
 
-#log("Cleaning yum")
+#log("Cleaning YUM")
 yum clean all
 
 #if( $arguments.updateLibraries )
-#log("Updating yum")
+#log("Updating YUM")
 yum update -y -q
 #end
 
-#log("Deleting yum history")
+#log("Deleting YUM History")
 yum history new
 
-#log("Getting Ambari repo")
+#log("Getting Ambari YUM Repo")
 wget -q http://repo.hdp.local/ambari/centos6/ambari.repo -O /etc/yum.repos.d/ambari.repo
 
 #log("Installing Ambari Server and Agent")
 yum install ambari-server ambari-agent unzip -y -q
 
-#log("Updating Ambari Agent hostname")
+#log("Updating Ambari Agent Hostname")
 sed -i "s/^hostname=localhost/hostname=$arguments.hostname/g" /etc/ambari-agent/conf/ambari-agent.ini
 
 #log("Downloading New MySQL Connector Jar")
@@ -90,16 +90,16 @@ ambari-server start
 #log("Starting Ambari Agent")
 ambari-agent start
 
-#log("Submitting POST for Blueprint")
+#log("Executing POST to Create Blueprint")
 curl --silent --show-error -H "X-Requested-By: ambari" -X POST -d @/vagrant/$bluprentJsonFileName -u admin:admin $arguments.getBlueprintUrl()
 
-#log("Submitting PUT for HDP Repo")
+#log("Executing PUT to Create HDP Repo")
 curl --silent --show-error -H "X-Requested-By: ambari" -X PUT -d @/vagrant/$hdpRepoJsonFileName -u admin:admin $arguments.getHdpRepoUrl()
 
-#log("Submitting PUT for HDP-Utils Repo")
+#log("Executing PUT to Create HDP-Utils Repo")
 curl --silent --show-error -H "X-Requested-By: ambari" -X PUT -d @/vagrant/$hdpUtilsRepoJsonFileName -u admin:admin $arguments.getHdpUtilsRepoUrl()
 
-#log("Submitting POST for Cluster")
+#log("Executing POST to Create Cluster")
 curl --silent --show-error -H "X-Requested-By: ambari" -X POST -d @/vagrant/$createClusterJsonFileName -u admin:admin $arguments.getClusterUrl()
 
 
