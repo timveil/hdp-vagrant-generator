@@ -18,13 +18,13 @@ public class MemoryConfiguration {
 
     public MemoryConfiguration(Arguments arguments) {
 
-        int availableRam = arguments.getMemoryInMegabytes() - arguments.getReservedSystemMemoryInMegabytes();
+        final int availableRam = arguments.getMemoryInMegabytes() - arguments.getReservedSystemMemoryInMegabytes();
         System.out.println("Available RAM: " + availableRam);
 
-        int numberOfContainers = Ints.min(2 * arguments.getCpus(), availableRam / arguments.getMinContainerSizeInMegabytes());
+        final int numberOfContainers = Ints.min(2 * arguments.getCpus(), availableRam / arguments.getMinContainerSizeInMegabytes());
         System.out.println("Number of Containers: " + numberOfContainers);
 
-        int ramPerContainer = Ints.max(arguments.getMinContainerSizeInMegabytes(), (availableRam / numberOfContainers));
+        final int ramPerContainer = Ints.max(arguments.getMinContainerSizeInMegabytes(), (availableRam / numberOfContainers));
         System.out.println("RAM per Container: " + ramPerContainer);
 
         nodeManagerResoureMemory = numberOfContainers * ramPerContainer;
