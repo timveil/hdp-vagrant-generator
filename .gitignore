@@ -1,10 +1,6 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Vagrant template
 .vagrant/
-
-## Directory-based project format:
 .idea/
-*.ipr
-*.iws
-/out/
 
+
+*.json
+Vagrantfile
