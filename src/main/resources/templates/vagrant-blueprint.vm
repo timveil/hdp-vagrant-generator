@@ -7,6 +7,7 @@
                 }
             }
         },
+#if( $arguments.containsHive() )
         {
             "hive-site": {
                 "properties": {
@@ -15,6 +16,7 @@
                 }
             }
         },
+#end
         {
             "mapred-site": {
                 "properties": {
@@ -48,10 +50,14 @@
                 {"name": "HCAT"},
                 {"name": "HDFS_CLIENT"},
                 {"name": "HISTORYSERVER"},
+#if( $arguments.containsHive() )
                 {"name": "HIVE_CLIENT"},
                 {"name": "HIVE_METASTORE"},
                 {"name": "HIVE_SERVER"},
+#end
+#if( $arguments.containsKnox() )
                 {"name": "KNOX_GATEWAY"},
+#end
                 {"name": "MAPREDUCE2_CLIENT"},
                 {"name": "METRICS_COLLECTOR"},
                 {"name": "METRICS_MONITOR"},

@@ -1,6 +1,8 @@
 package generator.service;
 
+import com.google.common.collect.Sets;
 import generator.model.Arguments;
+import generator.model.Component;
 import org.apache.commons.io.FileUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ public class VagrantService {
     public static final String VAGRANT_HDP_REPO_JSON = "vagrant-hdp-repo.json";
     public static final String VAGRANT_HDP_UTILS_REPO_JSON = "vagrant-hdp-utils-repo.json";
     public static final String VAGRANTFILE = "Vagrantfile";
+
     @Autowired
     private VelocityEngine engine;
 
@@ -33,6 +36,9 @@ public class VagrantService {
         arguments.setUpdateLibraries(true);
         arguments.setBlueprintName("custom-" + System.currentTimeMillis());
         arguments.setClusterName("test-cluster");
+        //arguments.setComponents(Sets.newHashSet(Component.hive));
+
+
 
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);

@@ -9,14 +9,6 @@ public class Arguments {
     private static final String HDP_REPO_NAME="HDP-2.2";
     private static final String HDP_UTILS_REPO_NAME="HDP-UTILS-1.1.0.20";
 
-    enum View {
-        hive, file;
-    }
-
-    enum Component {
-        hive, ranger, knox;
-    }
-
 
     private String hostname;
 
@@ -140,6 +132,13 @@ public class Arguments {
         return "http://" + hostname + ":8080/api/v1/stacks/HDP/versions/2.2/operating_systems/redhat6/repositories/" + HDP_UTILS_REPO_NAME;
     }
 
+    public boolean containsHive() {
+        return components != null && components.contains(Component.hive);
+    }
+
+    public boolean containsKnox() {
+        return components != null && components.contains(Component.knox);
+    }
 
 
     public void prettyPrint() {
