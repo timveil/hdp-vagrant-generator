@@ -1,5 +1,6 @@
 package generator.model;
 
+import com.google.common.base.MoreObjects;
 import org.springframework.core.env.Environment;
 
 import java.util.Set;
@@ -18,6 +19,11 @@ public class Arguments {
 
     private Integer cpus;
 
+    private Integer disks;
+
+    private Integer minContainerSizeInMegabytes;
+    private Integer reservedSystemMemoryInMegabytes;
+
     private String clusterName;
 
     private String blueprintName;
@@ -30,17 +36,26 @@ public class Arguments {
 
     private Set<Component> components;
 
+    public Arguments(Environment environment) {
+
+
+    }
+
+
+    public Integer getDisks() {
+        return disks;
+    }
+
+    public void setDisks(Integer disks) {
+        this.disks = disks;
+    }
+
     public String getBlueprintName() {
         return blueprintName;
     }
 
     public void setBlueprintName(String blueprintName) {
         this.blueprintName = blueprintName;
-    }
-
-    public Arguments(Environment environment) {
-
-
     }
 
     public String getHostname() {
@@ -115,6 +130,13 @@ public class Arguments {
         this.components = components;
     }
 
+    public Integer getMinContainerSizeInMegabytes() {
+        return minContainerSizeInMegabytes;
+    }
+
+    public void setMinContainerSizeInMegabytes(Integer minContainerSizeInMegabytes) {
+        this.minContainerSizeInMegabytes = minContainerSizeInMegabytes;
+    }
 
     public String getBlueprintUrl() {
         return "http://" + hostname + ":8080/api/v1/blueprints/" + blueprintName;
@@ -140,8 +162,34 @@ public class Arguments {
         return components != null && components.contains(Component.knox);
     }
 
+    public Integer getReservedSystemMemoryInMegabytes() {
+        return reservedSystemMemoryInMegabytes;
+    }
+
+    public void setReservedSystemMemoryInMegabytes(Integer reservedSystemMemoryInMegabytes) {
+        this.reservedSystemMemoryInMegabytes = reservedSystemMemoryInMegabytes;
+    }
 
     public void prettyPrint() {
 
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("hostname", hostname)
+                .add("ip", ip)
+                .add("memoryInMegabytes", memoryInMegabytes)
+                .add("cpus", cpus)
+                .add("disks", disks)
+                .add("minContainerSizeInMegabytes", minContainerSizeInMegabytes)
+                .add("reservedSystemMemoryInMegabytes", reservedSystemMemoryInMegabytes)
+                .add("clusterName", clusterName)
+                .add("blueprintName", blueprintName)
+                .add("updateLibraries", updateLibraries)
+                .add("mysqlPassword", mysqlPassword)
+                .add("views", views)
+                .add("components", components)
+                .toString();
     }
 }

@@ -20,21 +20,21 @@
         {
             "mapred-site": {
                 "properties": {
-                    "mapreduce.map.java.opts": "-Xmx3277m",
-                    "mapreduce.map.memory.mb": "4096",
-                    "mapreduce.reduce.java.opts": "-Xmx6554m",
-                    "mapreduce.reduce.memory.mb": "8192",
-                    "yarn.app.mapreduce.am.command-opts": "-Xmx6554m -Dhdp.version=${hdp.version}",
-                    "yarn.app.mapreduce.am.resource.mb": "8192"
+                    "mapreduce.map.java.opts": "-Xmx${memory.mrMapOpts}m",
+                    "mapreduce.map.memory.mb": "$memory.mrMapMemory",
+                    "mapreduce.reduce.java.opts": "-Xmx${memory.mrReduceOpts}m",
+                    "mapreduce.reduce.memory.mb": "$memory.mrReduceMemory",
+                    "yarn.app.mapreduce.am.command-opts": "-Xmx${memory.yarnMrCommandOpts}m -Dhdp.version=${hdp.version}",
+                    "yarn.app.mapreduce.am.resource.mb": "$memory.yarnMrMemory"
                 }
             }
         },
         {
             "yarn-site": {
                 "properties": {
-                    "yarn.nodemanager.resource.memory-mb": "8192",
-                    "yarn.scheduler.maximum-allocation-mb": "8192",
-                    "yarn.scheduler.minimum-allocation-mb": "4096"
+                    "yarn.nodemanager.resource.memory-mb": "$memory.nodeManagerResoureMemory",
+                    "yarn.scheduler.maximum-allocation-mb": "$memory.yarnMaxAllocation",
+                    "yarn.scheduler.minimum-allocation-mb": "$memory.yarnMinAllocation"
                 }
             }
         }

@@ -51,13 +51,16 @@ SCRIPT
 
 $build = <<SCRIPT
 
-#log("cleaning yum")
+#log("Cleaning yum")
 yum clean all
 
 #if( $arguments.updateLibraries )
 #log("Updating yum")
 yum update -y -q
 #end
+
+#log("Deleting yum history")
+yum history new
 
 #log("Get Ambari repo")
 wget -q http://repo.hdp.local/ambari/centos6/ambari.repo -O /etc/yum.repos.d/ambari.repo

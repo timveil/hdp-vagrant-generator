@@ -3,6 +3,7 @@ package generator.service;
 import com.google.common.collect.Sets;
 import generator.model.Arguments;
 import generator.model.Component;
+import generator.model.MemoryConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,25 @@ public class VagrantService {
         arguments.setHostname("test.hdp.local");
         arguments.setIp("192.168.66.101");
         arguments.setMemoryInMegabytes(8192);
+        arguments.setReservedSystemMemoryInMegabytes(2048);
+        arguments.setMinContainerSizeInMegabytes(512);
         arguments.setCpus(4);
         arguments.setUpdateLibraries(true);
         arguments.setBlueprintName("custom-" + System.currentTimeMillis());
         arguments.setClusterName("test-cluster");
-        //arguments.setComponents(Sets.newHashSet(Component.hive));
+        arguments.setComponents(Sets.newHashSet(Component.hive));
+        arguments.setDisks(1);
 
+        System.out.println(arguments.toString());
+
+        MemoryConfiguration memoryConfiguration = new MemoryConfiguration(arguments);
+
+        System.out.println(memoryConfiguration.toString());
 
 
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);
+        model.put("memory", memoryConfiguration);
         model.put("bluprentJsonFileName", VAGRANT_BLUEPRINT_JSON);
         model.put("createClusterJsonFileName", VAGRANT_CREATE_CLUSTER_JSON);
         model.put("hdpRepoJsonFileName", VAGRANT_HDP_REPO_JSON);
