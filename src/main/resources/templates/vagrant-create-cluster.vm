@@ -1,0 +1,14 @@
+{
+    "blueprint" : "$arguments.blueprintName",
+    "default_password" : "password",
+    "host_groups" :[
+        {
+            "name" : "host_group_1",
+                "hosts" : [
+                    {
+                        "fqdn" : "$arguments.hostname"
+                    }
+                ]
+            }
+        ]
+}

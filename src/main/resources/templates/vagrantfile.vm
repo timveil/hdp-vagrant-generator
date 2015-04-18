@@ -1,0 +1,93 @@
+#macro( log $message )
+echo "    "
+echo "---------------------------------------------------------------------------------------------------------------"
+echo "----- $message"
+echo "---------------------------------------------------------------------------------------------------------------"
+echo "    "
+#end
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "timveil/centos6.6-hdp-base"
+
+    config.vm.box_check_update = true
+
+    config.vbguest.auto_update = true
+
+    config.vbguest.no_remote = true
+
+    config.vbguest.no_install = false
+
+    config.multihostsupdater.aliases = {'$arguments.ip' => ['$arguments.hostname']}
+
+    config.vm.provision "hosts", type: "shell", inline: $hostsFile
+
+    config.vm.provision "build", type: "shell", inline: $build
+
+    config.vm.hostname = '$arguments.hostname'
+
+    config.vm.network "private_network", ip: '$arguments.ip'
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = $arguments.memoryInMegabytes
+        v.cpus = $arguments.cpus
+        v.name = '$arguments.hostname'
+    end
+end
+
+$hostsFile = <<SCRIPT
+
+cat > /etc/hosts <<EOF
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+$arguments.ip   $arguments.hostname
+192.168.66.10   repo.hdp.local
+EOF
+
+SCRIPT
+
+$build = <<SCRIPT
+
+#log("cleaning yum")
+yum clean all
+
+#if( $arguments.updateLibraries )
+#log("Updating yum")
+yum update -y -q
+#end
+
+#log("Get Ambari repo")
+wget -q http://repo.hdp.local/ambari/centos6/ambari.repo -O /etc/yum.repos.d/ambari.repo
+
+#log("Install Ambari Server and Agent")
+yum install ambari-server ambari-agent -y -q
+
+#log("Update Ambari Agent hostname")
+sed -i "s/^hostname=localhost/hostname=$arguments.hostname/g" /etc/ambari-agent/conf/ambari-agent.ini
+
+#log("Run Ambari Server setup")
+ambari-server setup -s -j $JAVA_HOME
+
+#log("Start Ambari Server")
+ambari-server start
+
+#log("Start Ambari Agent")
+ambari-agent start
+
+#log("POST Blueprint")
+curl --silent --show-error -H "X-Requested-By: ambari" -X POST -d @/vagrant/$bluprentJsonFileName -u admin:admin $arguments.getBlueprintUrl()
+
+#log("PUT HDP Repo")
+curl --silent --show-error -H "X-Requested-By: ambari" -X PUT -d @/vagrant/$hdpRepoJsonFileName -u admin:admin $arguments.getHdpRepoUrl()
+
+#log("PUT HDP-Utils Repo")
+curl --silent --show-error -H "X-Requested-By: ambari" -X PUT -d @/vagrant/$hdpUtilsRepoJsonFileName -u admin:admin $arguments.getHdpUtilsRepoUrl()
+
+#log("POST Cluster")
+curl --silent --show-error -H "X-Requested-By: ambari" -X POST -d @/vagrant/$createClusterJsonFileName -u admin:admin $arguments.getClusterUrl()
+
+
+SCRIPT

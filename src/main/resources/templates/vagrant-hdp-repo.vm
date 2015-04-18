@@ -1,0 +1,8 @@
+{
+    "Repositories": {
+        "base_url": "http://repo.hdp.local/hdp/centos6/HDP-2.2.4.0",
+        "default_base_url": "http://repo.hdp.local/hdp/centos6/HDP-2.2.4.0",
+        "latest_base_url": "http://repo.hdp.local/hdp/centos6/HDP-2.2.4.0",
+        "verify_base_url": true
+    }
+}
