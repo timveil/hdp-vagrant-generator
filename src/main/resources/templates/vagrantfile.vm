@@ -173,14 +173,6 @@ curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$filesViewJs
 #log("Executing POST to Create Hive View")
 curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$hiveViewJsonFileName -u admin:admin $arguments.getHiveViewUrl()
 #end
-
-#if( $arguments.containsHiveView() || $arguments.containsFileView()) )
-#log("Stopping Ambari Server")
-ambari-server stop
-
-#log("Starting Ambari Server")
-ambari-server start
-#end
 *#
 
 #log("Cluster Install Complete!")
