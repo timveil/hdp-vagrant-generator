@@ -1,4 +1,4 @@
-[ {
+{
     "ViewInstanceInfo" : {
         "properties" : {
             "webhdfs.url" : "webhdfs://${arguments.hostname}:50070",
@@ -10,4 +10,4 @@
             "hive.auth" : "auth=NONE"
         }
     }
-} ]
+}

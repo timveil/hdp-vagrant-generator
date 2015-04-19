@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "hosts", type: "shell", inline: $hostsFile
 
-    config.vm.provision "logCleanup", type: "shell", inline: $logCleanup,  run: "always"
+    config.vm.provision "logCleanup", type: "shell", inline: $logCleanup, run: "always"
 
     config.vm.provision "build", type: "shell", inline: $build
 
@@ -100,7 +100,7 @@ yum update -y -q
 yum history new
 
 
-#if( $arguments.containsFileView()) )
+#if( $arguments.containsFileView() )
 #log("Adding Admin User")
 useradd -G hdfs admin
 usermod -a -G users admin
@@ -127,12 +127,12 @@ ambari-server setup -s -j $JAVA_HOME
 #log("Updating MySql Connector Jar")
 ambari-server setup --jdbc-driver=/usr/share/java/${mysqlVersion}/${mysqlVersion}-bin.jar --jdbc-db=mysql
 
-#if( $arguments.containsFileView()) )
+#if( $arguments.containsFileView() )
 #log("Downloading Ambari Files View")
 wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/files-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/files-0.1.0-SNAPSHOT.jar
 #end
 
-#if( $arguments.containsHiveView()) )
+#if( $arguments.containsHiveView() )
 #log("Downloading Ambari Hive View")
 wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/hive-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/hive-0.1.0-SNAPSHOT.jar
 #end
@@ -144,16 +144,26 @@ ambari-server start
 ambari-agent start
 
 #log("Executing POST to Create Blueprint")
-curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$bluprentJsonFileName -u admin:admin $arguments.getBlueprintUrl()
+curl --silent --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.getBlueprintUrl()
 
 #log("Executing PUT to Create HDP Repo")
-curl --silent --show-error -H "${requestedBy}" -X PUT -d @/vagrant/$hdpRepoJsonFileName -u admin:admin $arguments.getHdpRepoUrl()
+curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpRepo' -u admin:admin $arguments.getHdpRepoUrl()
 
 #log("Executing PUT to Create HDP-Utils Repo")
-curl --silent --show-error -H "${requestedBy}" -X PUT -d @/vagrant/$hdpUtilsRepoJsonFileName -u admin:admin $arguments.getHdpUtilsRepoUrl()
+curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpUtilsRepo' -u admin:admin $arguments.getHdpUtilsRepoUrl()
+
+#if( $arguments.containsFileView() )
+#log("Executing POST to Create Files View")
+curl --silent --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:admin $arguments.getFilesViewUrl()
+#end
+
+#if( $arguments.containsHiveView() )
+#log("Executing POST to Create Hive View")
+curl --silent --show-error -H "${requestedBy}" -X POST -d '$hiveView' -u admin:admin $arguments.getHiveViewUrl()
+#end
 
 #log("Executing POST to Install Cluster")
-curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$createClusterJsonFileName -u admin:admin $arguments.getClusterUrl()
+curl --silent --show-error -H "${requestedBy}" -X POST -d '$createCluster' -u admin:admin $arguments.getClusterUrl()
 
 #log("Waiting for Cluster Install to Finish")
 RET=0
@@ -162,18 +172,6 @@ until [ ${RET} -eq 1 ]; do
     echo "."
     sleep 30
 done
-
-#*
-#if( $arguments.containsFileView()) )
-#log("Executing POST to Create Files View")
-curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$filesViewJsonFileName -u admin:admin $arguments.getFilesViewUrl()
-#end
-
-#if( $arguments.containsHiveView()) )
-#log("Executing POST to Create Hive View")
-curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$hiveViewJsonFileName -u admin:admin $arguments.getHiveViewUrl()
-#end
-*#
 
 #log("Cluster Install Complete!")
 

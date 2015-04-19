@@ -6,6 +6,7 @@ import generator.model.Component;
 import generator.model.MemoryConfiguration;
 import generator.model.View;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,7 @@ import java.util.Map;
 public class VagrantService {
 
 
-    public static final String VAGRANT_BLUEPRINT_JSON = "vagrant-blueprint.json";
-    public static final String VAGRANT_CREATE_CLUSTER_JSON = "vagrant-create-cluster.json";
-    public static final String VAGRANT_HDP_REPO_JSON = "vagrant-hdp-repo.json";
-    public static final String VAGRANT_HDP_UTILS_REPO_JSON = "vagrant-hdp-utils-repo.json";
     public static final String VAGRANTFILE = "Vagrantfile";
-    public static final String VAGRANT_HIVE_VIEW_JSON = "vagrant-hive-view.json";
-    public static final String VAGRANT_FILES_VIEW_JSON = "vagrant-files-view.json";
 
     @Autowired
     private VelocityEngine engine;
@@ -57,25 +52,39 @@ public class VagrantService {
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);
         model.put("memory", memoryConfiguration);
-        model.put("bluprentJsonFileName", VAGRANT_BLUEPRINT_JSON);
-        model.put("createClusterJsonFileName", VAGRANT_CREATE_CLUSTER_JSON);
-        model.put("hdpRepoJsonFileName", VAGRANT_HDP_REPO_JSON);
-        model.put("hdpUtilsRepoJsonFileName", VAGRANT_HDP_UTILS_REPO_JSON);
-        model.put("hiveViewJsonFileName", VAGRANT_HIVE_VIEW_JSON);
-        model.put("filesViewJsonFileName", VAGRANT_FILES_VIEW_JSON);
+
+        String blueprint = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-blueprint.vm", "UTF-8", model));
+        String createCluster = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-create-cluster.vm", "UTF-8", model));
+        String hdpRepo = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-repo.vm", "UTF-8", model));
+        String hdpUtilsRepo = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-utils-repo.vm", "UTF-8", model));
+
+        String hiveView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hive-view.vm", "UTF-8", model));
+        String filesView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-files-view.vm", "UTF-8", model));
+
+        model.put("blueprint", blueprint);
+        model.put("createCluster", createCluster);
+        model.put("hdpRepo", hdpRepo);
+        model.put("hdpUtilsRepo", hdpUtilsRepo);
+        model.put("hiveView", hiveView);
+        model.put("filesView", filesView);
+        //model.put("tezView", tezView);
+        //model.put("jobsView", jobsView);
+
 
         try {
             FileUtils.writeStringToFile(new File(VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", "UTF-8", model));
-            FileUtils.writeStringToFile(new File(VAGRANT_BLUEPRINT_JSON), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-blueprint.vm", "UTF-8", model));
-            FileUtils.writeStringToFile(new File(VAGRANT_CREATE_CLUSTER_JSON), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-create-cluster.vm", "UTF-8", model));
-            FileUtils.writeStringToFile(new File(VAGRANT_HDP_REPO_JSON), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-repo.vm", "UTF-8", model));
-            FileUtils.writeStringToFile(new File(VAGRANT_HDP_UTILS_REPO_JSON), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-utils-repo.vm", "UTF-8", model));
-            FileUtils.writeStringToFile(new File(VAGRANT_HIVE_VIEW_JSON), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hive-view.vm", "UTF-8", model));
-            FileUtils.writeStringToFile(new File(VAGRANT_FILES_VIEW_JSON), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-files-view.vm", "UTF-8", model));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private String cleanTemplate(String template) {
+        template = StringUtils.remove(template, "\n");
+        template = StringUtils.remove(template, "  ");
+        System.out.println(template);
+
+        return template;
     }
 
 }
