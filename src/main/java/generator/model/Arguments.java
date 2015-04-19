@@ -154,6 +154,18 @@ public class Arguments {
         return "http://" + hostname + ":8080/api/v1/stacks/HDP/versions/2.2/operating_systems/redhat6/repositories/" + HDP_UTILS_REPO_NAME;
     }
 
+    public String getFilesViewUrl() {
+        return "http://" + hostname + ":8080/api/v1/views/FILES/versions/0.1.0/instances/Files";
+    }
+
+    public String getHiveViewUrl() {
+        return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/0.1.0/instances/Hive";
+    }
+
+    public String getCheckStatusUrl() {
+        return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName + "/requests/1";
+    }
+
     public boolean containsHive() {
         return components != null && components.contains(Component.hive);
     }

@@ -1,0 +1,7 @@
+[ {
+    "ViewInstanceInfo" : {
+        "properties" : {
+            "dataworker.defaultFs" : "webhdfs://${arguments.hostname}:50070"
+        }
+    }
+} ]

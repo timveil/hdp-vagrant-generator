@@ -1,0 +1,12 @@
+[ {
+    "ViewInstanceInfo" : {
+        "properties" : {
+            "webhdfs.url" : "webhdfs://${arguments.hostname}:50070",
+            "webhcat.url" : "http://${arguments.hostname}:50111/templeton/v1",
+            "scripts.dir" : "/users/${username}",
+            "jobs.dir" : "/users/${username}",
+            "hive.host" : "$arguments.hostname",
+            "hive.port" : "10000"
+        }
+    }
+} ]

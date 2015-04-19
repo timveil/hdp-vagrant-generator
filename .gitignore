@@ -4,3 +4,5 @@
 
 *.json
 Vagrantfile
+
+.DS_Store

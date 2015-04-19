@@ -10,6 +10,7 @@ echo "    "
 #end
 
 #set( $mysqlVersion = "mysql-connector-java-5.1.35" )
+#set( $requestedBy = "X-Requested-By: ambari" )
 
 Vagrant.configure("2") do |config|
     config.vm.box = "timveil/centos6.6-hdp-base"
@@ -84,6 +85,12 @@ ambari-server setup -s -j $JAVA_HOME
 #log("Updating MySql Connector Jar")
 ambari-server setup --jdbc-driver=/usr/share/java/${mysqlVersion}/${mysqlVersion}-bin.jar --jdbc-db=mysql
 
+#log("Downloading Ambari Files View")
+wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/files-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/files-0.1.0-SNAPSHOT.jar
+
+#log("Downloading Ambari Hive View")
+wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/hive-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/hive-0.1.0-SNAPSHOT.jar
+
 #log("Starting Ambari Server")
 ambari-server start
 
@@ -91,16 +98,32 @@ ambari-server start
 ambari-agent start
 
 #log("Executing POST to Create Blueprint")
-curl --silent --show-error -H "X-Requested-By: ambari" -X POST -d @/vagrant/$bluprentJsonFileName -u admin:admin $arguments.getBlueprintUrl()
+curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$bluprentJsonFileName -u admin:admin $arguments.getBlueprintUrl()
 
 #log("Executing PUT to Create HDP Repo")
-curl --silent --show-error -H "X-Requested-By: ambari" -X PUT -d @/vagrant/$hdpRepoJsonFileName -u admin:admin $arguments.getHdpRepoUrl()
+curl --silent --show-error -H "${requestedBy}" -X PUT -d @/vagrant/$hdpRepoJsonFileName -u admin:admin $arguments.getHdpRepoUrl()
 
 #log("Executing PUT to Create HDP-Utils Repo")
-curl --silent --show-error -H "X-Requested-By: ambari" -X PUT -d @/vagrant/$hdpUtilsRepoJsonFileName -u admin:admin $arguments.getHdpUtilsRepoUrl()
+curl --silent --show-error -H "${requestedBy}" -X PUT -d @/vagrant/$hdpUtilsRepoJsonFileName -u admin:admin $arguments.getHdpUtilsRepoUrl()
 
-#log("Executing POST to Create Cluster")
-curl --silent --show-error -H "X-Requested-By: ambari" -X POST -d @/vagrant/$createClusterJsonFileName -u admin:admin $arguments.getClusterUrl()
+#log("Executing POST to Install Cluster")
+curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$createClusterJsonFileName -u admin:admin $arguments.getClusterUrl()
 
+#log("Waiting for Cluster Install to Finish")
+RET=0
+until [ ${RET} -eq 1 ]; do
+    RET=$(curl --silent --show-error -H "${requestedBy}" -X GET -u admin:admin $arguments.getCheckStatusUrl() 2>&1 | grep -c "COMPLETED")
+    echo "."
+    sleep 30
+done
+
+#log("Executing POST to Create Files View")
+curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$filesViewJsonFileName -u admin:admin $arguments.getFilesViewUrl()
+
+#log("Executing POST to Create Hive View")
+curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$hiveViewJsonFileName -u admin:admin $arguments.getHiveViewUrl()
+
+#log("Restarting Ambari Server")
+ambari-server restart
 
 SCRIPT
