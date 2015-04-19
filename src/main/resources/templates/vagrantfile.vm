@@ -27,6 +27,8 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "hosts", type: "shell", inline: $hostsFile
 
+    config.vm.provision "logCleanup", type: "shell", inline: $logCleanup,  run: "always"
+
     config.vm.provision "build", type: "shell", inline: $build
 
     config.vm.hostname = '$arguments.hostname'
@@ -52,6 +54,38 @@ EOF
 
 SCRIPT
 
+$logCleanup = <<SCRIPT
+
+#log("Cleaning Logs")
+rm -rf /var/log/ambari-metrics-collector/*
+rm -rf /var/log/ambari-metrics-monitor/*
+rm -rf /var/log/falcon/*
+rm -rf /var/log/flume/*
+rm -rf /var/log/hadoop/hdfs/*
+rm -rf /var/log/hadoop/mapreduce/*
+rm -rf /var/log/hadoop/yarn/*
+rm -rf /var/log/hadoop-mapreduce/mapred/*
+rm -rf /var/log/hadoop-yarn/yarn/*
+rm -rf /var/log/hadoop-yarn/nodemanager/*
+rm -rf /var/log/hadoop-httpfs/*
+rm -rf /var/log/hbase/*
+rm -rf /var/log/hive/*
+rm -rf /var/log/kafka/*
+rm -rf /var/log/knox/*
+rm -rf /var/log/oozie/*
+rm -rf /var/log/ranger/*
+rm -rf /var/log/sqoop/*
+rm -rf /var/log/storm/*
+rm -rf /var/log/webhcat/*
+rm -rf /var/log/zookeeper/*
+
+rm -rf /tmp/hive/*
+rm -rf /tmp/hcat/*
+rm -rf /tmp/ambari-qa/*
+rm -rf /tmp/root/*
+
+SCRIPT
+
 $build = <<SCRIPT
 
 #log("Cleaning YUM")
@@ -64,6 +98,14 @@ yum update -y -q
 
 #log("Deleting YUM History")
 yum history new
+
+
+#if( $arguments.containsFileView()) )
+#log("Adding Admin User")
+useradd -G hdfs admin
+usermod -a -G users admin
+usermod -a -G hadoop admin
+#end
 
 #log("Getting Ambari YUM Repo")
 wget -q http://repo.hdp.local/ambari/centos6/ambari.repo -O /etc/yum.repos.d/ambari.repo
@@ -85,11 +127,15 @@ ambari-server setup -s -j $JAVA_HOME
 #log("Updating MySql Connector Jar")
 ambari-server setup --jdbc-driver=/usr/share/java/${mysqlVersion}/${mysqlVersion}-bin.jar --jdbc-db=mysql
 
+#if( $arguments.containsFileView()) )
 #log("Downloading Ambari Files View")
 wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/files-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/files-0.1.0-SNAPSHOT.jar
+#end
 
+#if( $arguments.containsHiveView()) )
 #log("Downloading Ambari Hive View")
 wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/hive-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/hive-0.1.0-SNAPSHOT.jar
+#end
 
 #log("Starting Ambari Server")
 ambari-server start
@@ -117,13 +163,26 @@ until [ ${RET} -eq 1 ]; do
     sleep 30
 done
 
+#*
+#if( $arguments.containsFileView()) )
 #log("Executing POST to Create Files View")
 curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$filesViewJsonFileName -u admin:admin $arguments.getFilesViewUrl()
+#end
 
+#if( $arguments.containsHiveView()) )
 #log("Executing POST to Create Hive View")
 curl --silent --show-error -H "${requestedBy}" -X POST -d @/vagrant/$hiveViewJsonFileName -u admin:admin $arguments.getHiveViewUrl()
+#end
 
-#log("Restarting Ambari Server")
-ambari-server restart
+#if( $arguments.containsHiveView() || $arguments.containsFileView()) )
+#log("Stopping Ambari Server")
+ambari-server stop
+
+#log("Starting Ambari Server")
+ambari-server start
+#end
+*#
+
+#log("Cluster Install Complete!")
 
 SCRIPT

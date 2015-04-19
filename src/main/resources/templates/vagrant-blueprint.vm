@@ -7,7 +7,15 @@
                 }
             }
         },
-#if( $arguments.containsHive() )
+        {
+            "core-site": {
+                "properties": {
+                    "hadoop.proxyuser.root.groups": "*",
+                    "hadoop.proxyuser.root.hosts": "*"
+                }
+            }
+        },
+#if( $arguments.containsHiveComponent() )
         {
             "hive-site": {
                 "properties": {
@@ -50,12 +58,12 @@
                 {"name": "HCAT"},
                 {"name": "HDFS_CLIENT"},
                 {"name": "HISTORYSERVER"},
-#if( $arguments.containsHive() )
+#if( $arguments.containsHiveComponent() )
                 {"name": "HIVE_CLIENT"},
                 {"name": "HIVE_METASTORE"},
                 {"name": "HIVE_SERVER"},
 #end
-#if( $arguments.containsKnox() )
+#if( $arguments.containsKnoxComponent() )
                 {"name": "KNOX_GATEWAY"},
 #end
                 {"name": "MAPREDUCE2_CLIENT"},

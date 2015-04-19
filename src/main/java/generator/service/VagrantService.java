@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import generator.model.Arguments;
 import generator.model.Component;
 import generator.model.MemoryConfiguration;
+import generator.model.View;
 import org.apache.commons.io.FileUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class VagrantService {
         arguments.setBlueprintName("custom-" + System.currentTimeMillis());
         arguments.setClusterName("test-cluster");
         arguments.setComponents(Sets.newHashSet(Component.hive));
+        arguments.setViews(Sets.newHashSet(View.file, View.hive));
         arguments.setDisks(1);
 
         System.out.println(arguments.toString());

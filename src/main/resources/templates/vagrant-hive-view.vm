@@ -6,7 +6,8 @@
             "scripts.dir" : "/users/${username}",
             "jobs.dir" : "/users/${username}",
             "hive.host" : "$arguments.hostname",
-            "hive.port" : "10000"
+            "hive.port" : "10000",
+            "hive.auth" : "auth=NONE"
         }
     }
 } ]

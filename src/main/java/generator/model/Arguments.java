@@ -159,18 +159,26 @@ public class Arguments {
     }
 
     public String getHiveViewUrl() {
-        return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/0.1.0/instances/Hive";
+        return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/0.0.1/instances/Hive";
     }
 
     public String getCheckStatusUrl() {
         return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName + "/requests/1";
     }
 
-    public boolean containsHive() {
+    public boolean containsHiveComponent() {
         return components != null && components.contains(Component.hive);
     }
 
-    public boolean containsKnox() {
+    public boolean containsHiveView() {
+        return views != null && views.contains(View.hive);
+    }
+
+    public boolean containsFileView() {
+        return views != null && views.contains(View.file);
+    }
+
+    public boolean containsKnoxComponent() {
         return components != null && components.contains(Component.knox);
     }
 
