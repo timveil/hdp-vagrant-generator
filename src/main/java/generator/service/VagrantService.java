@@ -14,6 +14,8 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +54,7 @@ public class VagrantService {
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);
         model.put("memory", memoryConfiguration);
+        model.put("generatedDate", SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT).format(new Date()));
 
         String blueprint = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-blueprint.vm", "UTF-8", model));
         String createCluster = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-create-cluster.vm", "UTF-8", model));
