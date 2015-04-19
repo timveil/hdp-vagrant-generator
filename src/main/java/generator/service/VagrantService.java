@@ -35,7 +35,7 @@ public class VagrantService {
         arguments.setIp("192.168.66.101");
         arguments.setMemoryInMegabytes(8192);
         arguments.setReservedSystemMemoryInMegabytes(2048);
-        arguments.setReservedHbaseMemoryInMegabytes(1024);
+        arguments.setReservedHbaseMemoryInMegabytes(2048);
         arguments.setMinContainerSizeInMegabytes(512);
         arguments.setCpus(4);
         arguments.setUpdateLibraries(true);
@@ -56,31 +56,18 @@ public class VagrantService {
         model.put("memory", memoryConfiguration);
         model.put("generatedDate", SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT).format(new Date()));
 
-        String blueprint = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-blueprint.vm", ENCODING, model));
-        model.put("blueprint", blueprint);
-
-        String createCluster = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-create-cluster.vm", ENCODING, model));
-        model.put("createCluster", createCluster);
-
-        String hdpRepo = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-repo.vm", ENCODING, model));
-        model.put("hdpRepo", hdpRepo);
-
-        String hdpUtilsRepo = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-utils-repo.vm", ENCODING, model));
-        model.put("hdpUtilsRepo", hdpUtilsRepo);
+        addTemplateToModel(model, "vagrant-blueprint.vm", "blueprint");
+        addTemplateToModel(model, "vagrant-create-cluster.vm", "createCluster");
+        addTemplateToModel(model, "vagrant-hdp-repo.vm", "hdpRepo");
+        addTemplateToModel(model, "vagrant-hdp-utils-repo.vm", "hdpUtilsRepo");
 
         if (arguments.containsHiveView()) {
-            String hiveView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hive-view.vm", ENCODING, model));
-            model.put("hiveView", hiveView);
+            addTemplateToModel(model, "vagrant-hive-view.vm", "hiveView");
         }
 
-        String filesView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-files-view.vm", ENCODING, model));
-        model.put("filesView", filesView);
-
-        String tezView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-tez-view.vm", ENCODING, model));
-        model.put("tezView", tezView);
-
-        String jobsView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-jobs-view.vm", ENCODING, model));
-        model.put("jobsView", jobsView);
+        addTemplateToModel(model, "vagrant-files-view.vm", "filesView");
+        addTemplateToModel(model, "vagrant-tez-view.vm", "tezView");
+        addTemplateToModel(model, "vagrant-jobs-view.vm", "jobsView");
 
         try {
             FileUtils.writeStringToFile(new File(VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));
@@ -88,6 +75,11 @@ public class VagrantService {
             e.printStackTrace();
         }
 
+    }
+
+    private void addTemplateToModel(Map<String, Object> model, String templateName, String key) {
+        String template = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, templateName, ENCODING, model));
+        model.put(key, template);
     }
 
     private String cleanTemplate(String template) {

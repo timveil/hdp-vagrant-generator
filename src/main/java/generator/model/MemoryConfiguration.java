@@ -4,7 +4,7 @@ import com.google.common.primitives.Ints;
 
 public class MemoryConfiguration {
 
-    private static final String FORMAT = "%-40s %s\n";
+    private static final String FORMAT = "*** %-40s %s\n";
 
 
     private int yarnNodeManagerResoureMemory;
@@ -20,13 +20,13 @@ public class MemoryConfiguration {
     public MemoryConfiguration(Arguments arguments) {
 
         final int availableRam = arguments.getMemoryInMegabytes() - (arguments.getReservedSystemMemoryInMegabytes() + arguments.getReservedHbaseMemoryInMegabytes());
-        System.out.println("Available RAM: " + availableRam);
+        System.out.printf(FORMAT, "Available RAM", availableRam);
 
         final int numberOfContainers = Ints.min(2 * arguments.getCpus(), availableRam / arguments.getMinContainerSizeInMegabytes());
-        System.out.println("Number of Containers: " + numberOfContainers);
+        System.out.printf(FORMAT, "Number of Containers", numberOfContainers);
 
         final int ramPerContainer = Ints.max(arguments.getMinContainerSizeInMegabytes(), (availableRam / numberOfContainers));
-        System.out.println("RAM per Container: " + ramPerContainer);
+        System.out.printf(FORMAT, "RAM per Container", ramPerContainer);
 
         yarnNodeManagerResoureMemory = numberOfContainers * ramPerContainer;
         yarnMinAllocation = ramPerContainer;
@@ -80,7 +80,7 @@ public class MemoryConfiguration {
     public void prettyPrint() {
         System.out.println(" ");
         System.out.println("***********************************************************************");
-        System.out.println("****** Memory Configuration");
+        System.out.println("*** Memory Configuration");
         System.out.println("***********************************************************************");
         System.out.printf(FORMAT, "yarn.nodemanager.resource.memory-mb", yarnNodeManagerResoureMemory);
         System.out.printf(FORMAT, "yarn.scheduler.minimum-allocation-mb", yarnMinAllocation);

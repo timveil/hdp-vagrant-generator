@@ -9,7 +9,7 @@ public class Arguments {
 
     private static final String HDP_REPO_NAME="HDP-2.2";
     private static final String HDP_UTILS_REPO_NAME="HDP-UTILS-1.1.0.20";
-    private static final String FORMAT = "%-30s %s\n";
+    private static final String FORMAT = "*** %-30s %s\n";
 
     private String hostname;
 
@@ -194,7 +194,7 @@ public class Arguments {
     public void prettyPrint() {
         System.out.println(" ");
         System.out.println("***********************************************************************");
-        System.out.println("****** Arguments");
+        System.out.println("*** Arguments");
         System.out.println("***********************************************************************");
         System.out.printf(FORMAT, "VM Hostname", hostname);
         System.out.printf(FORMAT, "VM IP", ip);
