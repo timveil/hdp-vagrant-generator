@@ -24,6 +24,7 @@ public class VagrantService {
 
 
     public static final String VAGRANTFILE = "Vagrantfile";
+    public static final String ENCODING = "UTF-8";
 
     @Autowired
     private VelocityEngine engine;
@@ -38,10 +39,10 @@ public class VagrantService {
         arguments.setMinContainerSizeInMegabytes(512);
         arguments.setCpus(4);
         arguments.setUpdateLibraries(true);
-        arguments.setBlueprintName("generated");
+        arguments.setBlueprintName("custom-generated-blueprint");
         arguments.setClusterName("test-cluster");
         arguments.setComponents(Sets.newHashSet(Component.hive));
-        arguments.setViews(Sets.newHashSet(View.file, View.hive));
+        arguments.setViews(Sets.newHashSet(View.files, View.hive, View.jobs, View.tez));
         arguments.setDisks(1);
 
         System.out.println(arguments.toString());
@@ -50,34 +51,39 @@ public class VagrantService {
 
         System.out.println(memoryConfiguration.toString());
 
-
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);
         model.put("memory", memoryConfiguration);
         model.put("generatedDate", SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT).format(new Date()));
 
-        String blueprint = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-blueprint.vm", "UTF-8", model));
-        String createCluster = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-create-cluster.vm", "UTF-8", model));
-        String hdpRepo = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-repo.vm", "UTF-8", model));
-        String hdpUtilsRepo = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-utils-repo.vm", "UTF-8", model));
-
-        String hiveView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hive-view.vm", "UTF-8", model));
-        String filesView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-files-view.vm", "UTF-8", model));
-        String tezView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-tez-view.vm", "UTF-8", model));
-        String jobsView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-jobs-view.vm", "UTF-8", model));
-
+        String blueprint = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-blueprint.vm", ENCODING, model));
         model.put("blueprint", blueprint);
+
+        String createCluster = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-create-cluster.vm", ENCODING, model));
         model.put("createCluster", createCluster);
+
+        String hdpRepo = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-repo.vm", ENCODING, model));
         model.put("hdpRepo", hdpRepo);
+
+        String hdpUtilsRepo = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hdp-utils-repo.vm", ENCODING, model));
         model.put("hdpUtilsRepo", hdpUtilsRepo);
-        model.put("hiveView", hiveView);
+
+        if (arguments.containsHiveView()) {
+            String hiveView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hive-view.vm", ENCODING, model));
+            model.put("hiveView", hiveView);
+        }
+
+        String filesView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-files-view.vm", ENCODING, model));
         model.put("filesView", filesView);
+
+        String tezView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-tez-view.vm", ENCODING, model));
         model.put("tezView", tezView);
+
+        String jobsView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-jobs-view.vm", ENCODING, model));
         model.put("jobsView", jobsView);
 
-
         try {
-            FileUtils.writeStringToFile(new File(VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", "UTF-8", model));
+            FileUtils.writeStringToFile(new File(VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));
         } catch (IOException e) {
             e.printStackTrace();
         }

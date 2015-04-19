@@ -172,11 +172,11 @@ public class Arguments {
     }
 
     public boolean containsHiveView() {
-        return views != null && views.contains(View.hive);
+        return views != null && views.contains(View.hive) && containsHiveComponent();
     }
 
     public boolean containsFileView() {
-        return views != null && views.contains(View.file);
+        return views != null && views.contains(View.files);
     }
 
     public boolean containsKnoxComponent() {
