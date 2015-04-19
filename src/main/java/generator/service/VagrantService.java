@@ -37,10 +37,11 @@ public class VagrantService {
         arguments.setIp("192.168.66.101");
         arguments.setMemoryInMegabytes(8192);
         arguments.setReservedSystemMemoryInMegabytes(2048);
+        arguments.setReservedHbaseMemoryInMegabytes(1024);
         arguments.setMinContainerSizeInMegabytes(512);
         arguments.setCpus(4);
         arguments.setUpdateLibraries(true);
-        arguments.setBlueprintName("custom-" + System.currentTimeMillis());
+        arguments.setBlueprintName("generated-" + System.currentTimeMillis());
         arguments.setClusterName("test-cluster");
         arguments.setComponents(Sets.newHashSet(Component.hive));
         arguments.setViews(Sets.newHashSet(View.file, View.hive));

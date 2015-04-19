@@ -18,7 +18,7 @@ public class MemoryConfiguration {
 
     public MemoryConfiguration(Arguments arguments) {
 
-        final int availableRam = arguments.getMemoryInMegabytes() - arguments.getReservedSystemMemoryInMegabytes();
+        final int availableRam = arguments.getMemoryInMegabytes() - (arguments.getReservedSystemMemoryInMegabytes() + arguments.getReservedHbaseMemoryInMegabytes());
         System.out.println("Available RAM: " + availableRam);
 
         final int numberOfContainers = Ints.min(2 * arguments.getCpus(), availableRam / arguments.getMinContainerSizeInMegabytes());

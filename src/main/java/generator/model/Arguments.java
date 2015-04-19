@@ -23,6 +23,7 @@ public class Arguments {
 
     private Integer minContainerSizeInMegabytes;
     private Integer reservedSystemMemoryInMegabytes;
+    private Integer reservedHbaseMemoryInMegabytes;
 
     private String clusterName;
 
@@ -190,6 +191,14 @@ public class Arguments {
         this.reservedSystemMemoryInMegabytes = reservedSystemMemoryInMegabytes;
     }
 
+    public Integer getReservedHbaseMemoryInMegabytes() {
+        return reservedHbaseMemoryInMegabytes;
+    }
+
+    public void setReservedHbaseMemoryInMegabytes(Integer reservedHbaseMemoryInMegabytes) {
+        this.reservedHbaseMemoryInMegabytes = reservedHbaseMemoryInMegabytes;
+    }
+
     public void prettyPrint() {
 
     }
@@ -204,6 +213,7 @@ public class Arguments {
                 .add("disks", disks)
                 .add("minContainerSizeInMegabytes", minContainerSizeInMegabytes)
                 .add("reservedSystemMemoryInMegabytes", reservedSystemMemoryInMegabytes)
+                .add("reservedHbaseMemoryInMegabytes", reservedHbaseMemoryInMegabytes)
                 .add("clusterName", clusterName)
                 .add("blueprintName", blueprintName)
                 .add("updateLibraries", updateLibraries)

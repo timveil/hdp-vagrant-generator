@@ -1,0 +1,1 @@
+{"ViewInstanceInfo":{"instance_name":"Jobs","label":"Jobs","visible":true,"icon_path":"","icon64_path":"","properties":{"yarn.ats.url":"http://${arguments.hostname}:8188","yarn.resourcemanager.url":"http://${arguments.hostname}:8088"},"description":"Jobs"}}
