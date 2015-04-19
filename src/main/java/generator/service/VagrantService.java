@@ -38,7 +38,7 @@ public class VagrantService {
         arguments.setMinContainerSizeInMegabytes(512);
         arguments.setCpus(4);
         arguments.setUpdateLibraries(true);
-        arguments.setBlueprintName("generated-" + System.currentTimeMillis());
+        arguments.setBlueprintName("generated");
         arguments.setClusterName("test-cluster");
         arguments.setComponents(Sets.newHashSet(Component.hive));
         arguments.setViews(Sets.newHashSet(View.file, View.hive));
@@ -63,6 +63,8 @@ public class VagrantService {
 
         String hiveView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-hive-view.vm", "UTF-8", model));
         String filesView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-files-view.vm", "UTF-8", model));
+        String tezView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-tez-view.vm", "UTF-8", model));
+        String jobsView = cleanTemplate(VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-jobs-view.vm", "UTF-8", model));
 
         model.put("blueprint", blueprint);
         model.put("createCluster", createCluster);
@@ -70,8 +72,8 @@ public class VagrantService {
         model.put("hdpUtilsRepo", hdpUtilsRepo);
         model.put("hiveView", hiveView);
         model.put("filesView", filesView);
-        //model.put("tezView", tezView);
-        //model.put("jobsView", jobsView);
+        model.put("tezView", tezView);
+        model.put("jobsView", jobsView);
 
 
         try {

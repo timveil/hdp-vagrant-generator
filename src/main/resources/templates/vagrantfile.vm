@@ -121,10 +121,8 @@ ambari-server setup -s -j $JAVA_HOME
 #log("Updating MySql Connector Jar")
 ambari-server setup --jdbc-driver=/usr/share/java/${mysqlVersion}/${mysqlVersion}-bin.jar --jdbc-db=mysql
 
-#if( $arguments.containsFileView() )
 #log("Downloading Ambari Files View")
 wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/files-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/files-0.1.0-SNAPSHOT.jar
-#end
 
 #if( $arguments.containsHiveView() )
 #log("Downloading Ambari Hive View")
@@ -146,10 +144,8 @@ curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpRepo' -u admin:adm
 #log("Executing PUT to Create HDP-Utils Repo")
 curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpUtilsRepo' -u admin:admin $arguments.getHdpUtilsRepoUrl()
 
-#if( $arguments.containsFileView() )
 #log("Executing POST to Create Files View")
 curl --silent --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:admin $arguments.getFilesViewUrl()
-#end
 
 #if( $arguments.containsHiveView() )
 #log("Executing POST to Create Hive View")
@@ -167,12 +163,10 @@ until [ ${RET} -eq 1 ]; do
     sleep 30
 done
 
-#if( $arguments.containsFileView() )
 #log("Adding Admin User")
 useradd -G hdfs admin
 usermod -a -G users admin
 usermod -a -G hadoop admin
-#end
 
 #log("Cluster Install Complete!")
 
