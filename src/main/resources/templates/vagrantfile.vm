@@ -99,14 +99,6 @@ yum update -y -q
 #log("Deleting YUM History")
 yum history new
 
-
-#if( $arguments.containsFileView() )
-#log("Adding Admin User")
-useradd -G hdfs admin
-usermod -a -G users admin
-usermod -a -G hadoop admin
-#end
-
 #log("Getting Ambari YUM Repo")
 wget -q http://repo.hdp.local/ambari/centos6/ambari.repo -O /etc/yum.repos.d/ambari.repo
 
@@ -172,6 +164,13 @@ until [ ${RET} -eq 1 ]; do
     echo "."
     sleep 30
 done
+
+#if( $arguments.containsFileView() )
+#log("Adding Admin User")
+useradd -G hdfs admin
+usermod -a -G users admin
+usermod -a -G hadoop admin
+#end
 
 #log("Cluster Install Complete!")
 
