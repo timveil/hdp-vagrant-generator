@@ -93,9 +93,7 @@ public class VagrantService {
     private String cleanTemplate(String template) {
         template = StringUtils.remove(template, "\n");
         template = StringUtils.remove(template, "  ");
-        System.out.println(template);
-
-        return template;
+        return StringUtils.trimToNull(template);
     }
 
 }
