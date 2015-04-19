@@ -1,12 +1,13 @@
 package generator.model;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.primitives.Ints;
 
 public class MemoryConfiguration {
 
+    private static final String FORMAT = "%-40s %s\n";
 
-    private int nodeManagerResoureMemory;
+
+    private int yarnNodeManagerResoureMemory;
     private int yarnMinAllocation;
     private int yarnMaxAllocation;
     private int mrMapMemory;
@@ -27,7 +28,7 @@ public class MemoryConfiguration {
         final int ramPerContainer = Ints.max(arguments.getMinContainerSizeInMegabytes(), (availableRam / numberOfContainers));
         System.out.println("RAM per Container: " + ramPerContainer);
 
-        nodeManagerResoureMemory = numberOfContainers * ramPerContainer;
+        yarnNodeManagerResoureMemory = numberOfContainers * ramPerContainer;
         yarnMinAllocation = ramPerContainer;
         yarnMaxAllocation = numberOfContainers * ramPerContainer;
         mrMapMemory = ramPerContainer;
@@ -40,8 +41,8 @@ public class MemoryConfiguration {
     }
 
 
-    public int getNodeManagerResoureMemory() {
-        return nodeManagerResoureMemory;
+    public int getYarnNodeManagerResoureMemory() {
+        return yarnNodeManagerResoureMemory;
     }
 
     public int getYarnMinAllocation() {
@@ -76,18 +77,21 @@ public class MemoryConfiguration {
         return yarnMrCommandOpts;
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("nodeManagerResoureMemory", nodeManagerResoureMemory)
-                .add("yarnMinAllocation", yarnMinAllocation)
-                .add("yarnMaxAllocation", yarnMaxAllocation)
-                .add("mrMapMemory", mrMapMemory)
-                .add("mrReduceMemory", mrReduceMemory)
-                .add("mrMapOpts", mrMapOpts)
-                .add("mrReduceOpts", mrReduceOpts)
-                .add("yarnMrMemory", yarnMrMemory)
-                .add("yarnMrCommandOpts", yarnMrCommandOpts)
-                .toString();
+    public void prettyPrint() {
+        System.out.println(" ");
+        System.out.println("***********************************************************************");
+        System.out.println("****** Memory Configuration");
+        System.out.println("***********************************************************************");
+        System.out.printf(FORMAT, "yarn.nodemanager.resource.memory-mb", yarnNodeManagerResoureMemory);
+        System.out.printf(FORMAT, "yarn.scheduler.minimum-allocation-mb", yarnMinAllocation);
+        System.out.printf(FORMAT, "yarn.scheduler.maximum-allocation-mb", yarnMaxAllocation);
+        System.out.printf(FORMAT, "yarn.app.mapreduce.am.resource.mb", yarnMrMemory);
+        System.out.printf(FORMAT, "yarn.app.mapreduce.am.command-opts", yarnMrCommandOpts);
+        System.out.printf(FORMAT, "mapreduce.map.memory.mb", mrMapMemory);
+        System.out.printf(FORMAT, "mapreduce.map.java.opts", mrMapOpts);
+        System.out.printf(FORMAT, "mapreduce.reduce.memory.mb", mrReduceMemory);
+        System.out.printf(FORMAT, "mapreduce.reduce.java.opts", mrReduceOpts);
+        System.out.println("***********************************************************************");
+        System.out.println(" ");
     }
 }

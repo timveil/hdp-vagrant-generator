@@ -40,7 +40,7 @@
         {
             "yarn-site": {
                 "properties": {
-                    "yarn.nodemanager.resource.memory-mb": "$memory.nodeManagerResoureMemory",
+                    "yarn.nodemanager.resource.memory-mb": "$memory.yarnNodeManagerResoureMemory",
                     "yarn.scheduler.maximum-allocation-mb": "$memory.yarnMaxAllocation",
                     "yarn.scheduler.minimum-allocation-mb": "$memory.yarnMinAllocation"
                 }

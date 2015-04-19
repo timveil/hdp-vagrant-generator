@@ -45,11 +45,11 @@ public class VagrantService {
         arguments.setViews(Sets.newHashSet(View.files, View.hive, View.jobs, View.tez));
         arguments.setDisks(1);
 
-        System.out.println(arguments.toString());
+        arguments.prettyPrint();
 
         MemoryConfiguration memoryConfiguration = new MemoryConfiguration(arguments);
 
-        System.out.println(memoryConfiguration.toString());
+        memoryConfiguration.prettyPrint();
 
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);

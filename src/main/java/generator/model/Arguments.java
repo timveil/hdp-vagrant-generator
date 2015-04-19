@@ -9,7 +9,7 @@ public class Arguments {
 
     private static final String HDP_REPO_NAME="HDP-2.2";
     private static final String HDP_UTILS_REPO_NAME="HDP-UTILS-1.1.0.20";
-
+    private static final String FORMAT = "%-30s %s\n";
 
     private String hostname;
 
@@ -22,7 +22,9 @@ public class Arguments {
     private Integer disks;
 
     private Integer minContainerSizeInMegabytes;
+
     private Integer reservedSystemMemoryInMegabytes;
+
     private Integer reservedHbaseMemoryInMegabytes;
 
     private String clusterName;
@@ -30,8 +32,6 @@ public class Arguments {
     private String blueprintName;
 
     private boolean updateLibraries;
-
-    private String mysqlPassword;
 
     private Set<View> views;
 
@@ -105,14 +105,6 @@ public class Arguments {
 
     public void setUpdateLibraries(boolean updateLibraries) {
         this.updateLibraries = updateLibraries;
-    }
-
-    public String getMysqlPassword() {
-        return mysqlPassword;
-    }
-
-    public void setMysqlPassword(String mysqlPassword) {
-        this.mysqlPassword = mysqlPassword;
     }
 
     public Set<View> getViews() {
@@ -200,26 +192,25 @@ public class Arguments {
     }
 
     public void prettyPrint() {
-
+        System.out.println(" ");
+        System.out.println("***********************************************************************");
+        System.out.println("****** Arguments");
+        System.out.println("***********************************************************************");
+        System.out.printf(FORMAT, "Cluster Name", clusterName);
+        System.out.printf(FORMAT, "Blueprint Name", blueprintName);
+        System.out.printf(FORMAT, "VM Hostname", hostname);
+        System.out.printf(FORMAT, "VM IP", ip);
+        System.out.printf(FORMAT, "VM Memory in MB", memoryInMegabytes);
+        System.out.printf(FORMAT, "VM CPUs", cpus);
+        System.out.printf(FORMAT, "VM Disks", disks);
+        System.out.printf(FORMAT, "Min Container Size in MB", minContainerSizeInMegabytes);
+        System.out.printf(FORMAT, "Reserved System Memory in MB", reservedSystemMemoryInMegabytes);
+        System.out.printf(FORMAT, "Reserved HBase Memory in MB", reservedHbaseMemoryInMegabytes);
+        System.out.printf(FORMAT, "Update Libraries", updateLibraries);
+        System.out.printf(FORMAT, "Views", views);
+        System.out.printf(FORMAT, "Components", components);
+        System.out.println("***********************************************************************");
+        System.out.println(" ");
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("hostname", hostname)
-                .add("ip", ip)
-                .add("memoryInMegabytes", memoryInMegabytes)
-                .add("cpus", cpus)
-                .add("disks", disks)
-                .add("minContainerSizeInMegabytes", minContainerSizeInMegabytes)
-                .add("reservedSystemMemoryInMegabytes", reservedSystemMemoryInMegabytes)
-                .add("reservedHbaseMemoryInMegabytes", reservedHbaseMemoryInMegabytes)
-                .add("clusterName", clusterName)
-                .add("blueprintName", blueprintName)
-                .add("updateLibraries", updateLibraries)
-                .add("mysqlPassword", mysqlPassword)
-                .add("views", views)
-                .add("components", components)
-                .toString();
-    }
 }

@@ -19,13 +19,7 @@ public class BuildVagrantFile implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         Arguments arguments = new Arguments(environment);
-        arguments.prettyPrint();
-
-
         vagrantService.buildFile(arguments);
-
-
     }
 }
