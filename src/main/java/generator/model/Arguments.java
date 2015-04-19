@@ -196,13 +196,13 @@ public class Arguments {
         System.out.println("***********************************************************************");
         System.out.println("****** Arguments");
         System.out.println("***********************************************************************");
-        System.out.printf(FORMAT, "Cluster Name", clusterName);
-        System.out.printf(FORMAT, "Blueprint Name", blueprintName);
         System.out.printf(FORMAT, "VM Hostname", hostname);
         System.out.printf(FORMAT, "VM IP", ip);
         System.out.printf(FORMAT, "VM Memory in MB", memoryInMegabytes);
         System.out.printf(FORMAT, "VM CPUs", cpus);
         System.out.printf(FORMAT, "VM Disks", disks);
+        System.out.printf(FORMAT, "Cluster Name", clusterName);
+        System.out.printf(FORMAT, "Blueprint Name", blueprintName);
         System.out.printf(FORMAT, "Min Container Size in MB", minContainerSizeInMegabytes);
         System.out.printf(FORMAT, "Reserved System Memory in MB", reservedSystemMemoryInMegabytes);
         System.out.printf(FORMAT, "Reserved HBase Memory in MB", reservedHbaseMemoryInMegabytes);
