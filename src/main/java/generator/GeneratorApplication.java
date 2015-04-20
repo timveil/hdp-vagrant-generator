@@ -11,18 +11,18 @@ import org.springframework.context.ApplicationListener;
 public class GeneratorApplication {
 
     public static void main(String[] args) throws ParseException {
-       // final CommandLine commandLine = buildCommandLine(args);
+       final CommandLine commandLine = buildCommandLine(args);
 
         SpringApplication app = new SpringApplication(GeneratorApplication.class);
 
         app.setWebEnvironment(false);
 
-       /* app.addListeners(new ApplicationListener<ApplicationEnvironmentPreparedEvent>() {
+        app.addListeners(new ApplicationListener<ApplicationEnvironmentPreparedEvent>() {
             @Override
             public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
                 event.getEnvironment().getPropertySources().addLast(new CommonsCLIPropertySource(commandLine));
             }
-        });*/
+        });
 
         app.run(args);
     }
@@ -30,22 +30,30 @@ public class GeneratorApplication {
     private static CommandLine buildCommandLine(String[] args) throws ParseException {
         Options options = new Options();
 
-        options.addOption("b", "build", false, "build database, tables and load data");
-        options.addOption("q", "query", false, "execute queries");
-        options.addOption("c", "count", false, "when executing queries, count the records returned from the query");
-        options.addOption("i", "iterations", true, "number of times the query will be executed");
-
-        options.addOption(OptionBuilder.withLongOpt("test.name").withDescription("short name or description of test being run").hasArg().withArgName("NAME").create());
-        options.addOption(OptionBuilder.withLongOpt("hdfs.data.path").withDescription("path to where the data should be stored on HDFS").hasArg().withArgName("PATH").create());
-        options.addOption(OptionBuilder.withLongOpt("local.data.path").withDescription("path to local data to be uploaded to HDFS and used by build scripts ").hasArg().withArgName("PATH").create());
-        options.addOption(OptionBuilder.withLongOpt("hive.db.name").withDescription("name of database to create in Hive ").hasArg().withArgName("NAME").create());
+        options.addOption(buildOption("h", true, "Hostname of generated image.  Required!", true));
+        options.addOption(buildOption("n", true, "Name of cluster.  Required!", true));
+        options.addOption(buildOption("ip", true, "IP address of generated image", false));
+        options.addOption(buildOption("ram", true, "RAM allocated to generated image (in megabytes)", false));
+        options.addOption(buildOption("rs", true, "Reserved system memory (in megabytes)", false));
+        options.addOption(buildOption("rh", true, "Reserved HBase memory (in megabytes)", false));
+        options.addOption(buildOption("min", true, "Minimum container size memory (in megabytes)", false));
+        options.addOption(buildOption("cpu", true, "# of cpus of generated image", false));
+        options.addOption(buildOption("update", false, "Update YUM libraries while building image", false));
+        options.addOption(buildOption("b", true, "Name of blueprint used to build cluster", false));
+        options.addOption(buildOption("d", true, "# of disks in generated image", false));
 
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("java -jar <Hive Test Harness Jar>", options);
+        formatter.printHelp("java -jar <HDP Vagrant Generator>", options);
 
         CommandLineParser parser = new BasicParser();
 
-        return parser.parse(options, args);
+        return parser.parse(options, args, true);
 
+    }
+
+    private static Option buildOption(String option, boolean hasArg, String description, boolean required) {
+        Option opt = new Option(option, hasArg, description);
+        opt.setRequired(required);
+        return opt;
     }
 }

@@ -1,10 +1,7 @@
 package generator.service;
 
-import com.google.common.collect.Sets;
 import generator.model.Arguments;
-import generator.model.Component;
 import generator.model.MemoryConfiguration;
-import generator.model.View;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;
@@ -32,25 +29,7 @@ public class VagrantService {
 
     public void buildFile(Arguments arguments) {
 
-        arguments.setHostname("test.hdp.local");
-        arguments.setIp("192.168.66.101");
-        arguments.setMemoryInMegabytes(8192);
-        arguments.setReservedSystemMemoryInMegabytes(2048);
-        arguments.setReservedHbaseMemoryInMegabytes(2048);
-        arguments.setMinContainerSizeInMegabytes(512);
-        arguments.setCpus(4);
-        arguments.setUpdateLibraries(true);
-        arguments.setBlueprintName("custom-generated-blueprint");
-        arguments.setClusterName("test-cluster");
-        arguments.setComponents(Sets.newHashSet(Component.hive));
-        arguments.setViews(Sets.newHashSet(View.files, View.hive, View.jobs, View.tez));
-        arguments.setDisks(1);
-
-        arguments.prettyPrint();
-
         MemoryConfiguration memoryConfiguration = new MemoryConfiguration(arguments);
-
-        memoryConfiguration.prettyPrint();
 
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);

@@ -20,13 +20,13 @@ public class MemoryConfiguration {
     public MemoryConfiguration(Arguments arguments) {
 
         final int availableRam = arguments.getMemoryInMegabytes() - (arguments.getReservedSystemMemoryInMegabytes() + arguments.getReservedHbaseMemoryInMegabytes());
-        System.out.printf(FORMAT, "Available RAM", availableRam);
+        //System.out.printf(FORMAT, "Available RAM", availableRam);
 
         final int numberOfContainers = Ints.min(2 * arguments.getCpus(), availableRam / arguments.getMinContainerSizeInMegabytes());
-        System.out.printf(FORMAT, "Number of Containers", numberOfContainers);
+        //System.out.printf(FORMAT, "Number of Containers", numberOfContainers);
 
         final int ramPerContainer = Ints.max(arguments.getMinContainerSizeInMegabytes(), (availableRam / numberOfContainers));
-        System.out.printf(FORMAT, "RAM per Container", ramPerContainer);
+        //System.out.printf(FORMAT, "RAM per Container", ramPerContainer);
 
         yarnNodeManagerResoureMemory = numberOfContainers * ramPerContainer;
         yarnMinAllocation = ramPerContainer;
@@ -37,6 +37,8 @@ public class MemoryConfiguration {
         mrReduceOpts = Integer.toString((int) Math.floor(.8 * (2 * ramPerContainer)));
         yarnMrMemory = 2 * ramPerContainer;
         yarnMrCommandOpts = Integer.toString((int) Math.floor(.8 * (2 * ramPerContainer)));
+
+        this.prettyPrint();
 
     }
 
@@ -77,7 +79,7 @@ public class MemoryConfiguration {
         return yarnMrCommandOpts;
     }
 
-    public void prettyPrint() {
+    private void prettyPrint() {
         System.out.println(" ");
         System.out.println("***********************************************************************");
         System.out.println("*** Memory Configuration");

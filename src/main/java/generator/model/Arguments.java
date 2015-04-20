@@ -1,6 +1,7 @@
 package generator.model;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Sets;
 import org.springframework.core.env.Environment;
 
 import java.util.Set;
@@ -38,8 +39,22 @@ public class Arguments {
     private Set<Component> components;
 
     public Arguments(Environment environment) {
+        this.hostname =  environment.getProperty("h", String.class);
+        this.ip =  environment.getProperty("ip", String.class, "192.168.66.101");
+        this.memoryInMegabytes =  environment.getProperty("ram", Integer.class, 8192);
+        this.reservedSystemMemoryInMegabytes =  environment.getProperty("rs", Integer.class, 2048);
+        this.reservedHbaseMemoryInMegabytes =  environment.getProperty("rh", Integer.class, 0);
+        this.minContainerSizeInMegabytes =  environment.getProperty("min", Integer.class, 512);
+        this.cpus =  environment.getProperty("cpu", Integer.class, 4);
+        this.updateLibraries =  environment.containsProperty("update");
+        this.blueprintName =  environment.getProperty("b", String.class, "custom-generated-blueprint");
+        this.clusterName =  environment.getProperty("n", String.class);
+        this.disks =  environment.getProperty("d", Integer.class, 1);
 
+        this.components = Sets.newHashSet(Component.hive);
+        this.views = Sets.newHashSet(View.hive, View.jobs, View.tez, View.files);
 
+        this.prettyPrint();
     }
 
 
@@ -191,7 +206,7 @@ public class Arguments {
         this.reservedHbaseMemoryInMegabytes = reservedHbaseMemoryInMegabytes;
     }
 
-    public void prettyPrint() {
+    private void prettyPrint() {
         System.out.println(" ");
         System.out.println("***********************************************************************");
         System.out.println("*** Arguments");
