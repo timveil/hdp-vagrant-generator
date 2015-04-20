@@ -4,15 +4,15 @@ Generator for Vagrantfile's for Hortonworks Data Platform (HDP)
 
 ```
 usage: java -jar <HDP Vagrant Generator>
- -b <arg>     Name of blueprint used to build cluster
- -cpu <arg>   # of cpus of generated image
- -d <arg>     # of disks in generated image
- -h <arg>     Hostname of generated image.  Required!
- -ip <arg>    IP address of generated image
- -min <arg>   Minimum container size memory (in megabytes)
- -n <arg>     Name of cluster.  Required!
- -ram <arg>   RAM allocated to generated image (in megabytes)
- -rh <arg>    Reserved HBase memory (in megabytes)
- -rs <arg>    Reserved system memory (in megabytes)
- -update      Update YUM libraries while building image
+ -b <blueprint>              Name of blueprint used to build cluster
+ -cpu <number of cpus>       # of cpus of generated image
+ -d <number of disks>        # of disks in generated image
+ -h <hostname>               Hostname of generated image.  Required!
+ -ip <ip>                    IP address of generated image
+ -min <min container size>   Minimum container size memory (in megabytes)
+ -n <name>                   Name of cluster.  Required!
+ -ram <ram>                  RAM allocated to generated image (in megabytes)
+ -rh <reserved memory>       Reserved HBase memory (in megabytes)
+ -rs <reserved memory>       Reserved system memory (in megabytes)
+ -update                     Update YUM libraries while building image
 ```
