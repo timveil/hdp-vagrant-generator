@@ -10,7 +10,7 @@ usage: java -jar <HDP Vagrant Generator>
  -h <hostname>               Hostname of generated image.  Required!
  -ip <ip>                    IP address of generated image
  -min <min container size>   Minimum container size memory (in megabytes)
- -n <name>                   Name of cluster.  Required!
+ -n <name of cluster>        Name of cluster.  Required!
  -ram <ram>                  RAM allocated to generated image (in megabytes)
  -rh <reserved memory>       Reserved HBase memory (in megabytes)
  -rs <reserved memory>       Reserved system memory (in megabytes)
