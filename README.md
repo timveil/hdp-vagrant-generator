@@ -1,6 +1,8 @@
-# hdp-vagrant-generator
+# HDP Vagrant Generator
 
-```bash
+Generator for Vagrantfile's for Hortonworks Data Platform (HDP)
+
+```
 usage: java -jar <HDP Vagrant Generator>
  -b <arg>     Name of blueprint used to build cluster
  -cpu <arg>   # of cpus of generated image
