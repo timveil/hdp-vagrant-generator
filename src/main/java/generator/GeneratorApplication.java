@@ -30,8 +30,8 @@ public class GeneratorApplication {
     private static CommandLine buildCommandLine(String[] args) throws ParseException {
         Options options = new Options();
 
-        options.addOption(buildOption("h", true, "Hostname of generated image.  Required!", "hostname", true));
-        options.addOption(buildOption("n", true, "Name of cluster.  Required!", "name of cluster", true));
+        options.addOption(buildOption("h", true, "Required! Hostname of generated image", "hostname", true));
+        options.addOption(buildOption("n", true, "Required! Name of cluster", "name of cluster", true));
         options.addOption(buildOption("ip", true, "IP address of generated image", "ip", false));
         options.addOption(buildOption("ram", true, "RAM allocated to generated image (in megabytes)", "ram", false));
         options.addOption(buildOption("rs", true, "Reserved system memory (in megabytes)", "reserved memory", false));
