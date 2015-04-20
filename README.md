@@ -1,6 +1,6 @@
 # HDP Vagrant Generator
 
-Generator for Vagrantfile's for Hortonworks Data Platform (HDP)
+Vagrantfile generator for Hortonworks Data Platform (HDP)
 
 ```
 usage: java -jar <HDP Vagrant Generator>
