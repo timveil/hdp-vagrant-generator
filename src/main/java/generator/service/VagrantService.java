@@ -24,6 +24,7 @@ public class VagrantService {
 
 
     public static final String VAGRANTFILE = "Vagrantfile";
+    public static final String VAGRANT_CHECKSTATUS_SH = "vagrant-checkstatus.sh";
     public static final String ENCODING = "UTF-8";
 
     @Autowired
@@ -71,6 +72,7 @@ public class VagrantService {
 
         try {
             FileUtils.writeStringToFile(new File(VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));
+            FileUtils.writeStringToFile(new File(VAGRANT_CHECKSTATUS_SH), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-checkstatus.vm", ENCODING, model));
         } catch (IOException e) {
             e.printStackTrace();
         }
