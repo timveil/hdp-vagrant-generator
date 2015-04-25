@@ -8,7 +8,7 @@
 PROGRESS=0
 until [ $PROGRESS -eq 100 ]; do
     PROGRESS=`curl --silent --show-error -H "${requestedBy}" -X GET -u admin:admin $arguments.getCheckStatusUrl() 2>&1 | grep -oP '\"progress_percent\"\s+\:\s+\K[0-9]+'`
-    echo "$PROGRESS percent complete!"
+    echo -ne "$PROGRESS percent complete!"\\r
     sleep 5
 done
 

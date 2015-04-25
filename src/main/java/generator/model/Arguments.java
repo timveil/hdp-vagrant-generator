@@ -1,6 +1,5 @@
 package generator.model;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
 import org.springframework.core.env.Environment;
 
@@ -32,6 +31,12 @@ public class Arguments {
 
     private String blueprintName;
 
+    private String ambariRepoUrl;
+
+    private String baseHdpUrl;
+
+    private String baseHdpUtilsUrl;
+
     private boolean updateLibraries;
 
     private Set<View> views;
@@ -50,6 +55,9 @@ public class Arguments {
         this.blueprintName =  environment.getProperty("b", String.class, "custom-generated-blueprint");
         this.clusterName =  environment.getProperty("n", String.class);
         this.disks =  environment.getProperty("d", Integer.class, 1);
+        this.ambariRepoUrl =  environment.getProperty("ambariRepoUrl", String.class, "http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.0.0/ambari.repo");
+        this.baseHdpUrl =  environment.getProperty("baseHdpUrl", String.class);
+        this.baseHdpUtilsUrl =  environment.getProperty("baseHdpUtilsUrl", String.class);
 
         this.components = Sets.newHashSet(Component.hive);
         this.views = Sets.newHashSet(View.hive, View.jobs, View.tez, View.files);
@@ -57,93 +65,60 @@ public class Arguments {
         this.prettyPrint();
     }
 
-
-    public Integer getDisks() {
-        return disks;
-    }
-
-    public void setDisks(Integer disks) {
-        this.disks = disks;
-    }
-
-    public String getBlueprintName() {
-        return blueprintName;
-    }
-
-    public void setBlueprintName(String blueprintName) {
-        this.blueprintName = blueprintName;
-    }
-
     public String getHostname() {
         return hostname;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
     }
 
     public String getIp() {
         return ip;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
     public Integer getMemoryInMegabytes() {
         return memoryInMegabytes;
-    }
-
-    public void setMemoryInMegabytes(Integer memoryInMegabytes) {
-        this.memoryInMegabytes = memoryInMegabytes;
     }
 
     public Integer getCpus() {
         return cpus;
     }
 
-    public void setCpus(Integer cpus) {
-        this.cpus = cpus;
-    }
-
-    public String getClusterName() {
-        return clusterName;
-    }
-
-    public void setClusterName(String clusterName) {
-        this.clusterName = clusterName;
-    }
-
-    public boolean isUpdateLibraries() {
-        return updateLibraries;
-    }
-
-    public void setUpdateLibraries(boolean updateLibraries) {
-        this.updateLibraries = updateLibraries;
-    }
-
-    public Set<View> getViews() {
-        return views;
-    }
-
-    public void setViews(Set<View> views) {
-        this.views = views;
-    }
-
-    public Set<Component> getComponents() {
-        return components;
-    }
-
-    public void setComponents(Set<Component> components) {
-        this.components = components;
+    public Integer getDisks() {
+        return disks;
     }
 
     public Integer getMinContainerSizeInMegabytes() {
         return minContainerSizeInMegabytes;
     }
 
-    public void setMinContainerSizeInMegabytes(Integer minContainerSizeInMegabytes) {
-        this.minContainerSizeInMegabytes = minContainerSizeInMegabytes;
+    public Integer getReservedSystemMemoryInMegabytes() {
+        return reservedSystemMemoryInMegabytes;
+    }
+
+    public Integer getReservedHbaseMemoryInMegabytes() {
+        return reservedHbaseMemoryInMegabytes;
+    }
+
+    public String getClusterName() {
+        return clusterName;
+    }
+
+    public String getBlueprintName() {
+        return blueprintName;
+    }
+
+    public String getAmbariRepoUrl() {
+        return ambariRepoUrl;
+    }
+
+    public boolean isUpdateLibraries() {
+        return updateLibraries;
+    }
+
+    public Set<View> getViews() {
+        return views;
+    }
+
+    public Set<Component> getComponents() {
+        return components;
     }
 
     public String getBlueprintUrl() {
@@ -154,11 +129,11 @@ public class Arguments {
         return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName;
     }
 
-    public String getHdpRepoUrl() {
+    public String getBaseHdpUrl() {
         return "http://" + hostname + ":8080/api/v1/stacks/HDP/versions/2.2/operating_systems/redhat6/repositories/" + HDP_REPO_NAME;
     }
 
-    public String getHdpUtilsRepoUrl() {
+    public String getBaseHdpUtilsUrl() {
         return "http://" + hostname + ":8080/api/v1/stacks/HDP/versions/2.2/operating_systems/redhat6/repositories/" + HDP_UTILS_REPO_NAME;
     }
 
@@ -167,7 +142,11 @@ public class Arguments {
     }
 
     public String getHiveViewUrl() {
-        return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/0.0.1/instances/Hive";
+        return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/0.2.0/instances/Hive";
+    }
+
+    public String getTezViewUrl() {
+        return "http://" + hostname + ":8080/api/v1/views/TEZ/versions/0.5.2.2.2.2.0-151/instances/Tez";
     }
 
     public String getCheckStatusUrl() {
@@ -190,22 +169,6 @@ public class Arguments {
         return components != null && components.contains(Component.knox);
     }
 
-    public Integer getReservedSystemMemoryInMegabytes() {
-        return reservedSystemMemoryInMegabytes;
-    }
-
-    public void setReservedSystemMemoryInMegabytes(Integer reservedSystemMemoryInMegabytes) {
-        this.reservedSystemMemoryInMegabytes = reservedSystemMemoryInMegabytes;
-    }
-
-    public Integer getReservedHbaseMemoryInMegabytes() {
-        return reservedHbaseMemoryInMegabytes;
-    }
-
-    public void setReservedHbaseMemoryInMegabytes(Integer reservedHbaseMemoryInMegabytes) {
-        this.reservedHbaseMemoryInMegabytes = reservedHbaseMemoryInMegabytes;
-    }
-
     private void prettyPrint() {
         System.out.println(" ");
         System.out.println("***********************************************************************");
@@ -222,6 +185,9 @@ public class Arguments {
         System.out.printf(FORMAT, "Reserved System Memory in MB", reservedSystemMemoryInMegabytes);
         System.out.printf(FORMAT, "Reserved HBase Memory in MB", reservedHbaseMemoryInMegabytes);
         System.out.printf(FORMAT, "Update Libraries", updateLibraries);
+        System.out.printf(FORMAT, "Ambari Repo URL", ambariRepoUrl);
+        System.out.printf(FORMAT, "Base HDP URL", baseHdpUrl);
+        System.out.printf(FORMAT, "Base HDP Utils URL", baseHdpUtilsUrl);
         System.out.printf(FORMAT, "Views", views);
         System.out.printf(FORMAT, "Components", components);
         System.out.println("***********************************************************************");

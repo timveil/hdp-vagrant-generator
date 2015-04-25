@@ -42,6 +42,10 @@ public class GeneratorApplication {
         options.addOption(buildOption("b", true, "Name of blueprint used to build cluster", "blueprint", false));
         options.addOption(buildOption("d", true, "# of disks in generated image", "number of disks", false));
 
+        options.addOption(buildOption("ambariRepoUrl", true, "Ambar Repo URL", "url", false));
+        options.addOption(buildOption("baseHdpUrl", true, "Base HDP URL", "url", false));
+        options.addOption(buildOption("baseHdpUtilsUrl", true, "Base HDP Utils URL", "url", false));
+
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("java -jar <HDP Vagrant Generator>", options);
 

@@ -94,8 +94,8 @@ yum update -y -q
 #log("Deleting YUM History")
 yum history new
 
-#log("Getting Ambari YUM Repo")
-wget -q http://repo.hdp.local/ambari/centos6/ambari.repo -O /etc/yum.repos.d/ambari.repo
+#log("Getting Ambari YUM Repo from $arguments.ambariRepoUrl")
+wget -q $arguments.ambariRepoUrl -O /etc/yum.repos.d/ambari.repo
 
 #log("Installing Ambari Server and Agent")
 yum install ambari-server ambari-agent unzip -y -q
@@ -115,11 +115,11 @@ ambari-server setup -s -j $JAVA_HOME
 ambari-server setup --jdbc-driver=/usr/share/java/${mysqlVersion}/${mysqlVersion}-bin.jar --jdbc-db=mysql
 
 #log("Downloading Ambari Files View")
-wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/files-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/files-0.1.0-SNAPSHOT.jar
+wget -q http://public-repo-1.hortonworks.com/HDP-LABS/Projects/Views/tp1/files-0.1.0-tp1.jar -O /var/lib/ambari-server/resources/views/files-0.1.0-tp1.jar
 
 #if( $arguments.containsHiveView() )
 #log("Downloading Ambari Hive View")
-wget -q http://dev.hortonworks.com.s3.amazonaws.com/HDP-LABS/Projects/Ambari/2.0.0-Preview/contrib/views/hive-0.1.0-SNAPSHOT.jar -O /var/lib/ambari-server/resources/views/hive-0.1.0-SNAPSHOT.jar
+wget -q http://public-repo-1.hortonworks.com/HDP-LABS/Projects/Views/tp1/hive-0.2.0-tp1.jar -O /var/lib/ambari-server/resources/views/hive-0.2.0-tp1.jar
 #end
 
 #log("Starting Ambari Server")
@@ -131,11 +131,15 @@ ambari-agent start
 #log("Executing POST to Create Blueprint")
 curl --silent --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.getBlueprintUrl()
 
+#if( ! $arguments.baseHdpUrl )
 #log("Executing PUT to Create HDP Repo")
 curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpRepo' -u admin:admin $arguments.getHdpRepoUrl()
+#end
 
+#if( ! $arguments.baseHdpUtilsUrl )
 #log("Executing PUT to Create HDP-Utils Repo")
 curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpUtilsRepo' -u admin:admin $arguments.getHdpUtilsRepoUrl()
+#end
 
 #log("Executing POST to Create Files View")
 curl --silent --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:admin $arguments.getFilesViewUrl()
@@ -143,6 +147,9 @@ curl --silent --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:
 #if( $arguments.containsHiveView() )
 #log("Executing POST to Create Hive View")
 curl --silent --show-error -H "${requestedBy}" -X POST -d '$hiveView' -u admin:admin $arguments.getHiveViewUrl()
+
+#log("Executing POST to Create Tez View")
+curl --silent --show-error -H "${requestedBy}" -X POST -d '$tezView' -u admin:admin $arguments.getTezViewUrl()
 #end
 
 #log("Executing POST to Install Cluster")

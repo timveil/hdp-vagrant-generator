@@ -1,13 +1,1 @@
-{
-    "ViewInstanceInfo" : {
-        "properties" : {
-            "webhdfs.url" : "webhdfs://${arguments.hostname}:50070",
-            "webhcat.url" : "http://${arguments.hostname}:50111/templeton/v1",
-            "scripts.dir" : "/users/${username}",
-            "jobs.dir" : "/users/${username}",
-            "hive.host" : "$arguments.hostname",
-            "hive.port" : "10000",
-            "hive.auth" : "auth=NONE"
-        }
-    }
-}
+{"ViewInstanceInfo":{"instance_name":"HIve","label":"Hive","visible":true,"icon_path":"","icon64_path":"","properties":{"webhdfs.url":"webhdfs://${arguments.hostname}:50700","webhdfs.username":null,"webhdfs.auth":"auth=SIMPLE","dataworker.username":null,"scripts.dir":"/user/${username}/hive/scripts","jobs.dir":"/user/${username}/hive/jobs","hive.host":"${arguments.hostname}","hive.port":"10000","hive.auth":"auth=NONE","yarn.ats.url":"http://${arguments.hostname}:8188"},"description":"Hive"}}

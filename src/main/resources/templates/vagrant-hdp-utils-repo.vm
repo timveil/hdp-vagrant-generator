@@ -1,8 +1,8 @@
 {
     "Repositories": {
-        "base_url": "http://repo.hdp.local/hdp/centos6/HDP-UTILS-1.1.0.20",
-        "default_base_url": "http://repo.hdp.local/hdp/centos6/HDP-UTILS-1.1.0.20",
-        "latest_base_url": "http://repo.hdp.local/hdp/centos6/HDP-UTILS-1.1.0.20",
+        "base_url": "$arguments.baseHdpUtilsUrl",
+        "default_base_url": "$arguments.baseHdpUtilsUrl",
+        "latest_base_url": "$arguments.baseHdpUtilsUrl",
         "verify_base_url": true
     }
 }
