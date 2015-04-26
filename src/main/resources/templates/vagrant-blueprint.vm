@@ -76,6 +76,9 @@
 #if( $arguments.containsKnoxComponent() )
                 {"name": "KNOX_GATEWAY"},
 #end
+#if( $arguments.containsSqoopComponent() )
+                {"name": "SQOOP"},
+#end
                 {"name": "MAPREDUCE2_CLIENT"},
                 {"name": "METRICS_COLLECTOR"},
                 {"name": "METRICS_MONITOR"},

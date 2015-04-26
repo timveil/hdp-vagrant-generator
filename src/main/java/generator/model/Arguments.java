@@ -169,6 +169,10 @@ public class Arguments {
         return components != null && components.contains(Component.knox);
     }
 
+    public boolean containsSqoopComponent() {
+        return components != null && components.contains(Component.sqoop);
+    }
+
     private void prettyPrint() {
         System.out.println(" ");
         System.out.println("***********************************************************************");
