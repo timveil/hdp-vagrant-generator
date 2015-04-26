@@ -11,7 +11,17 @@
             "core-site": {
                 "properties": {
                     "hadoop.proxyuser.root.groups": "*",
-                    "hadoop.proxyuser.root.hosts": "*"
+                    "hadoop.proxyuser.root.hosts": "*",
+                    "hadoop.proxyuser.hcat.groups": "*",
+                    "hadoop.proxyuser.hcat.hosts": "*"
+                }
+            }
+        },
+        {
+            "webhcat-site": {
+                "properties": {
+                    "webhcat.proxyuser.root.groups": "*",
+                    "webhcat.proxyuser.root.hosts": "*"
                 }
             }
         },
