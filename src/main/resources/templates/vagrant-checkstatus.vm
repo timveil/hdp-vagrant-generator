@@ -17,4 +17,9 @@ useradd -G hdfs admin
 usermod -a -G users admin
 usermod -a -G hadoop admin
 
+#log("Updating Vagrant User")
+usermod -a -G users vagrant
+usermod -a -G hdfs vagrant
+usermod -a -G hadoop vagrant
+
 #log("Cluster Install Complete!  http://$arguments.hostname:8080")
