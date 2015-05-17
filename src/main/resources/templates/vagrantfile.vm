@@ -144,6 +144,9 @@ curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpUtilsRepo' -u admi
 #log("Executing POST to Create Files View")
 curl --silent --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:admin $arguments.getFilesViewUrl()
 
+#log("Executing POST to Create Jobs View")
+curl --silent --show-error -H "${requestedBy}" -X POST -d '$jobsView' -u admin:admin $arguments.getJobsViewUrl()
+
 #if( $arguments.containsHiveView() )
 #log("Executing POST to Create Hive View")
 curl --silent --show-error -H "${requestedBy}" -X POST -d '$hiveView' -u admin:admin $arguments.getHiveViewUrl()

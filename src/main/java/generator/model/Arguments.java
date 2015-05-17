@@ -141,6 +141,10 @@ public class Arguments {
         return "http://" + hostname + ":8080/api/v1/views/FILES/versions/0.1.0/instances/Files";
     }
 
+    public String getJobsViewUrl() {
+        return "http://" + hostname + ":8080/api/v1/views/JOBS/versions/1.0.0/instances/Jobs";
+    }
+
     public String getHiveViewUrl() {
         return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/0.2.0/instances/Hive";
     }
