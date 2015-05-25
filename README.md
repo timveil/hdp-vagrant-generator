@@ -4,7 +4,7 @@ Vagrantfile generator for Hortonworks Data Platform (HDP)
 
 ```
 usage: java -jar <HDP Vagrant Generator>
- -ambariRepoUrl <url>        Ambar Repo URL
+ -ambariRepoUrl <url>        Ambari Repo URL
  -b <blueprint>              Name of blueprint used to build cluster
  -baseHdpUrl <url>           Base HDP URL
  -baseHdpUtilsUrl <url>      Base HDP Utils URL
