@@ -68,7 +68,8 @@ rm -rf /var/log/hive/*
 rm -rf /var/log/kafka/*
 rm -rf /var/log/knox/*
 rm -rf /var/log/oozie/*
-rm -rf /var/log/ranger/*
+rm -rf /var/log/ranger/admin/*
+rm -rf /var/log/ranger/usersync/*
 rm -rf /var/log/sqoop/*
 rm -rf /var/log/storm/*
 rm -rf /var/log/webhcat/*
