@@ -46,8 +46,6 @@ public class VagrantService {
         }
 
         addTemplateToModel(model, "vagrant-files-view.vm", "filesView");
-        addTemplateToModel(model, "vagrant-tez-view.vm", "tezView");
-        addTemplateToModel(model, "vagrant-jobs-view.vm", "jobsView");
 
         try {
             FileUtils.writeStringToFile(new File(VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));

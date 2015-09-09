@@ -25,16 +25,6 @@
                 }
             }
         },
-#if( $arguments.containsHiveComponent() )
-        {
-            "hive-site": {
-                "properties": {
-                    "javax.jdo.option.ConnectionUserName": "hive",
-                    "javax.jdo.option.ConnectionPassword": "hive"
-                }
-            }
-        },
-#end
         {
             "mapred-site": {
                 "properties": {
@@ -61,6 +51,7 @@
         {
             "name": "host_group_1",
             "configurations": [],
+            "cardinality": "1",
             "components": [
                 {"name": "AMBARI_SERVER"},
                 {"name": "APP_TIMELINE_SERVER"},
@@ -93,13 +84,12 @@
                 {"name": "YARN_CLIENT"},
                 {"name": "ZOOKEEPER_CLIENT"},
                 {"name": "ZOOKEEPER_SERVER"}
-            ],
-            "cardinality": "1"
+            ]
         }
     ],
     "Blueprints": {
         "blueprint_name": "$arguments.blueprintName",
         "stack_name": "HDP",
-        "stack_version": "2.2"
+        "stack_version": "2.3"
     }
 }

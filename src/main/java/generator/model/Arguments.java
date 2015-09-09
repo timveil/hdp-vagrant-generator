@@ -55,7 +55,7 @@ public class Arguments {
         this.blueprintName =  environment.getProperty("b", String.class, "custom-generated-blueprint");
         this.clusterName =  environment.getProperty("n", String.class);
         this.disks =  environment.getProperty("d", Integer.class, 1);
-        this.ambariRepoUrl =  environment.getProperty("ambariRepoUrl", String.class, "http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.0.0/ambari.repo");
+        this.ambariRepoUrl =  environment.getProperty("ambariRepoUrl", String.class, "http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.1.1/ambari.repo");
         this.baseHdpUrl =  environment.getProperty("baseHdpUrl", String.class);
         this.baseHdpUtilsUrl =  environment.getProperty("baseHdpUtilsUrl", String.class);
 
@@ -138,19 +138,11 @@ public class Arguments {
     }
 
     public String getFilesViewUrl() {
-        return "http://" + hostname + ":8080/api/v1/views/FILES/versions/0.1.0/instances/Files";
-    }
-
-    public String getJobsViewUrl() {
-        return "http://" + hostname + ":8080/api/v1/views/JOBS/versions/1.0.0/instances/Jobs";
+        return "http://" + hostname + ":8080/api/v1/views/FILES/versions/1.0.0/instances/Files";
     }
 
     public String getHiveViewUrl() {
-        return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/0.2.0/instances/Hive";
-    }
-
-    public String getTezViewUrl() {
-        return "http://" + hostname + ":8080/api/v1/views/TEZ/versions/0.5.2.2.2.2.0-151/instances/Tez";
+        return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/1.0.0/instances/Hive";
     }
 
     public String getCheckStatusUrl() {
