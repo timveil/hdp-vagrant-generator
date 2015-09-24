@@ -125,6 +125,8 @@ ambari-server start
 #log("Starting Ambari Agent")
 ambari-agent start
 
+#log("Sleep...")
+sleep 10
 
 #log("Executing POST to Create Blueprint")
 curl --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.getBlueprintUrl()
