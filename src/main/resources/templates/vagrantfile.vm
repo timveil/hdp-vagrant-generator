@@ -5,18 +5,27 @@
 
 #parse( "macros.vm" )
 
+require 'ffi'
+
 Vagrant.configure("2") do |config|
     config.vm.box = "timveil/centos7-hdp-base"
 
     config.vm.box_check_update = true
 
-    config.vbguest.auto_update = true
+    if FFI::Platform::IS_WINDOWS
+        print "\n\n==> WINDOWS\n\n"
+    else
+        print "\n\n==> NOT WINDOWS\n\n"
 
-    config.vbguest.no_remote = true
+        config.vbguest.auto_update = true
 
-    config.vbguest.no_install = false
+        config.vbguest.no_remote = true
 
-    config.multihostsupdater.aliases = {'$arguments.ip' => ['$arguments.hostname']}
+        config.vbguest.no_install = false
+
+        config.multihostsupdater.aliases = {'$arguments.ip' => ['$arguments.hostname']}
+
+    end
 
     config.vm.provision "hosts", type: "shell", inline: $hostsFile
 
