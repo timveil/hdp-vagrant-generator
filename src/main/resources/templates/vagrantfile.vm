@@ -12,10 +12,9 @@ Vagrant.configure("2") do |config|
 
     config.vm.box_check_update = true
 
-    if FFI::Platform::IS_WINDOWS
-        print "\n\n==> WINDOWS\n\n"
-    else
-        print "\n\n==> NOT WINDOWS\n\n"
+    print "\n\n==> OS is " + FFI::Platform::OS + "\n\n"
+
+    if FFI::Platform::IS_MAC
 
         config.vbguest.auto_update = true
 
