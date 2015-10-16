@@ -55,7 +55,7 @@ public class Arguments {
         this.blueprintName =  environment.getProperty("b", String.class, "custom-generated-blueprint");
         this.clusterName =  environment.getProperty("n", String.class);
         this.disks =  environment.getProperty("d", Integer.class, 1);
-        this.ambariRepoUrl =  environment.getProperty("ambariRepoUrl", String.class, "http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.1.1/ambari.repo");
+        this.ambariRepoUrl =  environment.getProperty("ambariRepoUrl", String.class, "http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.1.2/ambari.repo");
         this.baseHdpUrl =  environment.getProperty("baseHdpUrl", String.class);
         this.baseHdpUtilsUrl =  environment.getProperty("baseHdpUtilsUrl", String.class);
 
