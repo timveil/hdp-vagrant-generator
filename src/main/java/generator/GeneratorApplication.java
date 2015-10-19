@@ -38,13 +38,11 @@ public class GeneratorApplication {
         options.addOption(buildOption("rh", true, "Reserved HBase memory (in megabytes)", "reserved memory", false));
         options.addOption(buildOption("min", true, "Minimum container size memory (in megabytes)", "min container size", false));
         options.addOption(buildOption("cpu", true, "# of cpus of generated image", "number of cpus", false));
-        options.addOption(buildOption("update", false, "Update YUM libraries while building image", null, false));
+        options.addOption(buildOption("u", true, "Update YUM libraries while building image true or false", "update", false));
         options.addOption(buildOption("b", true, "Name of blueprint used to build cluster", "blueprint", false));
         options.addOption(buildOption("d", true, "# of disks in generated image", "number of disks", false));
-
-        options.addOption(buildOption("ambariRepoUrl", true, "Ambar Repo URL", "url", false));
-        options.addOption(buildOption("baseHdpUrl", true, "Base HDP URL", "url", false));
-        options.addOption(buildOption("baseHdpUtilsUrl", true, "Base HDP Utils URL", "url", false));
+        options.addOption(buildOption("os", true, "os of image", "os of image", false));
+        options.addOption(buildOption("av", true, "ambari version", "ambari version", false));
 
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("java -jar <HDP Vagrant Generator>", options);

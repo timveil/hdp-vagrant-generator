@@ -17,7 +17,7 @@ public class CommonsCLIPropertySource extends CommandLinePropertySource<CommandL
 
     @Override
     protected boolean containsOption(String name) {
-        return this.source.hasOption(name);
+        return name != null && this.source.hasOption(name);
     }
 
     @Override

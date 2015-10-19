@@ -31,13 +31,13 @@ public class Arguments {
 
     private String blueprintName;
 
-    private String ambariRepoUrl;
-
-    private String baseHdpUrl;
-
-    private String baseHdpUtilsUrl;
-
     private boolean updateLibraries;
+
+    private String os;
+
+    private String ambariVersion;
+
+    private String ambariRepoUrl;
 
     private Set<View> views;
 
@@ -51,16 +51,22 @@ public class Arguments {
         this.reservedHbaseMemoryInMegabytes =  environment.getProperty("rh", Integer.class, 0);
         this.minContainerSizeInMegabytes =  environment.getProperty("min", Integer.class, 512);
         this.cpus =  environment.getProperty("cpu", Integer.class, 4);
-        this.updateLibraries =  environment.containsProperty("update");
+        this.updateLibraries =   Boolean.parseBoolean(environment.getProperty("u", String.class, "true"));
         this.blueprintName =  environment.getProperty("b", String.class, "custom-generated-blueprint");
         this.clusterName =  environment.getProperty("n", String.class);
         this.disks =  environment.getProperty("d", Integer.class, 1);
-        this.ambariRepoUrl =  environment.getProperty("ambariRepoUrl", String.class, "http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.1.2/ambari.repo");
-        this.baseHdpUrl =  environment.getProperty("baseHdpUrl", String.class);
-        this.baseHdpUtilsUrl =  environment.getProperty("baseHdpUtilsUrl", String.class);
+
+
+        this.os = environment.getProperty("os", String.class, "centos7");
+        this.ambariVersion = environment.getProperty("av", String.class, "2.1.2");
+
+
 
         this.components = Sets.newHashSet(Component.hive);
         this.views = Sets.newHashSet(View.hive, View.jobs, View.tez, View.files);
+
+        this.ambariRepoUrl =  "http://public-repo-1.hortonworks.com/ambari/" + this.os + "/2.x/updates/" + ambariVersion + "/ambari.repo";
+
 
         this.prettyPrint();
     }
@@ -129,14 +135,6 @@ public class Arguments {
         return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName;
     }
 
-    public String getBaseHdpUrl() {
-        return "http://" + hostname + ":8080/api/v1/stacks/HDP/versions/2.2/operating_systems/redhat6/repositories/" + HDP_REPO_NAME;
-    }
-
-    public String getBaseHdpUtilsUrl() {
-        return "http://" + hostname + ":8080/api/v1/stacks/HDP/versions/2.2/operating_systems/redhat6/repositories/" + HDP_UTILS_REPO_NAME;
-    }
-
     public String getFilesViewUrl() {
         return "http://" + hostname + ":8080/api/v1/views/FILES/versions/1.0.0/instances/Files";
     }
@@ -169,6 +167,14 @@ public class Arguments {
         return components != null && components.contains(Component.sqoop);
     }
 
+    public String getOs() {
+        return os;
+    }
+
+    public String getAmbariVersion() {
+        return ambariVersion;
+    }
+
     private void prettyPrint() {
         System.out.println(" ");
         System.out.println("***********************************************************************");
@@ -185,9 +191,9 @@ public class Arguments {
         System.out.printf(FORMAT, "Reserved System Memory in MB", reservedSystemMemoryInMegabytes);
         System.out.printf(FORMAT, "Reserved HBase Memory in MB", reservedHbaseMemoryInMegabytes);
         System.out.printf(FORMAT, "Update Libraries", updateLibraries);
+        System.out.printf(FORMAT, "OS", os);
+        System.out.printf(FORMAT, "Ambari Version", ambariVersion);
         System.out.printf(FORMAT, "Ambari Repo URL", ambariRepoUrl);
-        System.out.printf(FORMAT, "Base HDP URL", baseHdpUrl);
-        System.out.printf(FORMAT, "Base HDP Utils URL", baseHdpUtilsUrl);
         System.out.printf(FORMAT, "Views", views);
         System.out.printf(FORMAT, "Components", components);
         System.out.println("***********************************************************************");

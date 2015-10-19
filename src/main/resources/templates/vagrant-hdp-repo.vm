@@ -1,8 +1,0 @@
-{
-    "Repositories": {
-        "base_url": "$arguments.baseHdpUrl",
-        "default_base_url": "$arguments.baseHdpUrl",
-        "latest_base_url": "$arguments.baseHdpUrl",
-        "verify_base_url": true
-    }
-}

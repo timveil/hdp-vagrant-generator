@@ -139,16 +139,6 @@ sleep 10
 #log("Executing POST to Create Blueprint")
 curl --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.getBlueprintUrl()
 
-#if( ! $arguments.baseHdpUrl )
-#log("Executing PUT to Create HDP Repo")
-curl --show-error -H "${requestedBy}" -X PUT -d '$hdpRepo' -u admin:admin $arguments.getHdpRepoUrl()
-#end
-
-#if( ! $arguments.baseHdpUtilsUrl )
-#log("Executing PUT to Create HDP-Utils Repo")
-curl --show-error -H "${requestedBy}" -X PUT -d '$hdpUtilsRepo' -u admin:admin $arguments.getHdpUtilsRepoUrl()
-#end
-
 #log("Executing POST to Create Files View")
 curl --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:admin $arguments.getFilesViewUrl()
 

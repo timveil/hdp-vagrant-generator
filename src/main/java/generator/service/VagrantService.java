@@ -38,8 +38,6 @@ public class VagrantService {
 
         addTemplateToModel(model, "vagrant-blueprint.vm", "blueprint");
         addTemplateToModel(model, "vagrant-create-cluster.vm", "createCluster");
-        addTemplateToModel(model, "vagrant-hdp-repo.vm", "hdpRepo");
-        addTemplateToModel(model, "vagrant-hdp-utils-repo.vm", "hdpUtilsRepo");
 
         if (arguments.containsHiveView()) {
             addTemplateToModel(model, "vagrant-hive-view.vm", "hiveView");
