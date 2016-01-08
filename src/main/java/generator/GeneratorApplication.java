@@ -47,7 +47,7 @@ public class GeneratorApplication {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("java -jar <HDP Vagrant Generator>", options);
 
-        CommandLineParser parser = new BasicParser();
+        CommandLineParser parser = new DefaultParser();
 
         return parser.parse(options, args, true);
 
