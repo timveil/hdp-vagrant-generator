@@ -38,16 +38,11 @@ public class VagrantService {
 
         addTemplateToModel(model, "vagrant-blueprint.vm", "blueprint");
         addTemplateToModel(model, "vagrant-create-cluster.vm", "createCluster");
-
-        if (arguments.containsHiveView()) {
-            addTemplateToModel(model, "vagrant-hive-view.vm", "hiveView");
-        }
-
         addTemplateToModel(model, "vagrant-files-view.vm", "filesView");
 
         try {
-            FileUtils.writeStringToFile(new File(VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));
-            FileUtils.writeStringToFile(new File(VAGRANT_CHECKSTATUS_SH), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-checkstatus.vm", ENCODING, model));
+            FileUtils.writeStringToFile(new File("out", VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));
+            FileUtils.writeStringToFile(new File("out", VAGRANT_CHECKSTATUS_SH), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-checkstatus.vm", ENCODING, model));
         } catch (IOException e) {
             e.printStackTrace();
         }

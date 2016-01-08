@@ -58,12 +58,12 @@ public class Arguments {
 
 
         this.os = environment.getProperty("os", String.class, "centos7");
-        this.ambariVersion = environment.getProperty("av", String.class, "2.1.2");
+        this.ambariVersion = environment.getProperty("av", String.class, "2.2.0.0");
 
 
 
         this.components = Sets.newHashSet(Component.hive);
-        this.views = Sets.newHashSet(View.hive, View.jobs, View.tez, View.files);
+        this.views = Sets.newHashSet(View.files);
 
         this.ambariRepoUrl =  "http://public-repo-1.hortonworks.com/ambari/" + this.os + "/2.x/updates/" + ambariVersion + "/ambari.repo";
 
@@ -139,20 +139,12 @@ public class Arguments {
         return "http://" + hostname + ":8080/api/v1/views/FILES/versions/1.0.0/instances/Files";
     }
 
-    public String getHiveViewUrl() {
-        return "http://" + hostname + ":8080/api/v1/views/HIVE/versions/1.0.0/instances/Hive";
-    }
-
     public String getCheckStatusUrl() {
         return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName + "/requests/1";
     }
 
     public boolean containsHiveComponent() {
         return components != null && components.contains(Component.hive);
-    }
-
-    public boolean containsHiveView() {
-        return views != null && views.contains(View.hive) && containsHiveComponent();
     }
 
     public boolean containsFileView() {
