@@ -34,6 +34,10 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "checkStatus", type: "shell", path: "vagrant-checkstatus.sh"
 
+    config.vm.provision "postInstall", type: "shell", inline: $postInstall
+
+    config.vm.provision "complete", type: "shell", inline: $complete
+
     config.vm.hostname = '$arguments.hostname'
 
     config.vm.network "private_network", ip: '$arguments.ip'
@@ -137,13 +141,35 @@ ambari-agent start
 sleep 30
 
 #log("Executing POST to Create Blueprint")
-curl --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.getBlueprintUrl()
+curl -s --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.getBlueprintUrl()
 
 #log("Executing POST to Create Files View")
-curl --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:admin $arguments.getFilesViewUrl()
+curl -s --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:admin $arguments.getFilesViewUrl()
 
 #log("Executing POST to Install Cluster")
-curl --show-error -H "${requestedBy}" -X POST -d '$createCluster' -u admin:admin $arguments.getClusterUrl()
+curl -s --show-error -H "${requestedBy}" -X POST -d '$createCluster' -u admin:admin $arguments.getClusterUrl()
 
+
+SCRIPT
+
+$postInstall = <<SCRIPT
+
+#log("Adding Admin User")
+useradd -G hdfs admin
+usermod -a -G users admin
+usermod -a -G hadoop admin
+usermod -a -G hive admin
+
+#log("Updating Vagrant User")
+usermod -a -G users vagrant
+usermod -a -G hdfs vagrant
+usermod -a -G hadoop vagrant
+usermod -a -G hive vagrant
+
+SCRIPT
+
+$complete = <<SCRIPT
+
+#log("Cluster Install Complete!  http://$arguments.hostname:8080")
 
 SCRIPT

@@ -11,17 +11,3 @@ until [ $PROGRESS -eq 100 ]; do
     echo -ne "$PROGRESS percent complete!"\\r
     sleep 5
 done
-
-#log("Adding Admin User")
-useradd -G hdfs admin
-usermod -a -G users admin
-usermod -a -G hadoop admin
-usermod -a -G hive admin
-
-#log("Updating Vagrant User")
-usermod -a -G users vagrant
-usermod -a -G hdfs vagrant
-usermod -a -G hadoop vagrant
-usermod -a -G hive vagrant
-
-#log("Cluster Install Complete!  http://$arguments.hostname:8080")
