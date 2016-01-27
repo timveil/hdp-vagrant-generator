@@ -40,9 +40,11 @@ public class VagrantService {
         addTemplateToModel(model, "vagrant-create-cluster.vm", "createCluster");
         addTemplateToModel(model, "vagrant-files-view.vm", "filesView");
 
+        final String parentDirectoryName = "out/" + arguments.getHostname();
+
         try {
-            FileUtils.writeStringToFile(new File("out", VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));
-            FileUtils.writeStringToFile(new File("out", VAGRANT_CHECKSTATUS_SH), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-checkstatus.vm", ENCODING, model));
+            FileUtils.writeStringToFile(new File(parentDirectoryName, VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));
+            FileUtils.writeStringToFile(new File(parentDirectoryName, VAGRANT_CHECKSTATUS_SH), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-checkstatus.vm", ENCODING, model));
         } catch (IOException e) {
             e.printStackTrace();
         }
