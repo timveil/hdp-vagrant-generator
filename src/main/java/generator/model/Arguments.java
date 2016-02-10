@@ -60,8 +60,7 @@ public class Arguments {
         this.os = environment.getProperty("os", String.class, "centos7");
         this.ambariVersion = environment.getProperty("av", String.class, "2.2.0.0");
 
-
-
+        //this.components = Sets.newHashSet(Component.hive, Component.spark);
         this.components = Sets.newHashSet(Component.hive);
         this.views = Sets.newHashSet(View.files);
 
@@ -157,6 +156,10 @@ public class Arguments {
 
     public boolean containsSqoopComponent() {
         return components != null && components.contains(Component.sqoop);
+    }
+
+    public boolean containsSparkComponent() {
+        return components != null && components.contains(Component.spark);
     }
 
     public String getOs() {

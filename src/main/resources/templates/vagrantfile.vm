@@ -100,6 +100,12 @@ $build = <<SCRIPT
 systemctl stop firewalld
 systemctl disable firewalld
 
+#log("Installing Required YUM packages")
+yum install unzip git deltarpm -y -q
+
+#log("Updating YUM Cache")
+yum makecache fast
+
 #log("Cleaning YUM")
 yum clean all
 
@@ -115,7 +121,7 @@ yum history new
 wget -q $arguments.ambariRepoUrl -O /etc/yum.repos.d/ambari.repo
 
 #log("Installing Ambari Server and Agent")
-yum install ambari-server ambari-agent unzip -y -q
+yum install ambari-server ambari-agent -y -q
 
 #log("Updating Ambari Agent Hostname")
 sed -i "s/^hostname=localhost/hostname=$arguments.hostname/g" /etc/ambari-agent/conf/ambari-agent.ini
@@ -130,6 +136,12 @@ ambari-server setup -s -j $JAVA_HOME
 
 #log("Updating MySql Connector Jar")
 ambari-server setup --jdbc-driver=/usr/share/java/${mysqlVersion}/${mysqlVersion}-bin.jar --jdbc-db=mysql
+
+#if( $arguments.containsSparkComponent() )
+#log("Cloning Zepplin and updating stack definition")
+git clone https://github.com/hortonworks-gallery/ambari-zeppelin-service.git /var/lib/ambari-server/resources/stacks/HDP/2.3/services/ZEPPELIN
+sed -i.bak '/dependencies for all/a \    "ZEPPELIN_MASTER-START": ["NAMENODE-START", "DATANODE-START"],' /var/lib/ambari-server/resources/stacks/HDP/2.3/role_command_order.json
+#end
 
 #log("Starting Ambari Server")
 ambari-server start
