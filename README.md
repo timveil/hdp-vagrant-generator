@@ -1,21 +1,15 @@
 # HDP Vagrant Generator
 
-Vagrantfile generator for Hortonworks Data Platform (HDP)
+Vagrantfile generator for Hortonworks Data Platform (HDP).  Built using SpringBoot, this application will generate a `Vagrant` file based on the supplied `application.properties`.  This makes it very easy to create purpose built, custom Virtual Box HDP instances that are properly configured for your use case and hardware.
+
+To run, simply download or build the latest `generator-*.jar`.  If you would like to customize, place a copy of `application.properties` in the same directory as the `generator-*.jar` and from a command line run `java -jar generator-*.jar`.  A directory named `out` will be created with your new `Vagrant` file inside.
+
+To use the newly created `Vagrant` file make sure you have Vagrant installed along with the following plugins: 
 
 ```
-usage: java -jar <HDP Vagrant Generator>
- -ambariRepoUrl <url>        Ambari Repo URL
- -b <blueprint>              Name of blueprint used to build cluster
- -baseHdpUrl <url>           Base HDP URL
- -baseHdpUtilsUrl <url>      Base HDP Utils URL
- -cpu <number of cpus>       # of cpus of generated image
- -d <number of disks>        # of disks in generated image
- -h <hostname>               Required! Hostname of generated image
- -ip <ip>                    IP address of generated image
- -min <min container size>   Minimum container size memory (in megabytes)
- -n <name of cluster>        Required! Name of cluster
- -ram <ram>                  RAM allocated to generated image (in megabytes)
- -rh <reserved memory>       Reserved HBase memory (in megabytes)
- -rs <reserved memory>       Reserved system memory (in megabytes)
- -update                     Update YUM libraries while building image
+vagrant plugin install vagrant-multi-hostsupdater
+vagrant plugin install vagrant-vbguest
 ```
+
+Assuming, Vagrant and the required plugins are installed you can use you new image by running `vagrant up`.  The Vagrant file will provision an HDP cluster based on your specifications.  The process usually takes about 20 minutes based on hardware and network connectivity.
+
