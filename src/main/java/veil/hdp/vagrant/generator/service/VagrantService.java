@@ -20,9 +20,9 @@ import java.util.Map;
 public class VagrantService {
 
 
-    public static final String VAGRANTFILE = "Vagrantfile";
-    public static final String VAGRANT_CHECKSTATUS_SH = "vagrant-checkstatus.sh";
-    public static final String ENCODING = "UTF-8";
+    private static final String VAGRANTFILE = "Vagrantfile";
+    private static final String VAGRANT_CHECKSTATUS_SH = "vagrant-checkstatus.sh";
+    private static final String ENCODING = "UTF-8";
 
     @Autowired
     private VelocityEngine engine;
