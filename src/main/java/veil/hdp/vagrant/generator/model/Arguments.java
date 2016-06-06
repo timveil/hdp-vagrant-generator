@@ -2,15 +2,18 @@ package veil.hdp.vagrant.generator.model;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import veil.hdp.vagrant.generator.Constants;
 
+import java.util.Formatter;
 import java.util.List;
 import java.util.Set;
 
 public class Arguments {
 
-    private static final String FORMAT = "*** %-30s %s\n";
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private String hostname;
 
@@ -196,27 +199,32 @@ public class Arguments {
     }
 
     private void prettyPrint() {
-        System.out.println(" ");
-        System.out.println("***********************************************************************");
-        System.out.println("*** Arguments");
-        System.out.println("***********************************************************************");
-        System.out.printf(FORMAT, Constants.VM_HOSTNAME, hostname);
-        System.out.printf(FORMAT, Constants.VM_IP, ip);
-        System.out.printf(FORMAT, Constants.VM_RAM, memoryInMegabytes);
-        System.out.printf(FORMAT, Constants.VM_CORES, cores);
-        System.out.printf(FORMAT, Constants.VM_DISKS, disks);
-        System.out.printf(FORMAT, Constants.VM_UPDATE_YUM, updateLibraries);
-        System.out.printf(FORMAT, Constants.HDP_CLUSTER_NAME, clusterName);
-        System.out.printf(FORMAT, Constants.HDP_BLUEPRINT_NAME, blueprintName);
-        System.out.printf(FORMAT, Constants.HDP_STACK_VERSION, stackVersion);
-        System.out.printf(FORMAT, Constants.HDP_MIN_CONTAINER_SIZE, minContainerSizeInMegabytes);
-        System.out.printf(FORMAT, Constants.HDP_MEMORY_RESERVED_SYSTEM, reservedSystemMemoryInMegabytes);
-        System.out.printf(FORMAT, Constants.HDP_MEMORY_RESERVED_HBASE, reservedHbaseMemoryInMegabytes);
-        System.out.printf(FORMAT, Constants.HDP_AMBARI_REPO, ambariRepoUrl);
-        System.out.printf(FORMAT, Constants.HDP_VIEWS, views);
-        System.out.printf(FORMAT, Constants.HDP_COMPONENTS, components);
-        System.out.println("***********************************************************************");
-        System.out.println(" ");
+        StringBuilder builder = new StringBuilder();
+        Formatter formatter = new Formatter(builder);
+
+        formatter.format(Constants.FORMAT_NEW_LINE, " ");
+        formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
+        formatter.format(Constants.FORMAT_NEW_LINE, "*** Arguments");
+        formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_HOSTNAME, hostname);
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_IP, ip);
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_RAM, memoryInMegabytes);
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_CORES, cores);
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_DISKS, disks);
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_UPDATE_YUM, updateLibraries);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_CLUSTER_NAME, clusterName);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_BLUEPRINT_NAME, blueprintName);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_STACK_VERSION, stackVersion);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MIN_CONTAINER_SIZE, minContainerSizeInMegabytes);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_SYSTEM, reservedSystemMemoryInMegabytes);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_HBASE, reservedHbaseMemoryInMegabytes);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_REPO, ambariRepoUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_VIEWS, views);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_COMPONENTS, components);
+        formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
+        formatter.format(Constants.FORMAT_NEW_LINE, " ");
+
+        log.debug(builder.toString());
     }
 
 }

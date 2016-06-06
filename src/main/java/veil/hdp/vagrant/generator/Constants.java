@@ -17,4 +17,7 @@ public class Constants {
     public static final String HDP_VIEWS = "hdp.views";
     public static final String HDP_STACK_VERSION = "hdp.stack.version";
     public static final String MYSQL_CONNECTOR_VERSION = "mysql.connector.version";
+
+    public static final String FORMAT_SPACER = "*** %-40s %s\n";
+    public static final String FORMAT_NEW_LINE = "%s\n";
 }

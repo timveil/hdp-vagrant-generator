@@ -1,11 +1,15 @@
 package veil.hdp.vagrant.generator.model;
 
 import com.google.common.primitives.Ints;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import veil.hdp.vagrant.generator.Constants;
+
+import java.util.Formatter;
 
 public class MemoryConfiguration {
 
-    private static final String FORMAT = "*** %-40s %s\n";
-
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private int yarnNodeManagerResoureMemory;
     private int yarnMinAllocation;
@@ -20,13 +24,10 @@ public class MemoryConfiguration {
     public MemoryConfiguration(Arguments arguments) {
 
         final int availableRam = arguments.getMemoryInMegabytes() - (arguments.getReservedSystemMemoryInMegabytes() + arguments.getReservedHbaseMemoryInMegabytes());
-        System.out.printf(FORMAT, "Available RAM", availableRam);
 
         final int numberOfContainers = Ints.min(2 * arguments.getCores(), availableRam / arguments.getMinContainerSizeInMegabytes());
-        System.out.printf(FORMAT, "Number of Containers", numberOfContainers);
 
         final int ramPerContainer = Ints.max(arguments.getMinContainerSizeInMegabytes(), (availableRam / numberOfContainers));
-        System.out.printf(FORMAT, "RAM per Container", ramPerContainer);
 
         yarnNodeManagerResoureMemory = numberOfContainers * ramPerContainer;
         yarnMinAllocation = ramPerContainer;
@@ -80,20 +81,26 @@ public class MemoryConfiguration {
     }
 
     private void prettyPrint() {
-        System.out.println(" ");
-        System.out.println("***********************************************************************");
-        System.out.println("*** Memory Configuration");
-        System.out.println("***********************************************************************");
-        System.out.printf(FORMAT, "yarn.nodemanager.resource.memory-mb", yarnNodeManagerResoureMemory);
-        System.out.printf(FORMAT, "yarn.scheduler.minimum-allocation-mb", yarnMinAllocation);
-        System.out.printf(FORMAT, "yarn.scheduler.maximum-allocation-mb", yarnMaxAllocation);
-        System.out.printf(FORMAT, "yarn.app.mapreduce.am.resource.mb", yarnMrMemory);
-        System.out.printf(FORMAT, "yarn.app.mapreduce.am.command-opts", yarnMrCommandOpts);
-        System.out.printf(FORMAT, "mapreduce.map.memory.mb", mrMapMemory);
-        System.out.printf(FORMAT, "mapreduce.map.java.opts", mrMapOpts);
-        System.out.printf(FORMAT, "mapreduce.reduce.memory.mb", mrReduceMemory);
-        System.out.printf(FORMAT, "mapreduce.reduce.java.opts", mrReduceOpts);
-        System.out.println("***********************************************************************");
-        System.out.println(" ");
+
+        StringBuilder builder = new StringBuilder();
+        Formatter formatter = new Formatter(builder);
+
+        formatter.format(Constants.FORMAT_NEW_LINE, " ");
+        formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
+        formatter.format(Constants.FORMAT_NEW_LINE, "*** Memory Configuration");
+        formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
+        formatter.format(Constants.FORMAT_SPACER, "yarn.nodemanager.resource.memory-mb", yarnNodeManagerResoureMemory);
+        formatter.format(Constants.FORMAT_SPACER, "yarn.scheduler.minimum-allocation-mb", yarnMinAllocation);
+        formatter.format(Constants.FORMAT_SPACER, "yarn.scheduler.maximum-allocation-mb", yarnMaxAllocation);
+        formatter.format(Constants.FORMAT_SPACER, "yarn.app.mapreduce.am.resource.mb", yarnMrMemory);
+        formatter.format(Constants.FORMAT_SPACER, "yarn.app.mapreduce.am.command-opts", yarnMrCommandOpts);
+        formatter.format(Constants.FORMAT_SPACER, "mapreduce.map.memory.mb", mrMapMemory);
+        formatter.format(Constants.FORMAT_SPACER, "mapreduce.map.java.opts", mrMapOpts);
+        formatter.format(Constants.FORMAT_SPACER, "mapreduce.reduce.memory.mb", mrReduceMemory);
+        formatter.format(Constants.FORMAT_SPACER, "mapreduce.reduce.java.opts", mrReduceOpts);
+        formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
+        formatter.format(Constants.FORMAT_NEW_LINE, " ");
+
+        log.debug(builder.toString());
     }
 }
