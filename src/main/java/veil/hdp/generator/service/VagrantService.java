@@ -1,7 +1,7 @@
-package generator.service;
+package veil.hdp.generator.service;
 
-import generator.model.Arguments;
-import generator.model.MemoryConfiguration;
+import veil.hdp.generator.model.Arguments;
+import veil.hdp.generator.model.MemoryConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;
@@ -36,6 +36,7 @@ public class VagrantService {
         model.put("memory", memoryConfiguration);
         model.put("generatedDate", SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT).format(new Date()));
 
+        addTemplateToModel(model, "macros.vm", "macros");
         addTemplateToModel(model, "vagrant-blueprint.vm", "blueprint");
         addTemplateToModel(model, "vagrant-create-cluster.vm", "createCluster");
         addTemplateToModel(model, "vagrant-files-view.vm", "filesView");

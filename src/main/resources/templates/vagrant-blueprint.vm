@@ -86,6 +86,11 @@
                 {"name": "SECONDARY_NAMENODE"},
                 {"name": "TEZ_CLIENT"},
                 {"name": "WEBHCAT_SERVER"},
+#if( $arguments.containsRangerComponent() )
+                {"name": "RANGER_ADMIN"},
+                {"name": "RANGER_KMS_SERVER"},
+                {"name": "RANGER_USERSYNC"},
+#end
                 {"name": "YARN_CLIENT"},
                 {"name": "ZOOKEEPER_CLIENT"},
                 {"name": "ZOOKEEPER_SERVER"}
@@ -95,6 +100,6 @@
     "Blueprints": {
         "blueprint_name": "$arguments.blueprintName",
         "stack_name": "HDP",
-        "stack_version": "2.3"
+        "stack_version": "$arguments.stackVersion"
     }
 }

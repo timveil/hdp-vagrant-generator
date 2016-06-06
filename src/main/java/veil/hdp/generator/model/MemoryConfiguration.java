@@ -1,4 +1,4 @@
-package generator.model;
+package veil.hdp.generator.model;
 
 import com.google.common.primitives.Ints;
 
@@ -22,7 +22,7 @@ public class MemoryConfiguration {
         final int availableRam = arguments.getMemoryInMegabytes() - (arguments.getReservedSystemMemoryInMegabytes() + arguments.getReservedHbaseMemoryInMegabytes());
         System.out.printf(FORMAT, "Available RAM", availableRam);
 
-        final int numberOfContainers = Ints.min(2 * arguments.getCpus(), availableRam / arguments.getMinContainerSizeInMegabytes());
+        final int numberOfContainers = Ints.min(2 * arguments.getCores(), availableRam / arguments.getMinContainerSizeInMegabytes());
         System.out.printf(FORMAT, "Number of Containers", numberOfContainers);
 
         final int ramPerContainer = Ints.max(arguments.getMinContainerSizeInMegabytes(), (availableRam / numberOfContainers));

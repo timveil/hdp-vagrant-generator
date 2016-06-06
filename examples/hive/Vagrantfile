@@ -116,7 +116,7 @@ echo "----- Installing Required YUM packages"
 echo "---------------------------------------------------------------------------------------------------------------"
 echo " "
 
-yum install unzip git deltarpm -y -q
+yum install unzip git wget deltarpm -y -q
 
 echo " "
 echo "---------------------------------------------------------------------------------------------------------------"
@@ -239,7 +239,7 @@ echo "----- Executing POST to Create Files View"
 echo "---------------------------------------------------------------------------------------------------------------"
 echo " "
 
-curl -s --show-error -H "X-Requested-By: ambari" -X POST -d '{"ViewInstanceInfo":{"instance_name":"FILES_VIEW_INSTANCE","label":"Files View","visible":true,"icon_path":"","icon64_path":"","properties":{"webhdfs.url":"webhdfs://hive.hdp.local:50070","webhdfs.username":null,"webhdfs.auth":"auth=SIMPLE"},"description":"Files View installed by https://github.com/timveil/hdp-vagrant-generator"}}' -u admin:admin http://hive.hdp.local:8080/api/v1/views/FILES/versions/1.0.0/instances/Files
+curl -s --show-error -H "X-Requested-By: ambari" -X POST -d '{"ViewInstanceInfo":{"instance_name":"FILES_VIEW_INSTANCE","label":"Files View","visible":true,"icon_path":"","icon64_path":"","properties":{"webhdfs.url":"webhdfs://hive.hdp.local:50070","webhdfs.username":null,"webhdfs.auth":"auth=SIMPLE"},"description":"Files View installed by https://github.com/timveil/hdp-vagrant-veil.hdp.generator"}}' -u admin:admin http://hive.hdp.local:8080/api/v1/views/FILES/versions/1.0.0/instances/Files
 
 echo " "
 echo "---------------------------------------------------------------------------------------------------------------"
