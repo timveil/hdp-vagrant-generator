@@ -1,9 +1,3 @@
-/*.json
-/Vagrantfile
-/*.sh
-
-.DS_Store
-
 ### Vagrant template
 .vagrant/
 
