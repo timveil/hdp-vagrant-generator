@@ -20,7 +20,7 @@ Assuming, Vagrant and the required plugins are installed you can use you new ima
 
 ## How to customize
 
-You can change the configuration of the Virtual Box image or the HDP cluster by customizing application.properties
+You can change the configuration of the Virtual Box image or the HDP cluster by creating a file called `application.properties` and placing it in the same directory as `hdp-vagrant-generator-*.jar`.  The following values are used by default if no custom `application.properties` is provided.
 
 ```
 # ####################################### Required Configurations
