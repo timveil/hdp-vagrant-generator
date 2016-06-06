@@ -1,7 +1,7 @@
-package veil.hdp.generator.service;
+package veil.hdp.vagrant.generator.service;
 
-import veil.hdp.generator.model.Arguments;
-import veil.hdp.generator.model.MemoryConfiguration;
+import veil.hdp.vagrant.generator.model.Arguments;
+import veil.hdp.vagrant.generator.model.MemoryConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;

@@ -1,4 +1,4 @@
-package veil.hdp.generator;
+package veil.hdp.vagrant.generator;
 
 public class Constants {
     public static final String VM_HOSTNAME = "vm.hostname";

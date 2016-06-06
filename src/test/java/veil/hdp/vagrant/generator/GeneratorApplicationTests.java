@@ -1,4 +1,4 @@
-package veil.hdp.generator;
+package veil.hdp.vagrant.generator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

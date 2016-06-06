@@ -1,7 +1,7 @@
-package veil.hdp.generator;
+package veil.hdp.vagrant.generator;
 
-import veil.hdp.generator.model.Arguments;
-import veil.hdp.generator.service.VagrantService;
+import veil.hdp.vagrant.generator.model.Arguments;
+import veil.hdp.vagrant.generator.service.VagrantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;

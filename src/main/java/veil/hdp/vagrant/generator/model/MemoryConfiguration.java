@@ -1,4 +1,4 @@
-package veil.hdp.generator.model;
+package veil.hdp.vagrant.generator.model;
 
 import com.google.common.primitives.Ints;
 

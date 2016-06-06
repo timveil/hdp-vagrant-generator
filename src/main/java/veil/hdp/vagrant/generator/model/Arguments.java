@@ -1,9 +1,9 @@
-package veil.hdp.generator.model;
+package veil.hdp.vagrant.generator.model;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import org.springframework.core.env.Environment;
-import veil.hdp.generator.Constants;
+import veil.hdp.vagrant.generator.Constants;
 
 import java.util.List;
 import java.util.Set;
