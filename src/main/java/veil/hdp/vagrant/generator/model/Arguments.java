@@ -224,7 +224,7 @@ public class Arguments {
         formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
         formatter.format(Constants.FORMAT_NEW_LINE, " ");
 
-        log.debug(builder.toString());
+        log.info(builder.toString());
     }
 
 }
