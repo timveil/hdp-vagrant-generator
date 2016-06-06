@@ -23,7 +23,7 @@ Assuming, Vagrant and the required plugins are installed you can use you new ima
 You can change the configuration of the Virtual Box image or the HDP cluster by customizing application.properties
 
 ```
-## Required Configurations
+# ####################################### Required Configurations
 
 # dns hostname of virtual box image
 vm.hostname=default.hdp.local
@@ -32,7 +32,7 @@ vm.hostname=default.hdp.local
 hdp.cluster.name=default
 
 
-## Virtual Box Configurations
+# ####################################### Virtual Box Configurations
 
 # ip address of virtual box image
 vm.ip=192.168.7.101
@@ -50,7 +50,7 @@ vm.disks=1
 vm.update.yum=true
 
 
-## HDP Configurations
+# ####################################### HDP Configurations
 
 # amount of memory reserved for system in MB
 hdp.memory.reserved.system=2048
