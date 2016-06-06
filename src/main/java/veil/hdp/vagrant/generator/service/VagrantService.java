@@ -1,13 +1,15 @@
 package veil.hdp.vagrant.generator.service;
 
-import veil.hdp.vagrant.generator.model.Arguments;
-import veil.hdp.vagrant.generator.model.MemoryConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
+import veil.hdp.vagrant.generator.model.Arguments;
+import veil.hdp.vagrant.generator.model.MemoryConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.util.Map;
 @Service
 public class VagrantService {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private static final String VAGRANTFILE = "Vagrantfile";
     private static final String VAGRANT_CHECKSTATUS_SH = "vagrant-checkstatus.sh";
@@ -47,7 +50,7 @@ public class VagrantService {
             FileUtils.writeStringToFile(new File(parentDirectoryName, VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));
             FileUtils.writeStringToFile(new File(parentDirectoryName, VAGRANT_CHECKSTATUS_SH), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrant-checkstatus.vm", ENCODING, model));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
 
     }

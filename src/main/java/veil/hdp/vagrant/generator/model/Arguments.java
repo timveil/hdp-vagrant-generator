@@ -15,37 +15,37 @@ public class Arguments {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private String hostname;
+    private final String hostname;
 
-    private String ip;
+    private final String ip;
 
-    private Integer memoryInMegabytes;
+    private final Integer memoryInMegabytes;
 
-    private Integer cores;
+    private final Integer cores;
 
-    private Integer disks;
+    private final Integer disks;
 
-    private Integer minContainerSizeInMegabytes;
+    private final Integer minContainerSizeInMegabytes;
 
-    private Integer reservedSystemMemoryInMegabytes;
+    private final Integer reservedSystemMemoryInMegabytes;
 
-    private Integer reservedHbaseMemoryInMegabytes;
+    private final Integer reservedHbaseMemoryInMegabytes;
 
-    private String clusterName;
+    private final String clusterName;
 
-    private String blueprintName;
+    private final String blueprintName;
 
-    private boolean updateLibraries;
+    private final boolean updateLibraries;
 
-    private String ambariRepoUrl;
+    private final String ambariRepoUrl;
 
-    private Set<View> views;
+    private final Set<View> views;
 
-    private Set<Component> components;
+    private final Set<Component> components;
 
-    private String mySqlConnectorVersion;
+    private final String mySqlConnectorVersion;
 
-    private String stackVersion;
+    private final String stackVersion;
 
     public Arguments(Environment environment) {
         this.hostname =  environment.getProperty(Constants.VM_HOSTNAME, String.class);

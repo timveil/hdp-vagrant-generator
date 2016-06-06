@@ -27,9 +27,7 @@ public class VagrantServiceTest {
 
     @Before
     public void setUp() throws Exception {
-
         arguments = new Arguments(environment);
-
     }
 
     @After
@@ -39,10 +37,7 @@ public class VagrantServiceTest {
 
     @Test
     public void buildFile() throws Exception {
-
         vagrantService.buildFile(arguments);
-
-
     }
 
 }

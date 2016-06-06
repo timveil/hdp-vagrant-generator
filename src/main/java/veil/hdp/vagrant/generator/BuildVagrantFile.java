@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class BuildVagrantFile implements CommandLineRunner {
 
-
     @Autowired
     private Environment environment;
 
