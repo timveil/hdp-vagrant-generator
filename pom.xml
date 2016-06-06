@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>veil.hdp.vagrant</groupId>
-	<artifactId>generator</artifactId>
+	<artifactId>hdp-vagrant-generator</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>generator</name>
+	<name>HDP Vagrant Generator</name>
 	<description>HDP Vagrant Generator</description>
 
 	<parent>
