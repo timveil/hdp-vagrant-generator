@@ -2,7 +2,7 @@
 
 ## Overview
 
-`Vagrantfile` generator for Hortonworks Data Platform (HDP).  Built using SpringBoot, this application will generate a `Vagrantfile` file based on the supplied `application.properties`.  This makes it very easy to create purpose built, custom Virtual Box HDP instances that are properly configured for your use case and hardware.
+A `Vagrantfile` generator for Hortonworks Data Platform (HDP).  Built using SpringBoot, this application will generate a `Vagrantfile` file based on the supplied `application.properties`.  This makes it very easy to create purpose built, custom Virtual Box HDP instances that are properly configured for your use case and hardware.
 
 
 ## How to run
