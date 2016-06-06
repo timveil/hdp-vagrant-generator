@@ -1,5 +1,6 @@
 package veil.hdp.vagrant.generator;
 
+import org.springframework.context.annotation.Profile;
 import veil.hdp.vagrant.generator.model.Arguments;
 import veil.hdp.vagrant.generator.service.VagrantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("!test")
 public class BuildVagrantFile implements CommandLineRunner {
 
     @Autowired
