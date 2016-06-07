@@ -39,8 +39,6 @@ public class Arguments {
 
     private final String ambariRepoUrl;
 
-    private final Set<View> views;
-
     private final Set<Component> components;
 
     private final String mySqlConnectorVersion;
@@ -73,19 +71,6 @@ public class Arguments {
         }
 
         this.components = components;
-
-
-        String viewString = environment.getProperty(Constants.HDP_VIEWS);
-        List<String> viewStrings = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(viewString);
-        Set<View> views = Sets.newHashSet();
-
-        if (!viewStrings.isEmpty()) {
-            for (String view : viewStrings) {
-                views.add(View.valueOf(view));
-            }
-        }
-
-        this.views = views;
 
 
         this.ambariRepoUrl = environment.getProperty(Constants.HDP_AMBARI_REPO, String.class);
@@ -142,10 +127,6 @@ public class Arguments {
         return updateLibraries;
     }
 
-    public Set<View> getViews() {
-        return views;
-    }
-
     public Set<Component> getComponents() {
         return components;
     }
@@ -158,20 +139,12 @@ public class Arguments {
         return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName;
     }
 
-    public String getFilesViewUrl() {
-        return "http://" + hostname + ":8080/api/v1/views/FILES/versions/1.0.0/instances/Files";
-    }
-
     public String getCheckStatusUrl() {
         return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName + "/requests/1";
     }
 
     public boolean containsHiveComponent() {
         return components != null && components.contains(Component.hive);
-    }
-
-    public boolean containsFileView() {
-        return views != null && views.contains(View.files);
     }
 
     public boolean containsKnoxComponent() {
@@ -219,7 +192,6 @@ public class Arguments {
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_SYSTEM, reservedSystemMemoryInMegabytes);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_HBASE, reservedHbaseMemoryInMegabytes);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_REPO, ambariRepoUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_VIEWS, views);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_COMPONENTS, components);
         formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
         formatter.format(Constants.FORMAT_NEW_LINE, " ");

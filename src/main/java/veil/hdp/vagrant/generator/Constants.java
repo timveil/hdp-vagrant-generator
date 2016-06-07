@@ -14,7 +14,6 @@ public class Constants {
     public static final String VM_DISKS = "vm.disks";
     public static final String HDP_AMBARI_REPO = "hdp.ambari.repo";
     public static final String HDP_COMPONENTS = "hdp.components";
-    public static final String HDP_VIEWS = "hdp.views";
     public static final String HDP_STACK_VERSION = "hdp.stack.version";
     public static final String MYSQL_CONNECTOR_VERSION = "mysql.connector.version";
 

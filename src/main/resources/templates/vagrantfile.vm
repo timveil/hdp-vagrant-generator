@@ -161,9 +161,6 @@ mysql -e "FLUSH PRIVILEGES"
 #log("Executing POST to Create Blueprint")
 curl -s --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.getBlueprintUrl()
 
-#log("Executing POST to Create Files View")
-curl -s --show-error -H "${requestedBy}" -X POST -d '$filesView' -u admin:admin $arguments.getFilesViewUrl()
-
 #log("Executing POST to Install Cluster")
 curl -s --show-error -H "${requestedBy}" -X POST -d '$createCluster' -u admin:admin $arguments.getClusterUrl()
 
