@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "postInstall", type: "shell", inline: $postInstall
 
-    config.vm.provision "complete", type: "shell", inline: $complete
+    config.vm.provision "complete", type: "shell", inline: $complete, run: "always"
 
     config.vm.hostname = '$arguments.hostname'
 
@@ -185,6 +185,6 @@ SCRIPT
 
 $complete = <<SCRIPT
 
-#log("Cluster Install Complete!  http://$arguments.hostname:8080")
+#log("Cluster is ready!  http://$arguments.hostname:8080")
 
 SCRIPT
