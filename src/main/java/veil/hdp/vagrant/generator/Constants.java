@@ -19,4 +19,6 @@ public class Constants {
 
     public static final String FORMAT_SPACER = "*** %-40s %s\n";
     public static final String FORMAT_NEW_LINE = "%s\n";
+    public static final String HDP_KERBEROS_ENABLED = "hdp.kerberos.enabled";
+    public static final String HDP_KERBEROS_REALM = "hdp.kerberos.realm";
 }

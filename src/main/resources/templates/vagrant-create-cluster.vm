@@ -1,6 +1,19 @@
 {
     "blueprint" : "$arguments.blueprintName",
     "default_password" : "password",
+#if( $arguments.kerberosEnabled )
+    "credentials" : [
+        {
+            "alias" : "kdc.admin.credential",
+            "principal" : "admin/admin",
+            "key" : "admin",
+            "type" : "TEMPORARY"
+        }
+    ],
+    "security" : {
+        "type" : "KERBEROS"
+    },
+#end
     "host_groups" :[
         {
             "name" : "host_group_1",

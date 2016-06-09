@@ -46,6 +46,29 @@
                 }
             }
         }
+#if( $arguments.kerberosEnabled )
+        ,{
+            "kerberos-env": {
+                "properties" : {
+                    "realm" : "$arguments.kerberosRealm",
+                    "kdc_type" : "mit-kdc",
+                    "kdc_host" : "$arguments.hostname",
+                    "ldap_url" : "",
+                    "container_dn" : "",
+                    "encryption_types" : "aes des3-cbc-sha1 rc4 des-cbc-md5",
+                    "admin_server_host" : "$arguments.hostname"
+                }
+            }
+        },
+        {
+            "krb5-conf": {
+                "properties" : {
+                    "domains" : "$arguments.hostname",
+                    "manage_krb5_conf" : "true"
+                }
+            }
+        }
+#end
     ],
     "host_groups": [
         {
@@ -75,6 +98,9 @@
 #if( $arguments.containsSqoopComponent() )
                 {"name": "SQOOP"},
 #end
+#if( $arguments.kerberosEnabled )
+                {"name": "KERBEROS_CLIENT"},
+#end
                 {"name": "MAPREDUCE2_CLIENT"},
                 {"name": "METRICS_COLLECTOR"},
                 {"name": "METRICS_MONITOR"},
@@ -101,5 +127,10 @@
         "blueprint_name": "$arguments.blueprintName",
         "stack_name": "HDP",
         "stack_version": "$arguments.stackVersion"
+#if( $arguments.kerberosEnabled )
+        , "security" : {
+            "type" : "KERBEROS"
+        }
+#end
     }
 }

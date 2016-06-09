@@ -45,6 +45,10 @@ public class Arguments {
 
     private final String stackVersion;
 
+    private final boolean kerberosEnabled;
+
+    private final String kerberosRealm;
+
     public Arguments(Environment environment) {
         this.hostname =  environment.getProperty(Constants.VM_HOSTNAME, String.class);
         this.ip =  environment.getProperty(Constants.VM_IP, String.class);
@@ -74,6 +78,9 @@ public class Arguments {
 
 
         this.ambariRepoUrl = environment.getProperty(Constants.HDP_AMBARI_REPO, String.class);
+
+        this.kerberosEnabled = environment.getProperty(Constants.HDP_KERBEROS_ENABLED, Boolean.class);
+        this.kerberosRealm = environment.getProperty(Constants.HDP_KERBEROS_REALM, String.class);
 
 
         this.prettyPrint();
@@ -171,6 +178,14 @@ public class Arguments {
         return stackVersion;
     }
 
+    public boolean isKerberosEnabled() {
+        return kerberosEnabled;
+    }
+
+    public String getKerberosRealm() {
+        return kerberosRealm;
+    }
+
     private void prettyPrint() {
         StringBuilder builder = new StringBuilder();
         Formatter formatter = new Formatter(builder);
@@ -193,6 +208,8 @@ public class Arguments {
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_HBASE, reservedHbaseMemoryInMegabytes);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_REPO, ambariRepoUrl);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_COMPONENTS, components);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_KERBEROS_ENABLED, kerberosEnabled);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_KERBEROS_REALM, kerberosRealm);
         formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
         formatter.format(Constants.FORMAT_NEW_LINE, " ");
 
