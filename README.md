@@ -85,7 +85,7 @@ mysql.connector.version=5.1.39
 
 ## Example of generated Vagrantfile 
 
-The below `Vagrantfile` was generated using the default `application.properties`.
+The below `Vagrantfile` was generated using the default `application.properties`.  More examples can be found here: https://github.com/timveil/hdp-vagrant-generator/tree/master/examples.
 
 ```rb
 # -*- mode: ruby -*-
