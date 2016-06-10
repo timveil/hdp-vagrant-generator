@@ -19,7 +19,7 @@
             "name" : "host_group_1",
             "hosts" : [
                 {
-                    "fqdn" : "$arguments.hostname"
+                    "fqdn" : "$arguments.fqdn"
                 }
             ]
         }

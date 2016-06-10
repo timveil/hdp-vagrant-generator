@@ -52,18 +52,18 @@
                 "properties" : {
                     "realm" : "$arguments.kerberosRealm",
                     "kdc_type" : "mit-kdc",
-                    "kdc_host" : "$arguments.hostname",
+                    "kdc_host" : "$arguments.fqdn",
                     "ldap_url" : "",
                     "container_dn" : "",
                     "encryption_types" : "aes des3-cbc-sha1 rc4 des-cbc-md5",
-                    "admin_server_host" : "$arguments.hostname"
+                    "admin_server_host" : "$arguments.fqdn"
                 }
             }
         },
         {
             "krb5-conf": {
                 "properties" : {
-                    "domains" : "$arguments.hostname",
+                    "domains" : "$arguments.fqdn",
                     "manage_krb5_conf" : "true"
                 }
             }

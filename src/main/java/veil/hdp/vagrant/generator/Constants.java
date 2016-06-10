@@ -1,6 +1,7 @@
 package veil.hdp.vagrant.generator;
 
 public class Constants {
+    public static final String VM_FQDN = "vm.fqdn";
     public static final String VM_HOSTNAME = "vm.hostname";
     public static final String HDP_CLUSTER_NAME = "hdp.cluster.name";
     public static final String VM_IP = "vm.ip";

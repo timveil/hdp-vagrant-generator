@@ -44,7 +44,7 @@ public class VagrantService {
         addTemplateToModel(model, "vagrant-create-cluster.vm", "createCluster");
         addTemplateToModel(model, "vagrant-files-view.vm", "filesView");
 
-        final String parentDirectoryName = "out/" + arguments.getHostname();
+        final String parentDirectoryName = "out/" + arguments.getFqdn();
 
         try {
             FileUtils.writeStringToFile(new File(parentDirectoryName, VAGRANTFILE), VelocityEngineUtils.mergeTemplateIntoString(this.engine, "vagrantfile.vm", ENCODING, model));

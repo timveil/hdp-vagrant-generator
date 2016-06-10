@@ -15,6 +15,8 @@ public class Arguments {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private final String fqdn;
+
     private final String hostname;
 
     private final String ip;
@@ -50,6 +52,7 @@ public class Arguments {
     private final String kerberosRealm;
 
     public Arguments(Environment environment) {
+        this.fqdn =  environment.getProperty(Constants.VM_FQDN, String.class);
         this.hostname =  environment.getProperty(Constants.VM_HOSTNAME, String.class);
         this.ip =  environment.getProperty(Constants.VM_IP, String.class);
         this.memoryInMegabytes =  environment.getProperty(Constants.VM_RAM, Integer.class);
@@ -84,6 +87,10 @@ public class Arguments {
 
 
         this.prettyPrint();
+    }
+
+    public String getFqdn() {
+        return fqdn;
     }
 
     public String getHostname() {
@@ -139,15 +146,15 @@ public class Arguments {
     }
 
     public String getBlueprintUrl() {
-        return "http://" + hostname + ":8080/api/v1/blueprints/" + blueprintName;
+        return "http://" + fqdn + ":8080/api/v1/blueprints/" + blueprintName;
     }
 
     public String getClusterUrl() {
-        return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName;
+        return "http://" + fqdn + ":8080/api/v1/clusters/" + clusterName;
     }
 
     public String getCheckStatusUrl() {
-        return "http://" + hostname + ":8080/api/v1/clusters/" + clusterName + "/requests/1";
+        return "http://" + fqdn + ":8080/api/v1/clusters/" + clusterName + "/requests/1";
     }
 
     public boolean containsHiveComponent() {
@@ -194,6 +201,7 @@ public class Arguments {
         formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
         formatter.format(Constants.FORMAT_NEW_LINE, "*** Arguments");
         formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_FQDN, fqdn);
         formatter.format(Constants.FORMAT_SPACER, Constants.VM_HOSTNAME, hostname);
         formatter.format(Constants.FORMAT_SPACER, Constants.VM_IP, ip);
         formatter.format(Constants.FORMAT_SPACER, Constants.VM_RAM, memoryInMegabytes);
