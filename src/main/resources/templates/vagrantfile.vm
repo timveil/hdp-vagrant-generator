@@ -9,47 +9,36 @@ require 'ffi'
 
 Vagrant.configure("2") do |config|
     config.vm.box = "timveil/centos7-hdp-base"
-
     config.vm.box_check_update = true
 
-    print "\n\n==> Host OS is " + FFI::Platform::OS + "\n\n"
-
-    if FFI::Platform::IS_MAC
-
-        config.vbguest.auto_update = true
-
-        config.vbguest.no_remote = true
-
-        config.vbguest.no_install = false
-
-        config.multihostsupdater.aliases = {'$arguments.ip' => ['$arguments.hostname']}
-
-    end
-
-    config.vm.provision "hosts", type: "shell", inline: $hostsFile
-
-    config.vm.provision "logCleanup", type: "shell", inline: $logCleanup, run: "always"
-
-    config.vm.provision "build", type: "shell", inline: $build
-
-    config.vm.provision "checkStatus", type: "shell", path: "vagrant-checkstatus.sh"
-
-    config.vm.provision "postInstall", type: "shell", inline: $postInstall
-
-    config.vm.provision "complete", type: "shell", inline: $complete, run: "always"
-
+    # configure VM
     config.vm.hostname = '$arguments.hostname'
-
     config.vm.network "private_network", ip: '$arguments.ip'
-
     config.vm.provider "virtualbox" do |v|
         v.memory = $arguments.memoryInMegabytes
         v.cpus = $arguments.cores
         v.name = '$arguments.hostname'
     end
+
+    # configure host updater plugin - https://github.com/cogitatio/vagrant-hostsupdater
+    config.hostsupdater.aliases = ["$arguments.hostname"]
+
+    # configure VirtualBox Guest Additions plugin - https://github.com/dotless-de/vagrant-vbguest
+    config.vbguest.auto_update = true
+    config.vbguest.no_remote = true
+    config.vbguest.no_install = false
+
+    # provision VM
+    config.vm.provision "Update Hosts File", type: "shell", inline: $updateHostsFile
+    config.vm.provision "Pre Install", type: "shell", inline: $preInstall, run: "always"
+    config.vm.provision "Install", type: "shell", inline: $install
+    config.vm.provision "Check Install Status", type: "shell", path: "vagrant-checkstatus.sh"
+    config.vm.provision "Post Install", type: "shell", inline: $postInstall
+    config.vm.provision "Install Complete", type: "shell", inline: $installComplete, run: "always"
+
 end
 
-$hostsFile = <<SCRIPT
+$updateHostsFile = <<SCRIPT
 
 cat > /etc/hosts <<EOF
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
@@ -60,7 +49,7 @@ EOF
 
 SCRIPT
 
-$logCleanup = <<SCRIPT
+$preInstall = <<SCRIPT
 
 #log("Cleaning Logs")
 rm -rf /var/log/ambari-metrics-collector/*
@@ -93,7 +82,7 @@ rm -rf /tmp/root/*
 
 SCRIPT
 
-$build = <<SCRIPT
+$install = <<SCRIPT
 
 #log("Cleaning YUM")
 yum clean all
@@ -197,7 +186,7 @@ usermod -a -G hive vagrant
 
 SCRIPT
 
-$complete = <<SCRIPT
+$installComplete = <<SCRIPT
 
 #log("Cluster is ready!  http://$arguments.hostname:8080")
 
