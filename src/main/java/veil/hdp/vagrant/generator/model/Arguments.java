@@ -2,6 +2,7 @@ package veil.hdp.vagrant.generator.model;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -17,7 +18,7 @@ public class Arguments {
 
     private final String fqdn;
 
-    private final String hostname;
+    private  String hostname;
 
     private final String ip;
 
@@ -54,6 +55,11 @@ public class Arguments {
     public Arguments(Environment environment) {
         this.fqdn =  environment.getProperty(Constants.VM_FQDN, String.class);
         this.hostname =  environment.getProperty(Constants.VM_HOSTNAME, String.class);
+
+        if (StringUtils.isBlank(hostname)) {
+            this.hostname = fqdn;
+        }
+
         this.ip =  environment.getProperty(Constants.VM_IP, String.class);
         this.memoryInMegabytes =  environment.getProperty(Constants.VM_RAM, Integer.class);
         this.reservedSystemMemoryInMegabytes =  environment.getProperty(Constants.HDP_MEMORY_RESERVED_SYSTEM, Integer.class);
