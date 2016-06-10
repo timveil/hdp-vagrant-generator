@@ -6,7 +6,7 @@
 
 echo " "
 echo "---------------------------------------------------------------------------------------------------------------"
-echo "----- Waiting for Cluster Install to Finish"
+echo "----- Waiting for Cluster Install to Finish (will check every minute)"
 echo "---------------------------------------------------------------------------------------------------------------"
 echo " "
 
@@ -14,5 +14,5 @@ PROGRESS=0
 until [ $PROGRESS -eq 100 ]; do
     PROGRESS=`curl --silent --show-error -H "X-Requested-By: ambari" -X GET -u admin:admin http://kerberos.hdp.local:8080/api/v1/clusters/kerberos/requests/1 2>&1 | grep -oP '\"progress_percent\"\s+\:\s+\K[0-9]+'`
     echo -ne "$PROGRESS percent complete!"\\r
-    sleep 5
+    sleep 60
 done
