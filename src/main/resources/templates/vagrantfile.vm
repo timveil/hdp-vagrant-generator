@@ -35,7 +35,6 @@ Vagrant.configure("2") do |config|
     config.vm.provision "Check Install Status", type: "shell", path: "vagrant-checkstatus.sh"
     config.vm.provision "Post Install", type: "shell", inline: $postInstall
     config.vm.provision "Install Complete", type: "shell", inline: $installComplete, run: "always"
-
 end
 
 $updateHostsFile = <<SCRIPT
@@ -74,7 +73,6 @@ rm -rf /var/log/sqoop/*
 rm -rf /var/log/storm/*
 rm -rf /var/log/webhcat/*
 rm -rf /var/log/zookeeper/*
-
 rm -rf /tmp/hive/*
 rm -rf /tmp/hcat/*
 rm -rf /tmp/ambari-qa/*
@@ -98,7 +96,6 @@ yum install krb5-libs krb5-server krb5-workstation -y
 sed -i "s/kerberos.example.com/$arguments.fqdn/gI" /etc/krb5.conf
 sed -i "s/EXAMPLE.COM/$arguments.kerberosRealm/gI" /etc/krb5.conf
 sed -i "s/#//g" /etc/krb5.conf
-
 sed -i "s/EXAMPLE.COM/$arguments.kerberosRealm/gI" /var/kerberos/krb5kdc/kadm5.acl
 
 #log("Starting Kerberos KDC")
@@ -108,7 +105,6 @@ systemctl start krb5kdc
 systemctl enable krb5kdc
 systemctl start kadmin
 systemctl enable kadmin
-
 #end
 
 #if( $arguments.updateLibraries )
@@ -166,7 +162,6 @@ curl -s --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin 
 
 #log("Executing POST to Install Cluster")
 curl -s --show-error -H "${requestedBy}" -X POST -d '$createCluster' -u admin:admin $arguments.getClusterUrl()
-
 
 SCRIPT
 
