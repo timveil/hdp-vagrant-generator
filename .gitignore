@@ -5,3 +5,5 @@
 /out
 
 
+/src/test/resources/application-hdpc.properties
+/src/test/resources/application-hdpck.properties
