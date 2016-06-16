@@ -43,7 +43,6 @@ public class MemoryConfiguration {
 
     }
 
-
     public int getYarnNodeManagerResoureMemory() {
         return yarnNodeManagerResoureMemory;
     }

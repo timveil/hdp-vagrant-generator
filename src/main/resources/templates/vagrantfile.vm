@@ -121,19 +121,12 @@ yum install ambari-server ambari-agent -y
 #log("Updating Ambari Agent Hostname")
 sed -i "s/^hostname=localhost/hostname=$arguments.fqdn/g" /etc/ambari-agent/conf/ambari-agent.ini
 
-#log("Downloading New MySQL Connector Jar")
-wget -q http://dev.mysql.com/get/Downloads/Connector-J/${mysqlVersion}.zip -O /usr/share/java/${mysqlVersion}.zip
-cd /usr/share/java
-unzip -q ${mysqlVersion}.zip
-
 #log("Running Ambari Server setup")
-ambari-server setup -s -j $JAVA_HOME
-
-#log("Updating MySql Connector Jar")
-ambari-server setup --jdbc-driver=/usr/share/java/${mysqlVersion}/${mysqlVersion}-bin.jar --jdbc-db=mysql
+ambari-server setup -s
 
 #if( $arguments.containsSparkComponent() )
 #log("Cloning Zepplin and updating stack definition")
+yum install git -y
 git clone https://github.com/hortonworks-gallery/ambari-zeppelin-service.git /var/lib/ambari-server/resources/stacks/HDP/$arguments.stackVersion/services/ZEPPELIN
 sed -i.bak '/dependencies for all/a \    "ZEPPELIN_MASTER-START": ["NAMENODE-START", "DATANODE-START"],' /var/lib/ambari-server/resources/stacks/HDP/$arguments.stackVersion/role_command_order.json
 #end
@@ -146,16 +139,6 @@ ambari-agent start
 
 #log("Sleep...")
 sleep 30
-
-#if( $arguments.containsRangerComponent() )
-#log("Updating MySQL admin for Ranger")
-mysql -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root'"
-mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'"
-mysql -e "SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('$rootPassword')"
-mysql -e "SET PASSWORD FOR 'root'@'$arguments.fqdn' = PASSWORD('$rootPassword')"
-mysql -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$rootPassword')"
-mysql -e "FLUSH PRIVILEGES"
-#end
 
 #log("Executing POST to Create Blueprint")
 curl -s --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.getBlueprintUrl()

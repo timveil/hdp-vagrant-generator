@@ -7,6 +7,5 @@ echo " "
 
 #end
 
-#set( $mysqlVersion = "mysql-connector-java-$arguments.mySqlConnectorVersion" )
 #set( $requestedBy = "X-Requested-By: ambari" )
 #set( $rootPassword = "root" )

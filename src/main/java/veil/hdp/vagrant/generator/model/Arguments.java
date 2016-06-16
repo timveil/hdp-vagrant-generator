@@ -44,8 +44,6 @@ public class Arguments {
 
     private final Set<Component> components;
 
-    private final String mySqlConnectorVersion;
-
     private final String stackVersion;
 
     private final boolean kerberosEnabled;
@@ -70,12 +68,14 @@ public class Arguments {
         this.blueprintName =  environment.getProperty(Constants.HDP_BLUEPRINT_NAME, String.class);
         this.clusterName =  environment.getProperty(Constants.HDP_CLUSTER_NAME, String.class);
         this.disks =  environment.getProperty(Constants.VM_DISKS, Integer.class);
-        this.mySqlConnectorVersion =  environment.getProperty(Constants.MYSQL_CONNECTOR_VERSION, String.class);
         this.stackVersion =  environment.getProperty(Constants.HDP_STACK_VERSION, String.class);
+        this.ambariRepoUrl = environment.getProperty(Constants.HDP_AMBARI_REPO, String.class);
+        this.kerberosEnabled = environment.getProperty(Constants.HDP_KERBEROS_ENABLED, Boolean.class);
+        this.kerberosRealm = environment.getProperty(Constants.HDP_KERBEROS_REALM, String.class);
 
-        String componentString = environment.getProperty(Constants.HDP_COMPONENTS);
-        List<String> componentStrings = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(componentString);
-        Set<Component> components = Sets.newHashSet();
+        final String componentString = environment.getProperty(Constants.HDP_COMPONENTS);
+        final List<String> componentStrings = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(componentString);
+        final Set<Component> components = Sets.newHashSet();
 
         if (!componentStrings.isEmpty()) {
             for (String component : componentStrings) {
@@ -84,13 +84,6 @@ public class Arguments {
         }
 
         this.components = components;
-
-
-        this.ambariRepoUrl = environment.getProperty(Constants.HDP_AMBARI_REPO, String.class);
-
-        this.kerberosEnabled = environment.getProperty(Constants.HDP_KERBEROS_ENABLED, Boolean.class);
-        this.kerberosRealm = environment.getProperty(Constants.HDP_KERBEROS_REALM, String.class);
-
 
         this.prettyPrint();
     }
@@ -167,24 +160,8 @@ public class Arguments {
         return components != null && components.contains(Component.hive);
     }
 
-    public boolean containsKnoxComponent() {
-        return components != null && components.contains(Component.knox);
-    }
-
-    public boolean containsSqoopComponent() {
-        return components != null && components.contains(Component.sqoop);
-    }
-
     public boolean containsSparkComponent() {
         return components != null && components.contains(Component.spark);
-    }
-
-    public boolean containsRangerComponent() {
-        return components != null && components.contains(Component.ranger);
-    }
-
-    public String getMySqlConnectorVersion() {
-        return mySqlConnectorVersion;
     }
 
     public String getStackVersion() {

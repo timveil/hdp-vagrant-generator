@@ -42,7 +42,6 @@ public class VagrantService {
         addTemplateToModel(model, "macros.vm", "macros");
         addTemplateToModel(model, "vagrant-blueprint.vm", "blueprint");
         addTemplateToModel(model, "vagrant-create-cluster.vm", "createCluster");
-        addTemplateToModel(model, "vagrant-files-view.vm", "filesView");
 
         final String parentDirectoryName = "out/" + arguments.getFqdn();
 
