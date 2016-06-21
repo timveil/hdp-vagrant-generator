@@ -145,12 +145,12 @@ sleep 30
 #log("Executing POST to Create Blueprint")
 curl -s --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.blueprintsUrl
 
-#if($arguments.hdpBaseUrl)
+#if($arguments.hdpBaseUrl != '')
 #log("Executing PUT to Create HDP Repo")
 curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpRepo' -u admin:admin $arguments.repositoriesHdpUrl
 #end
 
-#if($arguments.hdpUtilsBaseUrl)
+#if($arguments.hdpUtilsBaseUrl != '')
 #log("Executing PUT to Create HDP-Utils Repo")
 curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpUtilsRepo' -u admin:admin $arguments.repositoriesHdpUtilsUrl
 #end
