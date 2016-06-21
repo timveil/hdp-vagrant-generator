@@ -18,7 +18,7 @@ public class Arguments {
 
     private final String fqdn;
 
-    private  String hostname;
+    private String hostname;
 
     private final String ip;
 
@@ -50,6 +50,20 @@ public class Arguments {
 
     private final String kerberosRealm;
 
+    private final String hdpBaseUrl;
+
+    private final String hdpUtilsBaseUrl;
+
+    private final String blueprintsUrl;
+
+    private final String clustersUrl;
+
+    private final String clustersRequestsUrl;
+
+    private final String repositoriesHdpUrl;
+
+    private final String repositoriesHdpUtilsUrl;
+
     public Arguments(Environment environment) {
         this.fqdn =  environment.getProperty(Constants.VM_FQDN, String.class);
         this.hostname =  environment.getProperty(Constants.VM_HOSTNAME, String.class);
@@ -69,9 +83,16 @@ public class Arguments {
         this.clusterName =  environment.getProperty(Constants.HDP_CLUSTER_NAME, String.class);
         this.disks =  environment.getProperty(Constants.VM_DISKS, Integer.class);
         this.stackVersion =  environment.getProperty(Constants.HDP_STACK_VERSION, String.class);
-        this.ambariRepoUrl = environment.getProperty(Constants.HDP_AMBARI_REPO, String.class);
+        this.ambariRepoUrl = environment.getProperty(Constants.HDP_REPO_AMBARI_FILE, String.class);
+        this.blueprintsUrl = environment.getProperty(Constants.HDP_AMBARI_API_BLUEPRINTS_URL, String.class);
+        this.clustersUrl = environment.getProperty(Constants.HDP_AMBARI_API_CLUSTERS_URL, String.class);
+        this.clustersRequestsUrl = environment.getProperty(Constants.HDP_AMBARI_API_CLUSTERS_REQUESTS_URL, String.class);
+        this.hdpBaseUrl = environment.getProperty(Constants.HDP_REPO_BASE, String.class);
+        this.hdpUtilsBaseUrl = environment.getProperty(Constants.HDP_REPO_UTILS_BASE, String.class);
         this.kerberosEnabled = environment.getProperty(Constants.HDP_KERBEROS_ENABLED, Boolean.class);
         this.kerberosRealm = environment.getProperty(Constants.HDP_KERBEROS_REALM, String.class);
+        this.repositoriesHdpUrl = environment.getProperty(Constants.HDP_AMBARI_API_REPOSITORIES_HDP_URL, String.class);
+        this.repositoriesHdpUtilsUrl = environment.getProperty(Constants.HDP_AMBARI_API_REPOSITORIES_HDPUTILS_URL, String.class);
 
         final String componentString = environment.getProperty(Constants.HDP_COMPONENTS);
         final List<String> componentStrings = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(componentString);
@@ -144,16 +165,24 @@ public class Arguments {
         return components;
     }
 
-    public String getBlueprintUrl() {
-        return "http://" + fqdn + ":8080/api/v1/blueprints/" + blueprintName;
+    public String getBlueprintsUrl() {
+        return blueprintsUrl;
     }
 
-    public String getClusterUrl() {
-        return "http://" + fqdn + ":8080/api/v1/clusters/" + clusterName;
+    public String getClustersUrl() {
+        return clustersUrl;
     }
 
-    public String getCheckStatusUrl() {
-        return "http://" + fqdn + ":8080/api/v1/clusters/" + clusterName + "/requests/1";
+    public String getClustersRequestsUrl() {
+        return clustersRequestsUrl;
+    }
+
+    public String getHdpBaseUrl() {
+        return hdpBaseUrl;
+    }
+
+    public String getHdpUtilsBaseUrl() {
+        return hdpUtilsBaseUrl;
     }
 
     public boolean containsHiveComponent() {
@@ -174,6 +203,14 @@ public class Arguments {
 
     public String getKerberosRealm() {
         return kerberosRealm;
+    }
+
+    public String getRepositoriesHdpUrl() {
+        return repositoriesHdpUrl;
+    }
+
+    public String getRepositoriesHdpUtilsUrl() {
+        return repositoriesHdpUtilsUrl;
     }
 
     private void prettyPrint() {
@@ -197,7 +234,14 @@ public class Arguments {
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MIN_CONTAINER_SIZE, minContainerSizeInMegabytes);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_SYSTEM, reservedSystemMemoryInMegabytes);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_HBASE, reservedHbaseMemoryInMegabytes);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_REPO, ambariRepoUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_BLUEPRINTS_URL, blueprintsUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_CLUSTERS_URL, clustersUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_CLUSTERS_REQUESTS_URL, clustersRequestsUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_REPOSITORIES_HDP_URL, repositoriesHdpUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_REPOSITORIES_HDPUTILS_URL, repositoriesHdpUtilsUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_REPO_AMBARI_FILE, ambariRepoUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_REPO_BASE, hdpBaseUrl);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_REPO_UTILS_BASE, hdpUtilsBaseUrl);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_COMPONENTS, components);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_KERBEROS_ENABLED, kerberosEnabled);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_KERBEROS_REALM, kerberosRealm);

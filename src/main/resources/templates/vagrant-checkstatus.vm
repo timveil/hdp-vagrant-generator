@@ -7,7 +7,7 @@
 #log("Waiting for Cluster Install to Finish")
 PROGRESS=0
 until [ $PROGRESS -eq 100 ]; do
-    PROGRESS=`curl --silent --show-error -H "${requestedBy}" -X GET -u admin:admin $arguments.getCheckStatusUrl() 2>&1 | grep -oP '\"progress_percent\"\s+\:\s+\K[0-9]+'`
+    PROGRESS=`curl --silent --show-error -H "${requestedBy}" -X GET -u admin:admin $arguments.clustersRequestsUrl 2>&1 | grep -oP '\"progress_percent\"\s+\:\s+\K[0-9]+'`
     TIMESTAMP=$(date "+%m/%d/%y %H:%M:%S")
     echo -ne "$TIMESTAMP - $PROGRESS percent complete!"\\r
     sleep 60
