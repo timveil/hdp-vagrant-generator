@@ -126,7 +126,7 @@ sed -i "s/^hostname=localhost/hostname=$arguments.fqdn/g" /etc/ambari-agent/conf
 #log("Running Ambari Server setup")
 ambari-server setup -s
 
-#if( $arguments.containsSparkComponent() )
+#if( $arguments.containsZeppelinComponent() )
 #log("Cloning Zepplin and updating stack definition")
 yum install git -y
 git clone https://github.com/hortonworks-gallery/ambari-zeppelin-service.git /var/lib/ambari-server/resources/stacks/HDP/$arguments.stackVersion/services/ZEPPELIN
