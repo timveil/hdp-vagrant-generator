@@ -193,6 +193,10 @@ public class Arguments {
         return components != null && components.contains(Component.spark);
     }
 
+    public boolean containsZeppelinComponent() {
+        return components != null && components.contains(Component.zeppelin);
+    }
+
     public String getStackVersion() {
         return stackVersion;
     }
