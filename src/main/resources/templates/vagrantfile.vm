@@ -20,13 +20,15 @@ Vagrant.configure("2") do |config|
         v.name = '$arguments.fqdn'
     end
 
-    # configure host updater plugin - https://github.com/cogitatio/vagrant-hostsupdater
-    config.hostsupdater.aliases = ["$arguments.hostname"]
+    if FFI::Platform::IS_MAC
+        # configure host updater plugin - https://github.com/cogitatio/vagrant-hostsupdater
+        config.hostsupdater.aliases = ["$arguments.hostname"]
 
-    # configure VirtualBox Guest Additions plugin - https://github.com/dotless-de/vagrant-vbguest
-    config.vbguest.auto_update = true
-    config.vbguest.no_remote = true
-    config.vbguest.no_install = false
+        # configure VirtualBox Guest Additions plugin - https://github.com/dotless-de/vagrant-vbguest
+        config.vbguest.auto_update = true
+        config.vbguest.no_remote = true
+        config.vbguest.no_install = false
+    end
 
     # provision VM
     config.vm.provision "Update Hosts File", type: "shell", inline: $updateHostsFile

@@ -66,7 +66,7 @@ public class VagrantService {
     }
 
     private String cleanTemplate(String template) {
-        template = StringUtils.remove(template, "\n");
+        template = StringUtils.remove(template, System.getProperty("line.separator"));
         template = StringUtils.remove(template, "  ");
         return StringUtils.trimToNull(template);
     }
