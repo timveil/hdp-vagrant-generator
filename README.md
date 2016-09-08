@@ -22,7 +22,7 @@ Assuming, Vagrant and the required plugins are installed you can use you new ima
 
 You can change the configuration of the Virtual Box image or the HDP cluster by creating a file called `application.properties` and placing it in the same directory as `hdp-vagrant-generator-*.jar`.  The following values are used by default if no custom `application.properties` is provided.
 
-See (HDP Vagrant Local Repo)[https://github.com/timveil/hdp-vagrant-local-repo] for a quick and easy way to spin up a local yum repository using Vagrant.
+See [HDP Vagrant Local Repo](https://github.com/timveil/hdp-vagrant-local-repo) for a quick and easy way to spin up a local yum repository using Vagrant.
 
 ```dosini
 ## ####################################### Logging Configurations
