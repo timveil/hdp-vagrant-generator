@@ -45,8 +45,6 @@ cat > /etc/hosts <<EOF
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
-192.168.7.201   repo.hdp.local
-
 $arguments.ip   $arguments.fqdn $arguments.hostname
 EOF
 
@@ -116,8 +114,8 @@ systemctl enable kadmin
 yum update -y -q
 #end
 
-#log("Getting Ambari YUM Repo from $arguments.ambariRepoUrl")
-wget -nv $arguments.ambariRepoUrl -O /etc/yum.repos.d/ambari.repo
+#log("Getting Ambari YUM Repo from $arguments.ambariRepoFileUrl")
+wget -nv $arguments.ambariRepoFileUrl -O /etc/yum.repos.d/ambari.repo
 
 #log("Installing Ambari Server and Agent")
 yum install ambari-server ambari-agent -y
@@ -127,13 +125,6 @@ sed -i "s/^hostname=localhost/hostname=$arguments.fqdn/g" /etc/ambari-agent/conf
 
 #log("Running Ambari Server setup")
 ambari-server setup -s -v
-
-#if( $arguments.containsZeppelinComponent() )
-#log("Cloning Zepplin and updating stack definition")
-yum install git -y
-git clone https://github.com/hortonworks-gallery/ambari-zeppelin-service.git /var/lib/ambari-server/resources/stacks/HDP/$arguments.stackVersion/services/ZEPPELIN
-sed -i.bak '/dependencies for all/a \    "ZEPPELIN_MASTER-START": ["NAMENODE-START", "DATANODE-START"],' /var/lib/ambari-server/resources/stacks/HDP/$arguments.stackVersion/role_command_order.json
-#end
 
 #log("Starting Ambari Server")
 ambari-server start
@@ -147,12 +138,12 @@ sleep 30
 #log("Executing POST to Create Blueprint")
 curl -s --show-error -H "${requestedBy}" -X POST -d '$blueprint' -u admin:admin $arguments.blueprintsUrl
 
-#if($arguments.hdpBaseUrl != '')
+#if($arguments.hdpRepoBaseUrl != '')
 #log("Executing PUT to Create HDP Repo")
 curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpRepo' -u admin:admin $arguments.repositoriesHdpUrl
 #end
 
-#if($arguments.hdpUtilsBaseUrl != '')
+#if($arguments.hdpRepoUtilsBaseUrl != '')
 #log("Executing PUT to Create HDP-Utils Repo")
 curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpUtilsRepo' -u admin:admin $arguments.repositoriesHdpUtilsUrl
 #end
@@ -160,7 +151,7 @@ curl --silent --show-error -H "${requestedBy}" -X PUT -d '$hdpUtilsRepo' -u admi
 #log("Executing POST to Install Cluster")
 curl -s --show-error -H "${requestedBy}" -X POST -d '$createCluster' -u admin:admin $arguments.clustersUrl
 
-#log("Cluster is being installed!  You can check progress here:  http://$arguments.fqdn:8080 or http://$arguments.hostname:8080")
+#log("Cluster is being installed!  You can check progress here:  http://$arguments.fqdn:8080 or http://$arguments.hostname:8080 or http://$arguments.ip:8080")
 
 SCRIPT
 
@@ -182,6 +173,6 @@ SCRIPT
 
 $installComplete = <<SCRIPT
 
-#log("Ambari URL is http://$arguments.fqdn:8080 or http://$arguments.hostname:8080")
+#log("Ambari URL is http://$arguments.fqdn:8080 or http://$arguments.hostname:8080 or http://$arguments.ip:8080")
 
 SCRIPT

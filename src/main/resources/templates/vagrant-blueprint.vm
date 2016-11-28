@@ -86,9 +86,6 @@
                 {"name": "SPARK_JOBHISTORYSERVER"},
                 {"name": "SPARK_CLIENT"},
 #end
-#if( $arguments.containsZeppelinComponent() )
-                {"name": "ZEPPELIN_MASTER"},
-#end
 #if( $arguments.containsHiveComponent() )
                 {"name": "HIVE_CLIENT"},
                 {"name": "HIVE_METASTORE"},

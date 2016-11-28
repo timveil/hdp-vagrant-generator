@@ -43,10 +43,10 @@ public class VagrantService {
         addTemplateToModel(model, "vagrant-blueprint.vm", "blueprint");
         addTemplateToModel(model, "vagrant-create-cluster.vm", "createCluster");
 
-        model.put("url", arguments.getHdpBaseUrl());
+        model.put("url", arguments.getHdpRepoBaseUrl());
         addTemplateToModel(model, "vagrant-create-repository.vm", "hdpRepo");
 
-        model.put("url", arguments.getHdpUtilsBaseUrl());
+        model.put("url", arguments.getHdpRepoUtilsBaseUrl());
         addTemplateToModel(model, "vagrant-create-repository.vm", "hdpUtilsRepo");
 
         final String parentDirectoryName = "out/" + arguments.getFqdn();
