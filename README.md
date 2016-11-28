@@ -88,8 +88,8 @@ hdp.kerberos.realm=
 # HDP optional components installed
 hdp.components=hive,spark
 
-# URL of Ambari yum repo file (ex. "http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.0.1/ambari.repo")
-hdp.repo.ambari.file=http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.0.1/ambari.repo
+# URL of Ambari yum repo file (ex. "http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.1.0/ambari.repo")
+hdp.repo.ambari.file=http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.1.0/ambari.repo
 
 hdp.ambari.api.blueprints.url=http://${vm.fqdn}:8080/api/v1/blueprints/${hdp.blueprint.name}
 hdp.ambari.api.clusters.url=http://${vm.fqdn}:8080/api/v1/clusters/${hdp.cluster.name}
@@ -230,11 +230,11 @@ yum update -y -q
 
 echo " "
 echo "---------------------------------------------------------------------------------------------------------------"
-echo "----- Getting Ambari YUM Repo from http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.0.1/ambari.repo"
+echo "----- Getting Ambari YUM Repo from http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.1.0/ambari.repo"
 echo "---------------------------------------------------------------------------------------------------------------"
 echo " "
 
-wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.0.1/ambari.repo -O /etc/yum.repos.d/ambari.repo
+wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.1.0/ambari.repo -O /etc/yum.repos.d/ambari.repo
 
 echo " "
 echo "---------------------------------------------------------------------------------------------------------------"

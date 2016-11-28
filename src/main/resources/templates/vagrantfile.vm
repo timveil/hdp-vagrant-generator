@@ -126,7 +126,7 @@ yum install ambari-server ambari-agent -y
 sed -i "s/^hostname=localhost/hostname=$arguments.fqdn/g" /etc/ambari-agent/conf/ambari-agent.ini
 
 #log("Running Ambari Server setup")
-ambari-server setup -s
+ambari-server setup -s -v
 
 #if( $arguments.containsZeppelinComponent() )
 #log("Cloning Zepplin and updating stack definition")
