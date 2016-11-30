@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,24 +56,26 @@ public class VagrantService implements FileService {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(this.getClass().getClassLoader());
 
         String blueprintJson = convertTemplateToString(resolver, "templates/common/json/json-blueprint.mustache", model);
-        String createClusterJson = convertTemplateToString(resolver, "templates/common/json/json-create-cluster.mustache", model);
-
-        //todo build this conditionally
-        String hdpRepoJson = convertTemplateToString(resolver, "templates/common/json/json-create-repository.mustache", ImmutableMap.of("url", arguments.getHdpRepoBaseUrl()));
-        //todo build this conditionally
-        String hdpUtilsRepoJson = convertTemplateToString(resolver, "templates/common/json/json-create-repository.mustache", ImmutableMap.of("url", arguments.getHdpRepoUtilsBaseUrl()));
-
         model.put("blueprintJson", compactJSON(blueprintJson));
-        model.put("hdpRepoJson", compactJSON(hdpRepoJson));
-        model.put("hdpUtilsRepoJson", compactJSON(hdpUtilsRepoJson));
+
+        String createClusterJson = convertTemplateToString(resolver, "templates/common/json/json-create-cluster.mustache", model);
         model.put("createClusterJson", compactJSON(createClusterJson));
+
+        if (StringUtils.isNotBlank(arguments.getHdpRepoBaseUrl()) && StringUtils.isNotBlank(arguments.getAmbariApiRepositoriesHdpUrl())) {
+            String hdpRepoJson = convertTemplateToString(resolver, "templates/common/json/json-create-repository.mustache", ImmutableMap.of("url", arguments.getHdpRepoBaseUrl()));
+            model.put("hdpRepoJson", compactJSON(hdpRepoJson));
+        }
+
+        if (StringUtils.isNotBlank(arguments.getHdpRepoUtilsBaseUrl()) && StringUtils.isNotBlank(arguments.getAmbariApiRepositoriesHdpUtilsUrl())) {
+            String hdpUtilsRepoJson = convertTemplateToString(resolver, "templates/common/json/json-create-repository.mustache", ImmutableMap.of("url", arguments.getHdpRepoUtilsBaseUrl()));
+            model.put("hdpUtilsRepoJson", compactJSON(hdpUtilsRepoJson));
+        }
 
         String installShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-install.mustache", model);
         String postInstallShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-post-install.mustache", model);
         String cleanLogsShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-clean-logs.mustache", model);
         String checkClusterStatusShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-check-cluster-status.mustache", model);
         String vagrantFile = convertTemplateToString(resolver, "templates/vagrant/vagrantfile.mustache", model);
-
 
 
         final String parentDirectoryName = "out/" + arguments.getFqdn();

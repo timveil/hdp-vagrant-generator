@@ -39,14 +39,14 @@ ambari-agent start
 
 sleep 30
 
-curl -s --show-error -H "{{requestedBy}}" -X POST -d '{{blueprintJson}}' -u admin:admin {{arguments.blueprintsUrl}}
+curl -s --show-error -H "{{requestedBy}}" -X POST -d '{{blueprintJson}}' -u admin:admin {{arguments.ambariApiBlueprintsUrl}}
 
-{{#arguments.hdpRepoBaseUrl}}
-curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '{{hdpRepoJson}}' -u admin:admin {{arguments.repositoriesHdpUrl}}
-{{/arguments.hdpRepoBaseUrl}}
+{{#hdpRepoJson}}
+curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '{{hdpRepoJson}}' -u admin:admin {{arguments.ambariApiRepositoriesHdpUrl}}
+{{/hdpRepoJson}}
 
-{{#arguments.hdpRepoUtilsBaseUrl}}
-curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '{{hdpUtilsRepoJson}}' -u admin:admin {{arguments.repositoriesHdpUtilsUrl}}
-{{/arguments.hdpRepoUtilsBaseUrl}}
+{{#hdpUtilsRepoJson}}
+curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '{{hdpUtilsRepoJson}}' -u admin:admin {{arguments.ambariApiRepositoriesHdpUtilsUrl}}
+{{/hdpUtilsRepoJson}}
 
-curl -s --show-error -H "{{requestedBy}}" -X POST -d '{{createClusterJson}}' -u admin:admin {{arguments.clustersUrl}}
+curl -s --show-error -H "{{requestedBy}}" -X POST -d '{{createClusterJson}}' -u admin:admin {{arguments.ambariApiClustersUrl}}
