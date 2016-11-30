@@ -29,7 +29,6 @@ public class VagrantService implements FileService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private static final String VAGRANTFILE = "Vagrantfile";
-    private static final String VAGRANT_CHECKSTATUS_SH = "vagrant-checkstatus.sh";
 
     @Autowired
     private Mustache.Compiler compiler;
@@ -69,22 +68,21 @@ public class VagrantService implements FileService {
         model.put("createClusterJson", compactJSON(createClusterJson));
 
         String installShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-install.mustache", model);
-        String usersShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-users.mustache", model);
+        String postInstallShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-post-install.mustache", model);
         String cleanLogsShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-clean-logs.mustache", model);
-
-        model.put("installShellScript", installShellScript);
-        model.put("usersShellScript", usersShellScript);
-        model.put("cleanLogsShellScript", cleanLogsShellScript);
-
+        String checkClusterStatusShellScript = convertTemplateToString(resolver, "templates/common/shell/shell-check-cluster-status.mustache", model);
         String vagrantFile = convertTemplateToString(resolver, "templates/vagrant/vagrantfile.mustache", model);
-        String checkStatusFile = convertTemplateToString(resolver, "templates/vagrant/vagrant-checkstatus.mustache", model);
+
 
 
         final String parentDirectoryName = "out/" + arguments.getFqdn();
 
         try {
             FileUtils.writeStringToFile(new File(parentDirectoryName, VAGRANTFILE), vagrantFile, StandardCharsets.UTF_8);
-            FileUtils.writeStringToFile(new File(parentDirectoryName, VAGRANT_CHECKSTATUS_SH), checkStatusFile, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(parentDirectoryName, "shell-clean-logs.sh"), cleanLogsShellScript, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(parentDirectoryName, "shell-check-cluster-status.sh"), checkClusterStatusShellScript, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(parentDirectoryName, "shell-install.sh"), installShellScript, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(parentDirectoryName, "shell-post-install.sh"), postInstallShellScript, StandardCharsets.UTF_8);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
