@@ -1,0 +1,48 @@
+yum clean all
+yum history new
+
+{{#arguments.kerberosEnabled}}
+yum install krb5-libs krb5-server krb5-workstation -y
+
+sed -i "s/kerberos.example.com/{{arguments.fqdn}}/gI" /etc/krb5.conf
+sed -i "s/EXAMPLE.COM/{{arguments.kerberosRealm}}/gI" /etc/krb5.conf
+sed -i "s/#//g" /etc/krb5.conf
+sed -i "s/EXAMPLE.COM/{{arguments.kerberosRealm}}/gI" /var/kerberos/krb5kdc/kadm5.acl
+
+kdb5_util create -s -P Bbh2z8HrVx
+kadmin.local -q 'addprinc -pw admin admin/admin' -w Bbh2z8HrVx
+systemctl start krb5kdc
+systemctl enable krb5kdc
+systemctl start kadmin
+systemctl enable kadmin
+{{/arguments.kerberosEnabled}}
+
+{{#arguments.updateLibraries}}
+yum update -y -q
+{{/arguments.updateLibraries}}
+
+wget -nv {{arguments.ambariRepoFileUrl}} -O /etc/yum.repos.d/ambari.repo
+
+yum install ambari-server ambari-agent -y
+
+sed -i "s/^hostname=localhost/hostname={{arguments.fqdn}}/g" /etc/ambari-agent/conf/ambari-agent.ini
+
+ambari-server setup -s -v
+
+ambari-server start
+
+ambari-agent start
+
+sleep 30
+
+curl -s --show-error -H "{{requestedBy}}" -X POST -d '{{blueprintJson}}' -u admin:admin {{arguments.blueprintsUrl}}
+
+{{#arguments.hdpRepoBaseUrl}}
+curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '{{hdpRepoJson}}' -u admin:admin {{arguments.repositoriesHdpUrl}}
+{{/arguments.hdpRepoBaseUrl}}
+
+{{#arguments.hdpRepoUtilsBaseUrl}}
+curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '{{hdpUtilsRepoJson}}' -u admin:admin {{arguments.repositoriesHdpUtilsUrl}}
+{{/arguments.hdpRepoUtilsBaseUrl}}
+
+curl -s --show-error -H "{{requestedBy}}" -X POST -d '{{createClusterJson}}' -u admin:admin {{arguments.clustersUrl}}

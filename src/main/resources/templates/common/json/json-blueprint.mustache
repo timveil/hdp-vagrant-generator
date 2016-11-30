@@ -28,47 +28,47 @@
         {
             "mapred-site": {
                 "properties": {
-                    "mapreduce.map.java.opts": "-Xmx${memory.mrMapOpts}m",
-                    "mapreduce.map.memory.mb": "$memory.mrMapMemory",
-                    "mapreduce.reduce.java.opts": "-Xmx${memory.mrReduceOpts}m",
-                    "mapreduce.reduce.memory.mb": "$memory.mrReduceMemory",
-                    "yarn.app.mapreduce.am.command-opts": "-Xmx${memory.yarnMrCommandOpts}m -Dhdp.version=${hdp.version}",
-                    "yarn.app.mapreduce.am.resource.mb": "$memory.yarnMrMemory"
+                    "mapreduce.map.java.opts": "-Xmx{{memory.mrMapOpts}}m",
+                    "mapreduce.map.memory.mb": "{{memory.mrMapMemory}}",
+                    "mapreduce.reduce.java.opts": "-Xmx{{memory.mrReduceOpts}}m",
+                    "mapreduce.reduce.memory.mb": "{{memory.mrReduceMemory}}",
+                    "yarn.app.mapreduce.am.command-opts": "-Xmx{{memory.yarnMrCommandOpts}}m -Dhdp.version=${hdp.version}",
+                    "yarn.app.mapreduce.am.resource.mb": "{{memory.yarnMrMemory}}"
                 }
             }
         },
         {
             "yarn-site": {
                 "properties": {
-                    "yarn.nodemanager.resource.memory-mb": "$memory.yarnNodeManagerResoureMemory",
-                    "yarn.scheduler.maximum-allocation-mb": "$memory.yarnMaxAllocation",
-                    "yarn.scheduler.minimum-allocation-mb": "$memory.yarnMinAllocation"
+                    "yarn.nodemanager.resource.memory-mb": "{{memory.yarnNodeManagerResoureMemory}}",
+                    "yarn.scheduler.maximum-allocation-mb": "{{memory.yarnMaxAllocation}}",
+                    "yarn.scheduler.minimum-allocation-mb": "{{memory.yarnMinAllocation}}"
                 }
             }
         }
-#if( $arguments.kerberosEnabled )
+{{#arguments.kerberosEnabled}}
         ,{
             "kerberos-env": {
                 "properties" : {
-                    "realm" : "$arguments.kerberosRealm",
+                    "realm" : "{{arguments.kerberosRealm}}",
                     "kdc_type" : "mit-kdc",
-                    "kdc_host" : "$arguments.fqdn",
+                    "kdc_host" : "{{arguments.fqdn}}",
                     "ldap_url" : "",
                     "container_dn" : "",
                     "encryption_types" : "aes des3-cbc-sha1 rc4 des-cbc-md5",
-                    "admin_server_host" : "$arguments.fqdn"
+                    "admin_server_host" : "{{arguments.fqdn}}"
                 }
             }
         },
         {
             "krb5-conf": {
                 "properties" : {
-                    "domains" : "$arguments.fqdn",
+                    "domains" : "{{arguments.fqdn}}",
                     "manage_krb5_conf" : "true"
                 }
             }
         }
-#end
+{{/arguments.kerberosEnabled}}
     ],
     "host_groups": [
         {
@@ -82,18 +82,18 @@
                 {"name": "HCAT"},
                 {"name": "HDFS_CLIENT"},
                 {"name": "HISTORYSERVER"},
-#if( $arguments.containsSparkComponent() )
+{{#arguments.containsSparkComponent}}
                 {"name": "SPARK_JOBHISTORYSERVER"},
                 {"name": "SPARK_CLIENT"},
-#end
-#if( $arguments.containsHiveComponent() )
+{{/arguments.containsSparkComponent}}
+{{#arguments.containsHiveComponent}}
                 {"name": "HIVE_CLIENT"},
                 {"name": "HIVE_METASTORE"},
                 {"name": "HIVE_SERVER"},
-#end
-#if( $arguments.kerberosEnabled )
+{{/arguments.containsHiveComponent}}
+{{#arguments.kerberosEnabled}}
                 {"name": "KERBEROS_CLIENT"},
-#end
+{{/arguments.kerberosEnabled}}
                 {"name": "MAPREDUCE2_CLIENT"},
                 {"name": "METRICS_COLLECTOR"},
                 {"name": "METRICS_MONITOR"},
@@ -112,13 +112,13 @@
         }
     ],
     "Blueprints": {
-        "blueprint_name": "$arguments.blueprintName",
+        "blueprint_name": "{{arguments.blueprintName}}",
         "stack_name": "HDP",
-        "stack_version": "$arguments.stackVersion"
-#if( $arguments.kerberosEnabled )
+        "stack_version": "{{arguments.stackVersion}}"
+{{#arguments.kerberosEnabled}}
         , "security" : {
             "type" : "KERBEROS"
         }
-#end
+{{/arguments.kerberosEnabled}}
     }
 }

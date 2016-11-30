@@ -1,7 +1,7 @@
 {
-    "blueprint" : "$arguments.blueprintName",
+    "blueprint" : "{{arguments.blueprintName}}",
     "default_password" : "password",
-#if( $arguments.kerberosEnabled )
+{{#arguments.kerberosEnabled}}
     "credentials" : [
         {
             "alias" : "kdc.admin.credential",
@@ -13,13 +13,13 @@
     "security" : {
         "type" : "KERBEROS"
     },
-#end
+{{/arguments.kerberosEnabled}}
     "host_groups" :[
         {
             "name" : "host_group_1",
             "hosts" : [
                 {
-                    "fqdn" : "$arguments.fqdn"
+                    "fqdn" : "{{arguments.fqdn}}"
                 }
             ]
         }

@@ -2,7 +2,7 @@ package veil.hdp.vagrant.generator.model;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
