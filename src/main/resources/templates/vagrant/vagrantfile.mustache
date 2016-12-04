@@ -31,7 +31,5 @@ Vagrant.configure("2") do |config|
     # provision VM
     config.vm.provision "Clean Logs", type: "shell", path: "shell-clean-logs.sh", run: "always"
     config.vm.provision "Install", type: "shell", path: "shell-install.sh"
-    config.vm.provision "Check Cluster Status", type: "shell", path: "shell-check-cluster-status.sh"
-    config.vm.provision "Post Install", type: "shell", path: "shell-post-install.sh"
     config.vm.provision "Ambari Details", type: "shell", inline: "echo 'Ambari URL is http://{{arguments.fqdn}}:8080 or http://{{arguments.hostname}}:8080 or http://{{arguments.ip}}:8080'", run: "always"
 end

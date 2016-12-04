@@ -1,0 +1,21 @@
+FROM centos:7
+
+RUN wget -nv {{arguments.ambariRepoFileUrl}} -O /etc/yum.repos.d/ambari.repo
+
+RUN yum clean all && yum history new{{#arguments.updateLibraries}} && update -y -q{{/arguments.updateLibraries}}
+
+RUN yum install ambari-server ambari-agent{{#arguments.kerberosEnabled}} krb5-libs krb5-server krb5-workstation{{/arguments.kerberosEnabled}} -y
+
+{{#arguments.kerberosEnabled}}
+sed -i "s/kerberos.example.com/{{arguments.fqdn}}/gI" /etc/krb5.conf
+sed -i "s/EXAMPLE.COM/{{arguments.kerberosRealm}}/gI" /etc/krb5.conf
+sed -i "s/#//g" /etc/krb5.conf
+sed -i "s/EXAMPLE.COM/{{arguments.kerberosRealm}}/gI" /var/kerberos/krb5kdc/kadm5.acl
+
+kdb5_util create -s -P Bbh2z8HrVx
+kadmin.local -q 'addprinc -pw admin admin/admin' -w Bbh2z8HrVx
+systemctl start krb5kdc
+systemctl enable krb5kdc
+systemctl start kadmin
+systemctl enable kadmin
+{{/arguments.kerberosEnabled}}
