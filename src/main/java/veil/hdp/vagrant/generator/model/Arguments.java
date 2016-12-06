@@ -28,12 +28,6 @@ public class Arguments {
 
     private final Integer disks;
 
-    private final Integer minContainerSizeInMegabytes;
-
-    private final Integer reservedSystemMemoryInMegabytes;
-
-    private final Integer reservedHbaseMemoryInMegabytes;
-
     private final String clusterName;
 
     private final String blueprintName;
@@ -78,9 +72,6 @@ public class Arguments {
 
         this.ip =  environment.getProperty(Constants.VM_IP, String.class);
         this.memoryInMegabytes =  environment.getProperty(Constants.VM_RAM, Integer.class);
-        this.reservedSystemMemoryInMegabytes =  environment.getProperty(Constants.HDP_MEMORY_RESERVED_SYSTEM, Integer.class);
-        this.reservedHbaseMemoryInMegabytes =  environment.getProperty(Constants.HDP_MEMORY_RESERVED_HBASE, Integer.class);
-        this.minContainerSizeInMegabytes =  environment.getProperty(Constants.HDP_MIN_CONTAINER_SIZE, Integer.class);
         this.cores =  environment.getProperty(Constants.VM_CORES, Integer.class);
         this.updateLibraries =   Boolean.parseBoolean(environment.getProperty(Constants.VM_UPDATE_YUM, String.class));
         this.blueprintName =  environment.getProperty(Constants.HDP_BLUEPRINT_NAME, String.class);
@@ -137,18 +128,6 @@ public class Arguments {
 
     public Integer getDisks() {
         return disks;
-    }
-
-    public Integer getMinContainerSizeInMegabytes() {
-        return minContainerSizeInMegabytes;
-    }
-
-    public Integer getReservedSystemMemoryInMegabytes() {
-        return reservedSystemMemoryInMegabytes;
-    }
-
-    public Integer getReservedHbaseMemoryInMegabytes() {
-        return reservedHbaseMemoryInMegabytes;
     }
 
     public String getClusterName() {
@@ -245,9 +224,6 @@ public class Arguments {
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_CLUSTER_NAME, clusterName);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_BLUEPRINT_NAME, blueprintName);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_STACK_VERSION, stackVersion);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MIN_CONTAINER_SIZE, minContainerSizeInMegabytes);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_SYSTEM, reservedSystemMemoryInMegabytes);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_MEMORY_RESERVED_HBASE, reservedHbaseMemoryInMegabytes);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_BLUEPRINTS_URL, ambariApiBlueprintsUrl);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_CLUSTERS_URL, ambariApiClustersUrl);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_CLUSTERS_REQUESTS_URL, ambariApiClustersRequestsUrl);

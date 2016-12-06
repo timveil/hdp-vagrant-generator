@@ -2,11 +2,9 @@ package veil.hdp.vagrant.generator.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import veil.hdp.vagrant.generator.model.Arguments;
-import veil.hdp.vagrant.generator.model.MemoryConfiguration;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -46,11 +43,9 @@ public abstract class AbstractFileService implements FileService {
     protected abstract void buildFile(Map<String, Object> model, Arguments arguments);
 
     protected Map<String, Object> buildModel(Arguments arguments) {
-        MemoryConfiguration memoryConfiguration = new MemoryConfiguration(arguments);
 
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);
-        model.put("memory", memoryConfiguration);
         model.put("generatedDate", SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT).format(new Date()));
         model.put("requestedBy", "X-Requested-By: ambari");
 
