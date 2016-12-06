@@ -50,9 +50,9 @@
         ,{
             "kerberos-env": {
                 "properties" : {
-                    "realm" : "{{arguments.kerberosRealm}}",
+                    "realm" : "{{realmUpper}}",
                     "kdc_type" : "mit-kdc",
-                    "kdc_host" : "{{arguments.fqdn}}",
+                    "kdc_hosts" : "{{arguments.fqdn}}",
                     "ldap_url" : "",
                     "container_dn" : "",
                     "encryption_types" : "aes des3-cbc-sha1 rc4 des-cbc-md5",
@@ -63,7 +63,7 @@
         {
             "krb5-conf": {
                 "properties" : {
-                    "domains" : "{{arguments.fqdn}}",
+                    "domains" : "{{realmLower}}, .{{realmLower}}",
                     "manage_krb5_conf" : "true"
                 }
             }

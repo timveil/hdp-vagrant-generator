@@ -4,7 +4,7 @@
     admin_server = FILE:/var/log/kadmind.log
 
 [libdefaults]
-    default_realm = {{arguments.kerberosRealm}}
+    default_realm = {{realmUpper}}
     dns_lookup_realm = false
     dns_lookup_kdc = false
     ticket_lifetime = 24h
@@ -12,7 +12,11 @@
     forwardable = true
 
 [realms]
-    {{arguments.kerberosRealm}} = {
+    {{realmUpper}} = {
         kdc = {{arguments.fqdn}}
         admin_server = {{arguments.fqdn}}
     }
+
+[domain_realm]
+    .{{realmLower}} = {{realmUpper}}
+    {{realmLower}} = {{realmUpper}}

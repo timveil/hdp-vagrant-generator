@@ -219,6 +219,14 @@ public class Arguments {
         return ambariApiRepositoriesHdpUtilsUrl;
     }
 
+    public boolean hasCustomHDPUrl() {
+        return StringUtils.isNotBlank(hdpRepoBaseUrl) && StringUtils.isNotBlank(ambariApiRepositoriesHdpUrl);
+    }
+
+    public boolean hasCustomHDPUtilsUrl() {
+        return StringUtils.isNotBlank(hdpRepoUtilsBaseUrl) && StringUtils.isNotBlank(ambariApiRepositoriesHdpUtilsUrl);
+    }
+
     private void prettyPrint() {
         StringBuilder builder = new StringBuilder();
         Formatter formatter = new Formatter(builder);
