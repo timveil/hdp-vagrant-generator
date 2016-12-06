@@ -8,41 +8,9 @@
             }
         },
         {
-            "core-site": {
+            "hadoop-env": {
                 "properties": {
-                    "hadoop.proxyuser.root.groups": "*",
-                    "hadoop.proxyuser.root.hosts": "*",
-                    "hadoop.proxyuser.hcat.groups": "*",
-                    "hadoop.proxyuser.hcat.hosts": "*"
-                }
-            }
-        },
-        {
-            "webhcat-site": {
-                "properties": {
-                    "webhcat.proxyuser.root.groups": "*",
-                    "webhcat.proxyuser.root.hosts": "*"
-                }
-            }
-        },
-        {
-            "mapred-site": {
-                "properties": {
-                    "mapreduce.map.java.opts": "-Xmx{{memory.mrMapOpts}}m",
-                    "mapreduce.map.memory.mb": "{{memory.mrMapMemory}}",
-                    "mapreduce.reduce.java.opts": "-Xmx{{memory.mrReduceOpts}}m",
-                    "mapreduce.reduce.memory.mb": "{{memory.mrReduceMemory}}",
-                    "yarn.app.mapreduce.am.command-opts": "-Xmx{{memory.yarnMrCommandOpts}}m -Dhdp.version=${hdp.version}",
-                    "yarn.app.mapreduce.am.resource.mb": "{{memory.yarnMrMemory}}"
-                }
-            }
-        },
-        {
-            "yarn-site": {
-                "properties": {
-                    "yarn.nodemanager.resource.memory-mb": "{{memory.yarnNodeManagerResoureMemory}}",
-                    "yarn.scheduler.maximum-allocation-mb": "{{memory.yarnMaxAllocation}}",
-                    "yarn.scheduler.minimum-allocation-mb": "{{memory.yarnMinAllocation}}"
+                    "namenode_heapsize": "2048m"
                 }
             }
         }
@@ -82,20 +50,20 @@
                 {"name": "HCAT"},
                 {"name": "HDFS_CLIENT"},
                 {"name": "HISTORYSERVER"},
-{{#arguments.containsSparkComponent}}
-                {"name": "SPARK_JOBHISTORYSERVER"},
-                {"name": "SPARK_CLIENT"},
-{{/arguments.containsSparkComponent}}
 {{#arguments.containsHiveComponent}}
                 {"name": "HIVE_CLIENT"},
                 {"name": "HIVE_METASTORE"},
                 {"name": "HIVE_SERVER"},
 {{/arguments.containsHiveComponent}}
+                {"name": "INFRA_SOLR_CLIENT"},
+                {"name": "INFRA_SOLR"},
+                {"name": "LIVY_SERVER"},
 {{#arguments.kerberosEnabled}}
                 {"name": "KERBEROS_CLIENT"},
 {{/arguments.kerberosEnabled}}
                 {"name": "MAPREDUCE2_CLIENT"},
                 {"name": "METRICS_COLLECTOR"},
+                {"name": "METRICS_GRAFANA"},
                 {"name": "METRICS_MONITOR"},
                 {"name": "MYSQL_SERVER"},
                 {"name": "NAMENODE"},
@@ -103,6 +71,12 @@
                 {"name": "PIG"},
                 {"name": "RESOURCEMANAGER"},
                 {"name": "SECONDARY_NAMENODE"},
+                {"name": "SLIDER"},
+{{#arguments.containsSparkComponent}}
+                {"name": "SPARK_CLIENT"},
+                {"name": "SPARK_JOBHISTORYSERVER"},
+                {"name": "SPARK_THRIFTSERVER"},
+{{/arguments.containsSparkComponent}}
                 {"name": "TEZ_CLIENT"},
                 {"name": "WEBHCAT_SERVER"},
                 {"name": "YARN_CLIENT"},
