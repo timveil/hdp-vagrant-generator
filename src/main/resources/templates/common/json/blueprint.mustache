@@ -50,11 +50,11 @@
                 {"name": "HCAT"},
                 {"name": "HDFS_CLIENT"},
                 {"name": "HISTORYSERVER"},
-{{#arguments.containsHiveComponent}}
+{{#containsHive}}
                 {"name": "HIVE_CLIENT"},
                 {"name": "HIVE_METASTORE"},
                 {"name": "HIVE_SERVER"},
-{{/arguments.containsHiveComponent}}
+{{/containsHive}}
                 {"name": "INFRA_SOLR_CLIENT"},
                 {"name": "INFRA_SOLR"},
                 {"name": "LIVY_SERVER"},
@@ -72,11 +72,11 @@
                 {"name": "RESOURCEMANAGER"},
                 {"name": "SECONDARY_NAMENODE"},
                 {"name": "SLIDER"},
-{{#arguments.containsSparkComponent}}
+{{#containsSpark}}
                 {"name": "SPARK_CLIENT"},
                 {"name": "SPARK_JOBHISTORYSERVER"},
                 {"name": "SPARK_THRIFTSERVER"},
-{{/arguments.containsSparkComponent}}
+{{/containsSpark}}
                 {"name": "TEZ_CLIENT"},
                 {"name": "WEBHCAT_SERVER"},
                 {"name": "YARN_CLIENT"},
@@ -86,7 +86,7 @@
         }
     ],
     "Blueprints": {
-        "blueprint_name": "{{arguments.blueprintName}}",
+        "blueprint_name": "{{blueprintName}}",
         "stack_name": "HDP",
         "stack_version": "{{arguments.stackVersion}}"
 {{#arguments.kerberosEnabled}}

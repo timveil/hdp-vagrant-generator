@@ -33,13 +33,13 @@ public class VagrantService extends AbstractFileService {
             writeContentsToFile(parentDirectoryName, BLUEPRINT_JSON, convertTemplateToString(resolver, "templates/common/json/blueprint.mustache", model));
             writeContentsToFile(parentDirectoryName, CREATE_CLUSTER_JSON, convertTemplateToString(resolver, "templates/common/json/create-cluster.mustache", model));
 
-            if (arguments.hasCustomHDPUrl()) {
+/*            if (arguments.hasCustomHDPUrl()) {
                 writeContentsToFile(parentDirectoryName, CREATE_HDP_REPO_JSON,  convertTemplateToString(resolver, "templates/common/json/create-repository.mustache", ImmutableMap.of("url", arguments.getHdpRepoBaseUrl())));
             }
 
             if (arguments.hasCustomHDPUtilsUrl()) {
                 writeContentsToFile(parentDirectoryName, CREATE_HDP_UTILS_REPO_JSON, convertTemplateToString(resolver, "templates/common/json/create-repository.mustache", ImmutableMap.of("url", arguments.getHdpRepoUtilsBaseUrl())));
-            }
+            }*/
 
             if (arguments.isKerberosEnabled()) {
                 writeContentsToFile(parentDirectoryName, KRB5_CONF, convertTemplateToString(resolver, "templates/common/kerberos/krb5.mustache", model));

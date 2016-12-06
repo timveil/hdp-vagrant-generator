@@ -12,9 +12,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import veil.hdp.vagrant.generator.model.Arguments;
+import veil.hdp.vagrant.generator.model.Component;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,10 +46,22 @@ public abstract class AbstractFileService implements FileService {
 
     protected Map<String, Object> buildModel(Arguments arguments) {
 
+        final String blueprintName="generated";
+        final String clusterName=arguments.getHostname();
+
         Map<String, Object> model = new HashMap<>();
         model.put("arguments", arguments);
         model.put("generatedDate", SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT).format(new Date()));
         model.put("requestedBy", "X-Requested-By: ambari");
+        model.put("clusterName", clusterName);
+        model.put("blueprintName", blueprintName);
+        model.put("containsSpark", arguments.getComponents().contains(Component.spark));
+        model.put("containsHive", arguments.getComponents().contains(Component.hive));
+
+        model.put("ambariRepoFileUrl", MessageFormat.format("http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/{0}/ambari.repo", arguments.getAmbariVersion()));
+        model.put("createBlueprintUrl", MessageFormat.format("http://{0}:8080/api/v1/blueprints/{1}", arguments.getIp(), blueprintName));
+        model.put("createClusterUrl", MessageFormat.format("http://{0}:8080/api/v1/clusters/{1}", arguments.getIp(), clusterName));
+        model.put("createClusterStatusUrl", MessageFormat.format("http://{0}:8080/api/v1/clusters/{1}/requests/1", arguments.getIp(), clusterName));
 
         if (arguments.isKerberosEnabled()) {
             model.put("realmUpper", arguments.getKerberosRealm().toUpperCase());

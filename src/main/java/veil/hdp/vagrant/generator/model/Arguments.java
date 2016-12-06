@@ -22,45 +22,25 @@ public class Arguments {
 
     private final String ip;
 
-    private final Integer memoryInMegabytes;
+    private final Integer memory;
 
     private final Integer cores;
 
     private final Integer disks;
 
-    private final String clusterName;
-
-    private final String blueprintName;
-
-    private final boolean updateLibraries;
-
-    private final String ambariRepoFileUrl;
-
-    private final Set<Component> components;
+    private final boolean updateYum;
 
     private final String stackVersion;
+
+    private final String ambariVersion;
 
     private final boolean kerberosEnabled;
 
     private final String kerberosRealm;
 
-    private final String hdpRepoBaseUrl;
+    private final Set<Component> components;
 
-    private final String hdpRepoUtilsBaseUrl;
 
-    private final String ambariApiBlueprintsUrl;
-
-    private final String ambariApiClustersUrl;
-
-    private final String ambariApiClustersRequestsUrl;
-
-    private final String ambariApiRepositoriesHdpUrl;
-
-    private final String ambariApiRepositoriesHdpUtilsUrl;
-
-    private final String hdpRepoIp;
-
-    private final String hdpRepoFqdn;
 
     public Arguments(Environment environment) {
         this.fqdn =  environment.getProperty(Constants.VM_FQDN, String.class);
@@ -71,25 +51,14 @@ public class Arguments {
         }
 
         this.ip =  environment.getProperty(Constants.VM_IP, String.class);
-        this.memoryInMegabytes =  environment.getProperty(Constants.VM_RAM, Integer.class);
+        this.memory =  environment.getProperty(Constants.VM_MEMORY, Integer.class);
         this.cores =  environment.getProperty(Constants.VM_CORES, Integer.class);
-        this.updateLibraries =   Boolean.parseBoolean(environment.getProperty(Constants.VM_UPDATE_YUM, String.class));
-        this.blueprintName =  environment.getProperty(Constants.HDP_BLUEPRINT_NAME, String.class);
-        this.clusterName =  environment.getProperty(Constants.HDP_CLUSTER_NAME, String.class);
+        this.updateYum =   Boolean.parseBoolean(environment.getProperty(Constants.VM_UPDATE_YUM, String.class));
         this.disks =  environment.getProperty(Constants.VM_DISKS, Integer.class);
         this.stackVersion =  environment.getProperty(Constants.HDP_STACK_VERSION, String.class);
-        this.ambariRepoFileUrl = environment.getProperty(Constants.HDP_REPO_AMBARI_FILE, String.class);
-        this.ambariApiBlueprintsUrl = environment.getProperty(Constants.HDP_AMBARI_API_BLUEPRINTS_URL, String.class);
-        this.ambariApiClustersUrl = environment.getProperty(Constants.HDP_AMBARI_API_CLUSTERS_URL, String.class);
-        this.ambariApiClustersRequestsUrl = environment.getProperty(Constants.HDP_AMBARI_API_CLUSTERS_REQUESTS_URL, String.class);
-        this.hdpRepoBaseUrl = environment.getProperty(Constants.HDP_REPO_BASE, String.class);
-        this.hdpRepoUtilsBaseUrl = environment.getProperty(Constants.HDP_REPO_UTILS_BASE, String.class);
+        this.ambariVersion =  environment.getProperty(Constants.HDP_AMBARI_VERSION, String.class);
         this.kerberosEnabled = environment.getProperty(Constants.HDP_KERBEROS_ENABLED, Boolean.class);
         this.kerberosRealm = environment.getProperty(Constants.HDP_KERBEROS_REALM, String.class);
-        this.ambariApiRepositoriesHdpUrl = environment.getProperty(Constants.HDP_AMBARI_API_REPOSITORIES_HDP_URL, String.class);
-        this.ambariApiRepositoriesHdpUtilsUrl = environment.getProperty(Constants.HDP_AMBARI_API_REPOSITORIES_HDPUTILS_URL, String.class);
-        this.hdpRepoIp = environment.getProperty(Constants.HDP_REPO_IP, String.class);
-        this.hdpRepoFqdn = environment.getProperty(Constants.HDP_REPO_FQDN, String.class);
 
         final String componentString = environment.getProperty(Constants.HDP_COMPONENTS);
         final List<String> componentStrings = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(componentString);
@@ -114,12 +83,16 @@ public class Arguments {
         return hostname;
     }
 
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
     public String getIp() {
         return ip;
     }
 
-    public Integer getMemoryInMegabytes() {
-        return memoryInMegabytes;
+    public Integer getMemory() {
+        return memory;
     }
 
     public Integer getCores() {
@@ -130,56 +103,16 @@ public class Arguments {
         return disks;
     }
 
-    public String getClusterName() {
-        return clusterName;
-    }
-
-    public String getBlueprintName() {
-        return blueprintName;
-    }
-
-    public String getAmbariRepoFileUrl() {
-        return ambariRepoFileUrl;
-    }
-
-    public boolean isUpdateLibraries() {
-        return updateLibraries;
-    }
-
-    public Set<Component> getComponents() {
-        return components;
-    }
-
-    public String getAmbariApiBlueprintsUrl() {
-        return ambariApiBlueprintsUrl;
-    }
-
-    public String getAmbariApiClustersUrl() {
-        return ambariApiClustersUrl;
-    }
-
-    public String getAmbariApiClustersRequestsUrl() {
-        return ambariApiClustersRequestsUrl;
-    }
-
-    public String getHdpRepoBaseUrl() {
-        return hdpRepoBaseUrl;
-    }
-
-    public String getHdpRepoUtilsBaseUrl() {
-        return hdpRepoUtilsBaseUrl;
-    }
-
-    public boolean containsHiveComponent() {
-        return components != null && components.contains(Component.hive);
-    }
-
-    public boolean containsSparkComponent() {
-        return components != null && components.contains(Component.spark);
+    public boolean isUpdateYum() {
+        return updateYum;
     }
 
     public String getStackVersion() {
         return stackVersion;
+    }
+
+    public String getAmbariVersion() {
+        return ambariVersion;
     }
 
     public boolean isKerberosEnabled() {
@@ -190,20 +123,8 @@ public class Arguments {
         return kerberosRealm;
     }
 
-    public String getAmbariApiRepositoriesHdpUrl() {
-        return ambariApiRepositoriesHdpUrl;
-    }
-
-    public String getAmbariApiRepositoriesHdpUtilsUrl() {
-        return ambariApiRepositoriesHdpUtilsUrl;
-    }
-
-    public boolean hasCustomHDPUrl() {
-        return StringUtils.isNotBlank(hdpRepoBaseUrl) && StringUtils.isNotBlank(ambariApiRepositoriesHdpUrl);
-    }
-
-    public boolean hasCustomHDPUtilsUrl() {
-        return StringUtils.isNotBlank(hdpRepoUtilsBaseUrl) && StringUtils.isNotBlank(ambariApiRepositoriesHdpUtilsUrl);
+    public Set<Component> getComponents() {
+        return components;
     }
 
     private void prettyPrint() {
@@ -217,26 +138,15 @@ public class Arguments {
         formatter.format(Constants.FORMAT_SPACER, Constants.VM_FQDN, fqdn);
         formatter.format(Constants.FORMAT_SPACER, Constants.VM_HOSTNAME, hostname);
         formatter.format(Constants.FORMAT_SPACER, Constants.VM_IP, ip);
-        formatter.format(Constants.FORMAT_SPACER, Constants.VM_RAM, memoryInMegabytes);
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_MEMORY, memory);
         formatter.format(Constants.FORMAT_SPACER, Constants.VM_CORES, cores);
         formatter.format(Constants.FORMAT_SPACER, Constants.VM_DISKS, disks);
-        formatter.format(Constants.FORMAT_SPACER, Constants.VM_UPDATE_YUM, updateLibraries);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_CLUSTER_NAME, clusterName);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_BLUEPRINT_NAME, blueprintName);
+        formatter.format(Constants.FORMAT_SPACER, Constants.VM_UPDATE_YUM, updateYum);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_STACK_VERSION, stackVersion);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_BLUEPRINTS_URL, ambariApiBlueprintsUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_CLUSTERS_URL, ambariApiClustersUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_CLUSTERS_REQUESTS_URL, ambariApiClustersRequestsUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_REPOSITORIES_HDP_URL, ambariApiRepositoriesHdpUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_API_REPOSITORIES_HDPUTILS_URL, ambariApiRepositoriesHdpUtilsUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_REPO_AMBARI_FILE, ambariRepoFileUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_REPO_BASE, hdpRepoBaseUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_REPO_UTILS_BASE, hdpRepoUtilsBaseUrl);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_REPO_IP, hdpRepoIp);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_REPO_FQDN, hdpRepoFqdn);
-        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_COMPONENTS, components);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_AMBARI_VERSION, ambariVersion);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_KERBEROS_ENABLED, kerberosEnabled);
         formatter.format(Constants.FORMAT_SPACER, Constants.HDP_KERBEROS_REALM, kerberosRealm);
+        formatter.format(Constants.FORMAT_SPACER, Constants.HDP_COMPONENTS, components);
         formatter.format(Constants.FORMAT_NEW_LINE, "***********************************************************************");
         formatter.format(Constants.FORMAT_NEW_LINE, " ");
 

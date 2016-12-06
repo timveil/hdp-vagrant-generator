@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     # config.vm.hostname = '{{arguments.fqdn}}'
     config.vm.network "private_network", ip: '{{arguments.ip}}'
     config.vm.provider "virtualbox" do |v|
-        v.memory = {{arguments.memoryInMegabytes}}
+        v.memory = {{arguments.memory}}
         v.cpus = {{arguments.cores}}
         v.name = '{{arguments.fqdn}}'
     end
@@ -39,14 +39,6 @@ Vagrant.configure("2") do |config|
     config.vm.provision "file", source: "kdc.conf", destination: "/tmp/install/kdc.conf"
     config.vm.provision "file", source: "krb5.conf", destination: "/tmp/install/krb5.conf"
     {{/arguments.kerberosEnabled}}
-
-    {{#arguments.hasCustomHDPUrl}}
-    config.vm.provision "file", source: "create-hdp-repo.json", destination: "/tmp/install/create-hdp-repo.json"
-    {{/arguments.hasCustomHDPUrl}}
-
-    {{#arguments.hasCustomHDPUtilsUrl}}
-    config.vm.provision "file", source: "create-hdp-utils-repo.json", destination: "/tmp/install/create-hdp-utils-repo.json"
-    {{/arguments.hasCustomHDPUtilsUrl}}
 
     config.vm.provision "Clean Logs", type: "shell", path: "clean-logs.sh", run: "always"
     config.vm.provision "Install", type: "shell", keep_color: "true", path: "install.sh"

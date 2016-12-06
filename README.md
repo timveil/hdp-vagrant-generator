@@ -50,7 +50,7 @@ hdp.cluster.name=default
 vm.ip=192.168.7.101
 
 # ram allocated to virtual box image in MB
-vm.ram=8192
+vm.memory=8192
 
 # number of cores allocated to virtual box image
 vm.cores=4

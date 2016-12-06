@@ -17,12 +17,12 @@ sudo chown root:root /etc/hosts
 hostnamectl --static set-hostname {{arguments.hostname}}
 
 {{#logger}}get ambari repo{{/logger}}
-wget -nv {{arguments.ambariRepoFileUrl}} -O /etc/yum.repos.d/ambari.repo
+wget -nv {{ambariRepoFileUrl}} -O /etc/yum.repos.d/ambari.repo
 
-{{#arguments.updateLibraries}}
+{{#arguments.updateYum}}
 {{#logger}}running yum update{{/logger}}
 yum update -y && yum clean all
-{{/arguments.updateLibraries}}
+{{/arguments.updateYum}}
 
 {{#logger}}running yum install{{/logger}}
 yum install{{#arguments.kerberosEnabled}} krb5-libs krb5-server krb5-workstation{{/arguments.kerberosEnabled}} ambari-server ambari-agent -y && yum clean all
@@ -55,21 +55,13 @@ ambari-server start && ambari-agent start
 sleep 30
 
 {{#logger}}calling ambari REST apis{{/logger}}
-curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/blueprint.json' -u admin:admin {{arguments.ambariApiBlueprintsUrl}}
+curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/blueprint.json' -u admin:admin {{createBlueprintUrl}}
 
-{{#arguments.hasCustomHDPUrl}}
-curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '@/tmp/install/create-hdp-repo.json' -u admin:admin {{arguments.ambariApiRepositoriesHdpUrl}}
-{{/arguments.hasCustomHDPUrl}}
-
-{{#arguments.hasCustomHDPUtilsUrl}}
-curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '@tmp/install/create-hdp-utils-repo.json' -u admin:admin {{arguments.ambariApiRepositoriesHdpUtilsUrl}}
-{{/arguments.hasCustomHDPUtilsUrl}}
-
-curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/create-cluster.json' -u admin:admin {{arguments.ambariApiClustersUrl}}
+curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/create-cluster.json' -u admin:admin {{createClusterUrl}}
 
 PROGRESS=0
 until [ $PROGRESS -eq 100 ]; do
-    PROGRESS=`curl --silent --show-error -H "{{requestedBy}}" -X GET -u admin:admin {{arguments.ambariApiClustersRequestsUrl}} 2>&1 | grep -oP '\"progress_percent\"\s+\:\s+\K[0-9]+'`
+    PROGRESS=`curl --silent --show-error -H "{{requestedBy}}" -X GET -u admin:admin {{createClusterStatusUrl}} 2>&1 | grep -oP '\"progress_percent\"\s+\:\s+\K[0-9]+'`
     TIMESTAMP=$(date "+%m/%d/%y %H:%M:%S")
     echo -ne "$TIMESTAMP - $PROGRESS percent complete!"\\r
     sleep 60
