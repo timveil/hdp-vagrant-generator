@@ -65,7 +65,7 @@ hdp.stack.version=2.5
 hdp.ambari.version=2.4.2.0
 
 # Kerberos enabled (defaults to false)?
-hdp.kerberos.enabled=false
+hdp.kerberos.enabled=
 
 # if Kerberos is enabled, the realm (ex. "example.com")
 hdp.kerberos.realm=
