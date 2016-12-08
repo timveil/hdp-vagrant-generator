@@ -1,10 +1,5 @@
 #!/bin/sh
 
-green=`tput setaf 2`
-reset=`tput sgr0`
-
-echo -e "${reset}"
-
 systemctl start ntpd
 
 {{#logger}}updating hosts file{{/logger}}
@@ -55,7 +50,14 @@ sleep 30
 {{#logger}}calling ambari REST apis{{/logger}}
 curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/blueprint.json' -u admin:admin {{createBlueprintUrl}}
 
+{{#arguments.customRepoEnabled}}
+curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '@/tmp/install/create-hdp-repo.json' -u admin:admin {{createHdpRepositoryUrl}}
+curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '@tmp/install/create-hdp-utils-repo.json' -u admin:admin {{createHdpUtilsRepositoryUrl}}
+{{/arguments.customRepoEnabled}}
+
 curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/create-cluster.json' -u admin:admin {{createClusterUrl}}
+
+
 
 PROGRESS=0
 until [ $PROGRESS -eq 100 ]; do
@@ -76,5 +78,3 @@ usermod -a -G hadoop vagrant
 usermod -a -G hive vagrant
 
 yum clean all
-
-echo -e "${reset}"

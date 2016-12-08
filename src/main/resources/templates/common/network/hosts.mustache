@@ -2,3 +2,7 @@
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
 {{arguments.ip}}    {{arguments.fqdn}} {{arguments.hostname}}
+
+{{#arguments.customRepoEnabled}}
+{{arguments.customRepoIp}}    {{arguments.customRepoFqdn}}
+{{/arguments.customRepoEnabled}}

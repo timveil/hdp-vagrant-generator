@@ -16,29 +16,41 @@ public class Arguments {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final String fqdn;
+    private String fqdn;
 
     private String hostname;
 
-    private final String ip;
+    private String ip;
 
-    private final Integer memory;
+    private Integer memory;
 
-    private final Integer cores;
+    private Integer cores;
 
-    private final Integer disks;
+    private Integer disks;
 
-    private final boolean updateYum;
+    private boolean updateYum;
 
-    private final String stackVersion;
+    private String stackVersion;
 
-    private final String ambariVersion;
+    private String ambariVersion;
 
-    private final boolean kerberosEnabled;
+    private boolean kerberosEnabled;
 
-    private final String kerberosRealm;
+    private String kerberosRealm;
 
-    private final Set<Component> components;
+    private Set<Component> components;
+
+    private boolean customRepoEnabled;
+
+    private String customRepoFqdn;
+
+    private String customRepoIp;
+
+    private String customRepoAmbariUrl;
+
+    private String customRepoHdpUrl;
+
+    private String customRepoHdpUtilsUrl;
 
 
 
@@ -57,8 +69,21 @@ public class Arguments {
         this.disks =  environment.getProperty(Constants.VM_DISKS, Integer.class);
         this.stackVersion =  environment.getProperty(Constants.HDP_STACK_VERSION, String.class);
         this.ambariVersion =  environment.getProperty(Constants.HDP_AMBARI_VERSION, String.class);
-        this.kerberosEnabled = environment.getProperty(Constants.HDP_KERBEROS_ENABLED, Boolean.class);
-        this.kerberosRealm = environment.getProperty(Constants.HDP_KERBEROS_REALM, String.class);
+        this.kerberosEnabled = environment.getProperty(Constants.HDP_KERBEROS_ENABLED, Boolean.class, false);
+
+        if (kerberosEnabled) {
+            this.kerberosRealm = environment.getProperty(Constants.HDP_KERBEROS_REALM, String.class);
+        }
+
+        this.customRepoEnabled = environment.getProperty("custom.repo.enabled", Boolean.class, false);
+
+        if (customRepoEnabled) {
+            this.customRepoFqdn = environment.getProperty("custom.repo.fqdn", String.class);
+            this.customRepoIp = environment.getProperty("custom.repo.ip", String.class);
+            this.customRepoAmbariUrl = environment.getProperty("custom.repo.ambari.url", String.class);
+            this.customRepoHdpUrl = environment.getProperty("custom.repo.hdp.url", String.class);
+            this.customRepoHdpUtilsUrl = environment.getProperty("custom.repo.hdp-utils.url", String.class);
+        }
 
         final String componentString = environment.getProperty(Constants.HDP_COMPONENTS);
         final List<String> componentStrings = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(componentString);
@@ -125,6 +150,30 @@ public class Arguments {
 
     public Set<Component> getComponents() {
         return components;
+    }
+
+    public boolean isCustomRepoEnabled() {
+        return customRepoEnabled;
+    }
+
+    public String getCustomRepoFqdn() {
+        return customRepoFqdn;
+    }
+
+    public String getCustomRepoIp() {
+        return customRepoIp;
+    }
+
+    public String getCustomRepoAmbariUrl() {
+        return customRepoAmbariUrl;
+    }
+
+    public String getCustomRepoHdpUrl() {
+        return customRepoHdpUrl;
+    }
+
+    public String getCustomRepoHdpUtilsUrl() {
+        return customRepoHdpUtilsUrl;
     }
 
     private void prettyPrint() {

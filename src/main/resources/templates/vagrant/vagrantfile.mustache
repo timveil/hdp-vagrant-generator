@@ -34,6 +34,12 @@ Vagrant.configure("2") do |config|
     config.vm.provision "file", source: "blueprint.json", destination: "/tmp/install/blueprint.json"
     config.vm.provision "file", source: "create-cluster.json", destination: "/tmp/install/create-cluster.json"
 
+    {{#arguments.customRepoEnabled}}
+    config.vm.provision "file", source: "create-hdp-repo.json", destination: "/tmp/install/create-hdp-repo.json"
+    config.vm.provision "file", source: "create-hdp-utils-repo.json", destination: "/tmp/install/create-hdp-utils-repo.json"
+    {{/arguments.customRepoEnabled}}
+
+
     {{#arguments.kerberosEnabled}}
     config.vm.provision "file", source: "kadm5.acl", destination: "/tmp/install/kadm5.acl"
     config.vm.provision "file", source: "kdc.conf", destination: "/tmp/install/kdc.conf"

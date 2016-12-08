@@ -58,20 +58,30 @@ public abstract class AbstractFileService implements FileService {
         model.put("containsSpark", arguments.getComponents().contains(Component.spark));
         model.put("containsHive", arguments.getComponents().contains(Component.hive));
 
-        model.put("ambariRepoFileUrl", MessageFormat.format("http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/{0}/ambari.repo", arguments.getAmbariVersion()));
-        model.put("createBlueprintUrl", MessageFormat.format("http://{0}:8080/api/v1/blueprints/{1}", arguments.getIp(), blueprintName));
-        model.put("createClusterUrl", MessageFormat.format("http://{0}:8080/api/v1/clusters/{1}", arguments.getIp(), clusterName));
-        model.put("createClusterStatusUrl", MessageFormat.format("http://{0}:8080/api/v1/clusters/{1}/requests/1", arguments.getIp(), clusterName));
+        model.put("createBlueprintUrl", MessageFormat.format("http://{0}:8080/api/v1/blueprints/{1}", arguments.getFqdn(), blueprintName));
+        model.put("createClusterUrl", MessageFormat.format("http://{0}:8080/api/v1/clusters/{1}", arguments.getFqdn(), clusterName));
+        model.put("createClusterStatusUrl", MessageFormat.format("http://{0}:8080/api/v1/clusters/{1}/requests/1", arguments.getFqdn(), clusterName));
+
+        if (arguments.isCustomRepoEnabled()) {
+            model.put("ambariRepoFileUrl", arguments.getCustomRepoAmbariUrl());
+            //todo: don't like that the repository names are hardcoded.  not sure how to get around this because i don't know where they come from
+            model.put("createHdpRepositoryUrl", MessageFormat.format("http://{0}:8080/api/v1/stacks/HDP/versions/{1}/operating_systems/redhat7/repositories/HDP-2.5", arguments.getFqdn(), arguments.getStackVersion()));
+            model.put("createHdpUtilsRepositoryUrl", MessageFormat.format("http://{0}:8080/api/v1/stacks/HDP/versions/{1}/operating_systems/redhat7/repositories/HDP-UTILS-1.1.0.21", arguments.getFqdn(), arguments.getStackVersion()));
+        } else {
+            model.put("ambariRepoFileUrl", MessageFormat.format("http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/{0}/ambari.repo", arguments.getAmbariVersion()));
+        }
 
         if (arguments.isKerberosEnabled()) {
             model.put("realmUpper", arguments.getKerberosRealm().toUpperCase());
             model.put("realmLower", arguments.getKerberosRealm().toLowerCase());
         }
 
+
+
         Mustache.Lambda logger = (frag, out) -> {
-            out.write("echo -e \"${green}********** ");
+            out.write("echo -e \"********** ");
             frag.execute(out);
-            out.write("${reset}\"");
+            out.write("\"");
         };
 
         model.put("logger", logger);
