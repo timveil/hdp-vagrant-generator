@@ -33,19 +33,15 @@ Vagrant.configure("2") do |config|
     config.vm.provision "file", source: "hosts", destination: "/tmp/install/hosts"
     config.vm.provision "file", source: "blueprint.json", destination: "/tmp/install/blueprint.json"
     config.vm.provision "file", source: "create-cluster.json", destination: "/tmp/install/create-cluster.json"
-
     {{#arguments.customRepoEnabled}}
     config.vm.provision "file", source: "create-hdp-repo.json", destination: "/tmp/install/create-hdp-repo.json"
     config.vm.provision "file", source: "create-hdp-utils-repo.json", destination: "/tmp/install/create-hdp-utils-repo.json"
     {{/arguments.customRepoEnabled}}
-
-
     {{#arguments.kerberosEnabled}}
     config.vm.provision "file", source: "kadm5.acl", destination: "/tmp/install/kadm5.acl"
     config.vm.provision "file", source: "kdc.conf", destination: "/tmp/install/kdc.conf"
     config.vm.provision "file", source: "krb5.conf", destination: "/tmp/install/krb5.conf"
     {{/arguments.kerberosEnabled}}
-
     config.vm.provision "Clean Logs", type: "shell", path: "clean-logs.sh", run: "always"
     config.vm.provision "Install", type: "shell", keep_color: "true", path: "install.sh"
     config.vm.provision "Ambari Details", type: "shell", inline: "echo 'Ambari URL is http://{{arguments.fqdn}}:8080 or http://{{arguments.hostname}}:8080 or http://{{arguments.ip}}:8080'", run: "always"

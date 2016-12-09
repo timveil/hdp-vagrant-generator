@@ -23,8 +23,8 @@ yum install{{#arguments.kerberosEnabled}} krb5-libs krb5-server krb5-workstation
 {{#logger}}updating ambari-agent.ini{{/logger}}
 sed -i "s/^hostname=localhost/hostname={{arguments.fqdn}}/g" /etc/ambari-agent/conf/ambari-agent.ini
 
-{{#logger}}dealing with kerberos{{/logger}}
 {{#arguments.kerberosEnabled}}
+{{#logger}}updating kerberos config{{/logger}}
 sudo mv /tmp/install/kadm5.acl /var/kerberos/krb5kdc/kadm5.acl
 sudo chown root:root /var/kerberos/krb5kdc/kadm5.acl
 
@@ -34,8 +34,13 @@ sudo chown root:root /var/kerberos/krb5kdc/kdc.conf
 sudo mv /tmp/install/krb5.conf /etc/krb5.conf
 sudo chown root:root /etc/krb5.conf
 
+{{#logger}}creating kerberos database{{/logger}}
 kdb5_util create -s -P password
+
+{{#logger}}adding kerberos principal{{/logger}}
 kadmin.local -q 'addprinc -pw admin admin/admin' -w password
+
+{{#logger}}starting kerberos services{{/logger}}
 systemctl start krb5kdc && systemctl enable krb5kdc && systemctl start kadmin && systemctl enable kadmin
 {{/arguments.kerberosEnabled}}
 
@@ -54,8 +59,6 @@ curl -H "{{requestedBy}}" -X PUT -d '@/tmp/install/create-hdp-repo.json' -u admi
 curl -H "{{requestedBy}}" -X PUT -d '@/tmp/install/create-hdp-utils-repo.json' -u admin:admin {{createHdpUtilsRepositoryUrl}}
 {{/arguments.customRepoEnabled}}
 curl -H "{{requestedBy}}" -X POST -d '@/tmp/install/create-cluster.json' -u admin:admin {{createClusterUrl}}
-
-
 
 PROGRESS=0
 until [ $PROGRESS -eq 100 ]; do
