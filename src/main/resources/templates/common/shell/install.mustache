@@ -48,14 +48,12 @@ ambari-server start && ambari-agent start
 sleep 30
 
 {{#logger}}calling ambari REST apis{{/logger}}
-curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/blueprint.json' -u admin:admin {{createBlueprintUrl}}
-
+curl -H "{{requestedBy}}" -X POST -d '@/tmp/install/blueprint.json' -u admin:admin {{createBlueprintUrl}}
 {{#arguments.customRepoEnabled}}
-curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '@/tmp/install/create-hdp-repo.json' -u admin:admin {{createHdpRepositoryUrl}}
-curl --silent --show-error -H "{{requestedBy}}" -X PUT -d '@tmp/install/create-hdp-utils-repo.json' -u admin:admin {{createHdpUtilsRepositoryUrl}}
+curl -H "{{requestedBy}}" -X PUT -d '@/tmp/install/create-hdp-repo.json' -u admin:admin {{createHdpRepositoryUrl}}
+curl -H "{{requestedBy}}" -X PUT -d '@/tmp/install/create-hdp-utils-repo.json' -u admin:admin {{createHdpUtilsRepositoryUrl}}
 {{/arguments.customRepoEnabled}}
-
-curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/create-cluster.json' -u admin:admin {{createClusterUrl}}
+curl -H "{{requestedBy}}" -X POST -d '@/tmp/install/create-cluster.json' -u admin:admin {{createClusterUrl}}
 
 
 
