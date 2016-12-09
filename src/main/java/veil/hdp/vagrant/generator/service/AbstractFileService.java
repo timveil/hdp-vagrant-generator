@@ -79,9 +79,13 @@ public abstract class AbstractFileService implements FileService {
 
 
         Mustache.Lambda logger = (frag, out) -> {
-            out.write("echo -e \"********** ");
+            out.write("echo \" \"\n");
+            out.write("echo \"---------------------------------------------------------------------------------------------------------------\"\n");
+            out.write("echo \"----- ");
             frag.execute(out);
-            out.write("\"");
+            out.write("\"\n");
+            out.write("echo \"---------------------------------------------------------------------------------------------------------------\"\n");
+            out.write("echo \" \"\n");
         };
 
         model.put("logger", logger);
