@@ -18,12 +18,16 @@ yum update -y && yum clean all
 {{/arguments.updateYum}}
 
 {{#logger}}running yum install{{/logger}}
-yum install{{#arguments.kerberosEnabled}} krb5-libs krb5-server krb5-workstation{{/arguments.kerberosEnabled}} ambari-server ambari-agent -y && yum clean all
+yum install{{#arguments.kerberosEnabled}} rng-tools krb5-libs krb5-server krb5-workstation{{/arguments.kerberosEnabled}} ambari-server ambari-agent -y && yum clean all
 
 {{#logger}}updating ambari-agent.ini{{/logger}}
 sed -i "s/^hostname=localhost/hostname={{arguments.fqdn}}/g" /etc/ambari-agent/conf/ambari-agent.ini
 
 {{#arguments.kerberosEnabled}}
+{{#logger}}starting rngd to increase entropy for kdb5_util create{{/logger}}
+systemctl start rngd
+systemctl enable rngd
+
 {{#logger}}updating kerberos config{{/logger}}
 sudo mv /tmp/install/kadm5.acl /var/kerberos/krb5kdc/kadm5.acl
 sudo chown root:root /var/kerberos/krb5kdc/kadm5.acl
