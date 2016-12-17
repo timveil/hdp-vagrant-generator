@@ -42,17 +42,21 @@ sudo chown root:root /etc/krb5.conf
 kdb5_util create -s -P password
 
 {{#logger}}adding kerberos principal{{/logger}}
-kadmin.local -q 'addprinc -pw admin admin/admin' -w password
+kadmin.local -q 'addprinc -pw password admin/admin' -w password
 
 {{#logger}}starting kerberos services{{/logger}}
-systemctl start krb5kdc && systemctl enable krb5kdc && systemctl start kadmin && systemctl enable kadmin
+systemctl start krb5kdc
+systemctl start kadmin
+systemctl enable krb5kdc
+systemctl enable kadmin
 {{/arguments.kerberosEnabled}}
 
 {{#logger}}running ambari setup{{/logger}}
 ambari-server setup -s
 
 {{#logger}}starting ambari server and agent{{/logger}}
-ambari-server start && ambari-agent start
+ambari-server start
+ambari-agent start
 
 sleep 30
 
