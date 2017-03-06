@@ -1,5 +1,5 @@
 package veil.hdp.vagrant.generator.model;
 
 public enum Component {
-    hive, spark
+    hive, spark, hbase
 }

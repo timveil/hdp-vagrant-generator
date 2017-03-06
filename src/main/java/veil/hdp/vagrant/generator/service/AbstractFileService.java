@@ -55,8 +55,18 @@ public abstract class AbstractFileService implements FileService {
         model.put("requestedBy", "X-Requested-By: ambari");
         model.put("clusterName", clusterName);
         model.put("blueprintName", blueprintName);
-        model.put("containsSpark", arguments.getComponents().contains(Component.spark));
-        model.put("containsHive", arguments.getComponents().contains(Component.hive));
+
+        boolean hasHive = arguments.getComponents().contains(Component.hive);
+        boolean hasSpark = arguments.getComponents().contains(Component.spark);
+        boolean hasHbase = arguments.getComponents().contains(Component.hbase);
+
+        if (hasSpark || hasHbase) {
+            hasHive = true;
+        }
+
+        model.put("containsHive", hasHive);
+        model.put("containsSpark", hasSpark);
+        model.put("containsHbase", hasHbase);
 
         model.put("createBlueprintUrl", MessageFormat.format("http://{0}:8080/api/v1/blueprints/{1}", arguments.getFqdn(), blueprintName));
         model.put("createClusterUrl", MessageFormat.format("http://{0}:8080/api/v1/clusters/{1}", arguments.getFqdn(), clusterName));

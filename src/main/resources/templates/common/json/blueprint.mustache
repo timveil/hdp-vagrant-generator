@@ -14,6 +14,15 @@
                 }
             }
         }
+{{#containsHbase}}
+        ,{
+            "hbase-env": {
+                "properties": {
+                    "phoenix_sql_enabled": "true"
+                }
+            }
+        }
+{{/containsHbase}}
 {{#arguments.kerberosEnabled}}
         ,{
             "kerberos-env": {
@@ -47,6 +56,12 @@
                 {"name": "AMBARI_SERVER"},
                 {"name": "APP_TIMELINE_SERVER"},
                 {"name": "DATANODE"},
+{{#containsHbase}}
+                {"name": "HBASE_MASTER"},
+                {"name": "HBASE_REGIONSERVER"},
+                {"name": "HBASE_CLIENT"},
+                {"name": "PHOENIX_QUERY_SERVER"},
+{{/containsHbase}}
                 {"name": "HCAT"},
                 {"name": "HDFS_CLIENT"},
                 {"name": "HISTORYSERVER"},
