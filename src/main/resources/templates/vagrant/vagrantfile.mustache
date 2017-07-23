@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
     config.vm.box_check_update = true
 
     # configure VM
-    # config.vm.hostname is broken in vagrant 1.9.0; works in 1.9.1; broken in 1.9.2 (windows); broken 1.9.3 (mac)
+    # config.vm.hostname is broken in vagrant 1.9.0; works in 1.9.1; broken in 1.9.2 (windows); broken 1.9.3 (mac); broken in 1.9.6 (windows)
     # config.vm.hostname = '{{arguments.fqdn}}'
     config.vm.network "private_network", ip: '{{arguments.ip}}'
     config.vm.provider "virtualbox" do |v|
