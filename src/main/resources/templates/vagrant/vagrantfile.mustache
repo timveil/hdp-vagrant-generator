@@ -9,8 +9,8 @@ Vagrant.configure("2") do |config|
     config.vm.box = "timveil/centos7-hdp-base"
     config.vm.box_check_update = true
 
+    # config.vm.hostname is broken in vagrant 1.9.0; works in 1.9.1; broken in 1.9.2 (windows); broken 1.9.3 (mac); broken in 1.9.6 (windows); works 1.9.7 (mac); works on windows 1.9.7 with updated base box
     # configure VM
-    # config.vm.hostname is broken in vagrant 1.9.0; works in 1.9.1; broken in 1.9.2 (windows); broken 1.9.3 (mac); broken in 1.9.6 (windows); works 1.9.7 (mac)
     config.vm.hostname = '{{arguments.fqdn}}'
     config.vm.network "private_network", ip: '{{arguments.ip}}'
     config.vm.provider "virtualbox" do |v|
@@ -22,12 +22,14 @@ Vagrant.configure("2") do |config|
     if FFI::Platform::IS_MAC
         # configure host updater plugin - https://github.com/cogitatio/vagrant-hostsupdater
         config.hostsupdater.aliases = ["{{arguments.hostname}}"]
-
-        # configure VirtualBox Guest Additions plugin - https://github.com/dotless-de/vagrant-vbguest
-        config.vbguest.auto_update = true
-        config.vbguest.no_remote = true
-        config.vbguest.no_install = false
     end
+
+    # install on windows or mac: vagrant plugin install vagrant-vbguest
+    # configure VirtualBox Guest Additions plugin - https://github.com/dotless-de/vagrant-vbguest
+    config.vbguest.auto_update = true
+    config.vbguest.no_remote = true
+    config.vbguest.no_install = false
+
 
     # workaround for https://github.com/mitchellh/vagrant/issues/8096; impacts 1.9.1
     config.vm.provision "shell", inline: "service network restart", run: "always"
