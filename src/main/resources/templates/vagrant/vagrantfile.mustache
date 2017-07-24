@@ -10,8 +10,8 @@ Vagrant.configure("2") do |config|
     config.vm.box_check_update = true
 
     # configure VM
-    # config.vm.hostname is broken in vagrant 1.9.0; works in 1.9.1; broken in 1.9.2 (windows); broken 1.9.3 (mac); broken in 1.9.6 (windows)
-    # config.vm.hostname = '{{arguments.fqdn}}'
+    # config.vm.hostname is broken in vagrant 1.9.0; works in 1.9.1; broken in 1.9.2 (windows); broken 1.9.3 (mac); broken in 1.9.6 (windows); works 1.9.7 (mac)
+    config.vm.hostname = '{{arguments.fqdn}}'
     config.vm.network "private_network", ip: '{{arguments.ip}}'
     config.vm.provider "virtualbox" do |v|
         v.memory = {{arguments.memory}}
@@ -45,6 +45,6 @@ Vagrant.configure("2") do |config|
     config.vm.provision "file", source: "kdc.conf", destination: "/tmp/install/kdc.conf"
     config.vm.provision "file", source: "krb5.conf", destination: "/tmp/install/krb5.conf"
     {{/arguments.kerberosEnabled}}
-    config.vm.provision "Install", type: "shell", keep_color: "true", path: "install.sh"
+    config.vm.provision "Install", type: "shell", path: "install.sh"
     config.vm.provision "Ambari Details", type: "shell", inline: "echo 'Ambari URL is http://{{arguments.fqdn}}:8080 or http://{{arguments.hostname}}:8080 or http://{{arguments.ip}}:8080'", run: "always"
 end
