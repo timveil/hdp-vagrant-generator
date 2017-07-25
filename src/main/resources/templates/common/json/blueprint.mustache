@@ -8,6 +8,21 @@
             }
         },
         {
+            "core-site" : {
+                "properties" : {
+                    "hadoop.proxyuser.root.groups" : "*",
+                    "hadoop.proxyuser.root.hosts" : "*"
+                }
+            }
+        },
+        {
+            "hive-site" : {
+                "properties" : {
+                    "hive.server2.transport.mode" : "binary"
+                }
+            }
+        },
+        {
             "hadoop-env": {
                 "properties": {
                     "namenode_heapsize": "1536m"

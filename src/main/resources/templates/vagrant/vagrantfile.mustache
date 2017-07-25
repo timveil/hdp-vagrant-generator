@@ -19,17 +19,16 @@ Vagrant.configure("2") do |config|
         v.name = '{{arguments.fqdn}}'
     end
 
-    if FFI::Platform::IS_MAC
-        # configure host updater plugin - https://github.com/cogitatio/vagrant-hostsupdater
-        config.hostsupdater.aliases = ["{{arguments.hostname}}"]
-    end
+    # install on windows or mac: vagrant plugin install vagrant-hostsupdater
+    # configure host updater plugin - https://github.com/cogitatio/vagrant-hostsupdater
+    config.hostsupdater.aliases = ["{{arguments.hostname}}"]
 
     # install on windows or mac: vagrant plugin install vagrant-vbguest
     # configure VirtualBox Guest Additions plugin - https://github.com/dotless-de/vagrant-vbguest
+    # for windows see https://github.com/cogitatio/vagrant-hostsupdater/issues/89.  you'll likely need to change the permissions of the host file.
     config.vbguest.auto_update = true
     config.vbguest.no_remote = true
     config.vbguest.no_install = false
-
 
     # workaround for https://github.com/mitchellh/vagrant/issues/8096; impacts 1.9.1
     config.vm.provision "shell", inline: "service network restart", run: "always"

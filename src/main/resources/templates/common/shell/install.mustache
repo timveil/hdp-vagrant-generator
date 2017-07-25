@@ -90,5 +90,11 @@ usermod -a -G hdfs vagrant
 usermod -a -G hadoop vagrant
 usermod -a -G hive vagrant
 
+{{#logger}}doing some hdfs view stuff{{/logger}}
+sudo su - hdfs << EOF
+    hadoop fs -mkdir /user/admin
+    hadoop fs -chown admin:hadoop /user/admin
+EOF
+
 {{#logger}}final yum cleanup{{/logger}}
 yum clean all
