@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import veil.hdp.vagrant.generator.Constants;
 import veil.hdp.vagrant.generator.model.Arguments;
 import veil.hdp.vagrant.generator.model.Component;
 
@@ -84,6 +85,8 @@ public abstract class AbstractFileService implements FileService {
         if (arguments.isKerberosEnabled()) {
             model.put("realmUpper", arguments.getKerberosRealm().toUpperCase());
             model.put("realmLower", arguments.getKerberosRealm().toLowerCase());
+            model.put("kdcAdmin", Constants.KDC_ADMIN);
+            model.put("kdcPassword", Constants.KDC_PASSWORD);
         }
 
 

@@ -1,12 +1,12 @@
 {
     "blueprint" : "{{blueprintName}}",
-    "default_password" : "password",
+    "default_password" : "{{kdcPassword}}",
 {{#arguments.kerberosEnabled}}
     "credentials" : [
         {
             "alias" : "kdc.admin.credential",
-            "principal" : "admin/admin",
-            "key" : "admin",
+            "principal" : "{{kdcAdmin}}",
+            "key" : "{{kdcPassword}}",
             "type" : "TEMPORARY"
         }
     ],

@@ -30,4 +30,7 @@ public class Constants {
     public static final String HDP_KERBEROS_ENABLED = "hdp.kerberos.enabled";
     public static final String HDP_KERBEROS_REALM = "hdp.kerberos.realm";
     public static final String HDP_AMBARI_VERSION = "hdp.ambari.version";
+
+    public static final String KDC_ADMIN = "admin/admin";
+    public static final String KDC_PASSWORD = "password";
 }

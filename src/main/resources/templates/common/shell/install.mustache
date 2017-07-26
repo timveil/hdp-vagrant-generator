@@ -39,10 +39,10 @@ sudo mv /tmp/install/krb5.conf /etc/krb5.conf
 sudo chown root:root /etc/krb5.conf
 
 {{#logger}}creating kerberos database{{/logger}}
-kdb5_util create -s -P password
+kdb5_util create -s -P {{kdcPassword}}
 
 {{#logger}}adding kerberos principal{{/logger}}
-kadmin.local -q 'addprinc -pw password admin/admin' -w password
+kadmin.local -q 'addprinc -pw {{kdcPassword}} {{kdcAdmin}}' -w {{kdcPassword}}
 
 {{#logger}}starting kerberos services{{/logger}}
 systemctl start krb5kdc
