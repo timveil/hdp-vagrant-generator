@@ -12,6 +12,10 @@
                 "properties" : {
                     "hadoop.proxyuser.root.groups" : "*",
                     "hadoop.proxyuser.root.hosts" : "*"
+{{#arguments.kerberosEnabled}}
+                    ,"hadoop.proxyuser.ambari-server-{{clusterName}}.groups" : "*"
+                    ,"hadoop.proxyuser.ambari-server-{{clusterName}}.hosts" : "*"
+{{/arguments.kerberosEnabled}}
                 }
             }
         },
