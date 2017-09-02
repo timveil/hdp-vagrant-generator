@@ -47,5 +47,6 @@ Vagrant.configure("2") do |config|
     config.vm.provision "file", source: "krb5.conf", destination: "/tmp/install/krb5.conf"
     {{/arguments.kerberosEnabled}}
     config.vm.provision "Install", type: "shell", path: "install.sh"
+    config.vm.provision "Post Install", type: "shell", path: "post-install.sh"
     config.vm.provision "Ambari Details", type: "shell", inline: "echo 'Ambari URL is http://{{arguments.fqdn}}:8080 or http://{{arguments.hostname}}:8080 or http://{{arguments.ip}}:8080'", run: "always"
 end

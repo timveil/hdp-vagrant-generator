@@ -62,7 +62,7 @@ vm.update.yum=true
 hdp.stack.version=2.6
 
 # HDP Ambari version
-hdp.ambari.version=2.5.1.0
+hdp.ambari.version=2.5.2.0
 
 # Kerberos enabled (defaults to false)?
 hdp.kerberos.enabled=
