@@ -71,6 +71,7 @@ curl --silent --show-error -H "{{requestedBy}}" -X POST -d '@/tmp/install/create
 {{#logger}}sleep before checking progress{{/logger}}
 sleep 30
 
+{{#logger}}checking progress{{/logger}}
 PROGRESS=0
 until [ $PROGRESS -eq 100 ]; do
     PROGRESS=`curl --silent --show-error -H "{{requestedBy}}" -X GET -u admin:admin {{createClusterStatusUrl}} 2>&1 | grep -oP '\"progress_percent\"\s+\:\s+\K[0-9]+'`
