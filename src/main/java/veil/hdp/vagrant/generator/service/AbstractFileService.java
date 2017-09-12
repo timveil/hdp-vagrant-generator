@@ -85,11 +85,10 @@ public abstract class AbstractFileService implements FileService {
         if (arguments.isKerberosEnabled()) {
             model.put("realmUpper", arguments.getKerberosRealm().toUpperCase());
             model.put("realmLower", arguments.getKerberosRealm().toLowerCase());
-            model.put("kdcAdmin", Constants.KDC_ADMIN);
-            model.put("kdcPassword", Constants.KDC_PASSWORD);
         }
 
-
+        model.put("kdcAdmin", Constants.KDC_ADMIN);
+        model.put("kdcPassword", Constants.KDC_PASSWORD);
 
         Mustache.Lambda logger = (frag, out) -> {
             out.write("echo \" \"\n");
