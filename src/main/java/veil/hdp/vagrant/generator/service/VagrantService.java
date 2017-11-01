@@ -24,7 +24,7 @@ public class VagrantService extends AbstractFileService {
     @Override
     protected void buildFile(Map<String, Object> model, Arguments arguments) {
 
-        final String parentDirectoryName = "out/" + arguments.getFqdn();
+        final String parentDirectoryName = "target/tests/" + arguments.getFqdn();
 
         writeContentsToFile(parentDirectoryName, INSTALL_SH, convertTemplateToString(resolver, "templates/common/shell/install.mustache", model));
         writeContentsToFile(parentDirectoryName, POST_INSTALL_SH, convertTemplateToString(resolver, "templates/common/shell/post-install.mustache", model));
