@@ -1,4 +1,4 @@
-**Most of my focus is now on building Hadoop clusters in Docker.  See https://github.com/timveil/docker-hadoop.  This repository is no longer maintained.**
+>**Most of my focus is now on building Hadoop clusters in Docker.  See https://github.com/timveil/docker-hadoop.  This repository is no longer maintained.**
 
 # HDP Vagrant Generator
 
